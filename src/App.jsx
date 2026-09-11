@@ -1,3 +1,20 @@
+import { useState, useEffect, useRef } from 'react';
+import { IntroScreen } from './components/IntroScreen';
+import { HoverExpandGallery } from './components/ui/hover-expand-gallery';
+import { MentorReportingFeatures } from './components/ui/features-2';
+import { Testimonials } from './components/ui/unique-testimonial';
+import { Linkedin, Github, Instagram } from './components/ui/brand-icons';
+import { Mail, ArrowUpRight, ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react';
+import CountUpPkg from 'react-countup';
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import { FloatingDock } from './components/ui/dock';
+import { SectionShell } from './components/ui/SectionShell';
+import { LetsWorkTogether } from './components/ui/lets-work-section';
+
+const CountUp = CountUpPkg.default ?? CountUpPkg;
+const roles = ["Developer.", "Mentor.", "Innovator.", "Creator."];
+
+const experienceJobs = [
   {
     title: "IT Specialist",
     company: "Krya Global",
@@ -28,406 +45,567 @@
   },
   {
     title: "Web Developer",
+    company: "Digital Daya Nusantara",
+    date: "Aug 2021-Nov 2024",
+    isActive: false,
+    desc: "Built responsive websites using HTML, CSS, JavaScript, PHP; tested and debugged for cross-device performance."
+  },
+  {
+    title: "Internship",
+    company: "SMA Kolese De Britto",
+    date: "Jul-Sep 2020",
+    isActive: false,
+    desc: "Built 'JB Videos', an internal Laravel platform for uploading and categorizing learning videos with secure access control."
+  }
+];
+
+
+
+const carouselSlides = [
+  { image: '/gallery_1.jpg', title: 'Classroom Session', description: 'Teaching' },
+  { image: '/gallery_2.jpg', title: 'Mentoring', description: '1-on-1' },
+  { image: '/gallery_3.jpg', title: 'Hackathon', description: 'Event' },
+  { image: '/gallery_4.jpg', title: 'Group Study', description: 'Collaboration' },
+  { image: '/gallery_5.jpg', title: 'Code Review', description: 'Dev' },
+];
+
+
+
+
+
+
+function StepCard({ number, title, color, bg, description, imageSrc, imageLabel }) {
+  return (
+    <div className="rounded-3xl border border-slate-100 p-6 flex flex-col h-full bg-[var(--card)] border-[var(--card-border)] shadow-xl shadow-slate-200/50">
+      <div className="flex items-center gap-3 mb-3">
+        <span className="w-8 h-8 shrink-0 rounded-full bg-slate-100 text-sm font-black flex items-center justify-center text-slate-900 dark:text-zinc-100">
+          {number}
+        </span>
+        <h3 className="font-bold text-2xl" style={{ color }}>
+          {title}
+        </h3>
+      </div>
+
+      {/* teks di flow normal */}
+      <p className="text-sm md:text-base text-slate-600 dark:text-zinc-400 dark:text-zinc-300 leading-relaxed mb-6">
+        {description}
+      </p>
+
+      {/* gambar ngisi SISA ruang card */}
+      <div className={`flex-1 min-h-[120px] rounded-2xl flex items-center justify-center overflow-hidden border border-slate-100 ${bg}`}>
+        {imageSrc ? (
+          <img src={imageSrc} alt={title} className="w-full h-full object-cover" />
+        ) : (
+          <span className="text-xs font-mono font-bold" style={{ color }}>
+            {imageLabel}
+          </span>
+        )}
+      </div>
+    </div>
+  );
+}
+
+
+function RotatingText({ words }) {
+  const [index, setIndex] = useState(0);
+  
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIndex((prev) => (prev + 1) % words.length);
+    }, 2000);
+    return () => clearInterval(interval);
+  }, [words.length]);
+
+  return (
+    <div className="inline-grid [grid-template-areas:'stack'] overflow-hidden text-blue-600">
+      <AnimatePresence mode="popLayout">
+        <motion.span
+          key={words[index]}
+          initial={{ y: "100%", opacity: 0 }}
+          animate={{ y: "0%", opacity: 1 }}
+          exit={{ y: "-100%", opacity: 0 }}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          className="[grid-area:stack] inline-block"
+        >
+          {words[index]}
+        </motion.span>
+      </AnimatePresence>
+    </div>
+  );
+}
+
+function App() {
+  const [hasEntered, setHasEntered] = useState(false);
+  const [activeServiceIndex, setActiveServiceIndex] = useState(null);
+  const [workIndex, setWorkIndex] = useState(0);
+
+  const workProjects = [
+    { 
+      title: "Mentor Reporting System", 
+      tag: "Internal Tool",
+      desc: "A comprehensive virtual administration platform to streamline reporting, data management, and parent communication.",
+      tech: ["React", "Tailwind", "Node.js", "Firebase"],
+      img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80",
+      url: "https://report-tembel.krya.global/"
+    },
+    { 
+      title: "Reminder App", 
+      tag: "Productivity",
+      desc: "A sleek, intuitive task manager and reminder app to boost daily productivity.",
+      tech: ["Next.js", "TypeScript", "Tailwind", "Prisma", "PostgreSQL"],
+      img: "https://images.unsplash.com/photo-1540350394557-8d14678e7f91?w=600&q=80",
+      url: "https://reminder-app-chromaksa.vercel.app/"
+    },
+    { 
+      title: "Ryan's Toolkit", 
+      tag: "PWA Utility",
+      desc: "A fast, local-first utility for PDF manipulation, AI background removal, and OCR.",
+      tech: ["React", "PWA", "WebAssembly", "PDF-Lib", "Tesseract"],
+      img: "https://images.unsplash.com/photo-1618044733300-9472054094ee?w=600&q=80",
+      url: "https://ryan-s-tools.vercel.app/"
+    }
+  ];
+
+  const nextWork = () => setWorkIndex((p) => (p + 1) % workProjects.length);
+  const prevWork = () => setWorkIndex((p) => (p - 1 + workProjects.length) % workProjects.length);
+
+
+  const staggerContainer = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+        delayChildren: 0.2
+      }
+    }
+  };
+
+  const fadeUp = {
+    hidden: { opacity: 0, y: 60, filter: 'blur(10px)', scale: 0.95 },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      filter: 'blur(0px)', 
+      scale: 1,
+      transition: { 
+        duration: 1.0, 
+        ease: [0.16, 1, 0.3, 1]
+      } 
+    }
+  };
+
+  const slideRight = {
+    hidden: { opacity: 0, x: -60, filter: 'blur(10px)' },
+    visible: { 
+      opacity: 1, 
+      x: 0, 
+      filter: 'blur(0px)',
+      transition: { 
+        duration: 1.0, 
+        ease: [0.16, 1, 0.3, 1] 
+      } 
+    }
+  };
+
+  const [roleIndex, setRoleIndex] = useState(0);
+
+  // Force scroll to top on refresh
+  useEffect(() => {
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setRoleIndex((prev) => (prev + 1) % roles.length);
+    }, 2500);
+    return () => clearInterval(interval);
   }, []);
 
   return (
     <>
+      <FloatingDock />
       <AnimatePresence>
         {!hasEntered && <IntroScreen key="intro" onEnter={() => setHasEntered(true)} />}
       </AnimatePresence>
 
-      <div className="relative min-h-screen overflow-x-hidden" id="about">
-        {/* Background Elements */}
-      <div className="fixed inset-0 z-0 pointer-events-none">
-        <div className="absolute inset-0 bg-grid opacity-50"></div>
-        <div className="absolute top-0 -left-4 w-96 h-96 bg-indigo-600 rounded-full filter blur-[100px] opacity-20 animate-blob"></div>
-        <div className="absolute top-0 -right-4 w-96 h-96 bg-blue-600 rounded-full filter blur-[100px] opacity-20 animate-blob animation-delay-2000"></div>
-        <div className="absolute -bottom-8 left-20 w-96 h-96 bg-cyan-600 rounded-full filter blur-[100px] opacity-20 animate-blob animation-delay-4000"></div>
-        <div className="absolute -bottom-8 right-20 w-96 h-96 bg-blue-400 rounded-full filter blur-[100px] opacity-10 animate-blob animation-delay-2000"></div>
-      </div>
-
-      <div className="relative z-10 w-full">
-        {/* 1. Hero Card */}
-        <StackedSection zIndex={10}>
-        <BentoCard className="w-full h-full flex flex-col gap-8" delay={0.1}>
-          <div className="flex flex-col-reverse md:flex-row gap-8 items-center w-full h-full">
-            <div className="flex-1 w-full flex flex-col justify-center">
-              <motion.h1 
-                className="text-5xl md:text-6xl lg:text-8xl font-black tracking-tight mb-6 leading-[1.1] flex flex-wrap gap-x-4 text-white"
-                initial="hidden"
-                animate="visible"
-                variants={{
-                  visible: { transition: { staggerChildren: 0.1 } }
-                }}
-              >
-                <motion.span 
-                  variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }} 
-                  className="text-transparent" 
-                  style={{ WebkitTextStroke: '2px rgba(255,255,255,0.9)' }}
-                >
-                  Educator
-                </motion.span>
-                <motion.span variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }} className="text-cyan-400">&</motion.span>
-                <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }} className="w-max min-w-full h-[1.3em] relative overflow-hidden pr-8">
-                  <AnimatePresence>
-                    <motion.span
-                      key={roleIndex}
-                      initial={{ y: 50, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      exit={{ y: -50, opacity: 0 }}
-                      transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                      className="absolute inset-0 whitespace-nowrap bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-cyan-300 pb-2"
-                  >
-                    {roles[roleIndex]}
-                  </motion.span>
-                </AnimatePresence>
-              </motion.div>
-            </motion.h1>
-            <p className="text-xl text-muted max-w-lg leading-relaxed">
-              Guiding the next generation of tech talent, and engineering systems that make digital learning seamless.
-            </p>
-          </div>
-          <div className="w-full md:w-1/3 aspect-square flex items-center justify-center relative">
-            <OrbitalNav />
-          </div>
+      <div className="relative" id="about">
+        {/* Background Elements (fixed so they stay behind everything) */}
+        <div className="fixed inset-0 z-0 pointer-events-none">
+          <div className="absolute inset-0 bg-grid opacity-50 dark:opacity-30"></div>
+          <div className="absolute top-0 -left-4 w-96 h-96 bg-indigo-600 rounded-full filter blur-[100px] opacity-20 animate-blob"></div>
+          <div className="absolute top-0 -right-4 w-96 h-96 bg-blue-600 rounded-full filter blur-[100px] opacity-20 animate-blob animation-delay-2000"></div>
+          <div className="absolute -bottom-8 left-20 w-96 h-96 bg-cyan-600 rounded-full filter blur-[100px] opacity-20 animate-blob animation-delay-4000"></div>
         </div>
-      </BentoCard>
-        </StackedSection>
 
-      {/* 2. Who Am I Card */}
-      <StackedSection zIndex={20}>
-        <BentoCard id="about" className="w-full h-full flex flex-col" delay={0.2}>
-        <div className="flex flex-col md:flex-row h-full w-full items-center justify-center gap-8 md:gap-16">
-          {/* 1. Large Prominent Portrait Photo */}
-          <div className="w-56 sm:w-64 md:w-72 aspect-[3/4] rounded-3xl overflow-hidden border-4 border-[var(--background)] shadow-xl relative group shrink-0 md:mb-0">
-            <div className="absolute inset-0 bg-brand/10 mix-blend-overlay group-hover:opacity-0 transition-opacity duration-300 z-10 pointer-events-none" />
-            <img src="/ryan.jpg" alt="Gabriel Ryan Prima" className="w-full h-full object-cover object-top transform group-hover:scale-105 transition-transform duration-700" />
-          </div>
-
-          {/* 2. Name Header */}
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-black text-white tracking-tight">Gabriel Ryan Prima</h2>
-          </div>
-
-          {/* 3. Stat badges */}
-          <div className="flex flex-wrap justify-center gap-3 mb-8">
-            <div className="glass-badge bg-[var(--background)]/50">
-              <span className="text-xl font-bold mr-1"><CountUp end={5} duration={3} enableScrollSpy scrollSpyOnce />+</span>
-              <span className="text-xs uppercase tracking-wider opacity-80">Years</span>
-            </div>
-            <div className="glass-badge bg-[var(--background)]/50">
-              <span className="text-xl font-bold mr-1"><CountUp end={500} duration={3} enableScrollSpy scrollSpyOnce />+</span>
-              <span className="text-xs uppercase tracking-wider opacity-80">Sessions</span>
-            </div>
-            <div className="glass-badge bg-[var(--background)]/50">
-              <span className="text-xl font-bold mr-1"><CountUp end={10} duration={3} enableScrollSpy scrollSpyOnce />+</span>
-              <span className="text-xs uppercase tracking-wider opacity-80">Programs</span>
-            </div>
-          </div>
-
-          {/* 4. About-me Paragraph */}
-          <p className="text-muted leading-relaxed text-sm text-justify">
-            I am an educator first, and a developer second. By stepping into the virtual classroom every day, I understand exactly where students struggle and where EdTech systems fail. I use my engineering background not just to teach code, but to build the tools that make teaching it better.
-          </p>
-        </div>
-      </BentoCard>
-        </StackedSection>
-
-      {/* 3. Experience Card */}
-      <StackedSection zIndex={30}>
-        <BentoCard delay={0.3} className="w-full h-full flex flex-col">
-        <div className="mb-6 flex items-center gap-2">
-          <motion.div whileHover={{ scale: 1.2, rotate: 15 }} transition={{ type: "spring", stiffness: 260, damping: 20 }}>
-            <Terminal className="w-5 h-5 text-brand cursor-pointer" />
-          </motion.div>
-          <h2 className="text-2xl font-bold">Experience</h2>
-        </div>
-          <div className="flex-1 relative overflow-hidden rounded-xl">
-            {/* Fade overlays for smooth scrolling effect */}
-            <div className="absolute top-0 left-0 right-0 h-10 bg-gradient-to-b from-[#09122c] to-transparent z-20 pointer-events-none" />
-            <div className="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-[#09122c] to-transparent z-20 pointer-events-none" />
-            
-            {/* Static Background Timeline Line */}
-            <div className="absolute left-[23px] top-0 bottom-0 w-px bg-gradient-to-b from-brand/10 via-brand/50 to-brand/10 z-0" />
-
-            <div className="absolute inset-0 pt-4">
-              <div className="animate-slide-up pause-on-hover flex flex-col gap-4">
-                {[...experienceJobs, ...experienceJobs].map((job, i) => (
-                  <div key={i} className="relative pl-14 group">
-                    {/* Timeline Dot */}
-                    <div className={`absolute left-[17px] top-7 w-3 h-3 rounded-full ring-4 ring-[#09122c] transition-all duration-300 z-10 ${
-                      job.isActive 
-                        ? 'bg-brand shadow-[0_0_10px_rgba(59,130,246,0.6)] animate-pulse group-hover:scale-150 group-hover:bg-cyan-400 group-hover:shadow-[0_0_15px_rgba(34,211,238,0.8)]' 
-                        : 'bg-slate-600 group-hover:bg-slate-400 group-hover:scale-125'
-                    }`} />
-                    
-                    {/* Card Container */}
-                    <div className={`border rounded-2xl p-5 transition-all duration-500 relative overflow-hidden ${
-                      job.isActive
-                        ? 'bg-white/[0.03] border-white/[0.08] hover:bg-white/[0.05] hover:border-brand/40'
-                        : 'bg-white/[0.01] border-white/[0.03] hover:bg-white/[0.02] hover:border-slate-600/50'
-                    }`}>
-                      {/* Subtle Hover Gradient */}
-                      <div className={`absolute inset-0 bg-gradient-to-r to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${
-                        job.isActive ? 'from-brand/10' : 'from-slate-600/10'
-                      }`} />
-                      
-                      <div className="relative z-10">
-                        <div className="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-2 mb-2">
-                          <h3 className={`font-bold text-lg transition-colors ${
-                            job.isActive ? 'text-white group-hover:text-cyan-300' : 'text-slate-300 group-hover:text-white'
-                          }`}>{job.title}</h3>
-                          <span className={`text-xs font-mono shrink-0 px-2.5 py-1 rounded-full border ${
-                            job.isActive 
-                              ? 'text-cyan-300 bg-blue-500/20 border-blue-500/30' 
-                              : 'text-slate-400 bg-slate-800/50 border-slate-700/50'
-                          }`}>{job.date}</span>
-                        </div>
-                        <div className="flex items-center gap-2 mb-3">
-                          <span className={`w-1.5 h-1.5 rounded-full ${job.isActive ? 'bg-brand/60' : 'bg-slate-500'}`} />
-                          <p className={`text-sm font-semibold tracking-wide uppercase ${job.isActive ? 'text-brand' : 'text-slate-400'}`}>{job.company}</p>
-                        </div>
-                        <p className={`text-sm leading-relaxed text-justify transition-colors ${
-                          job.isActive ? 'text-slate-300 group-hover:text-white' : 'text-slate-400 group-hover:text-slate-300'
-                        }`}>{job.desc}</p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </BentoCard>
-        </StackedSection>
-
-      {/* Teaching Sessions Squeeze Carousel Card */}
-      <StackedSection zIndex={40}>
-        <BentoCard className="w-full h-full flex flex-col overflow-hidden" delay={0.35} noPadding>
-        <div className="p-6 md:p-8 pb-0">
-          <div className=" mb-2 flex items-center gap-2">
-            <motion.div whileHover={{ scale: 1.2, rotate: 15 }} transition={{ type: "spring", stiffness: 260, damping: 20 }}>
-              <Users className="w-5 h-5 text-brand cursor-pointer" />
-            </motion.div>
-            <h2 className="text-2xl font-bold">In The Classroom</h2>
-          </div>
-          <p className="text-muted mb-6 md:mb-8 pr-24 md:pr-0">Moments from mentoring, coaching, and virtual sessions.</p>
-        </div>
-        
-        <div className="flex-1 min-h-0 w-full px-4 md:px-8 pb-6 md:pb-8">
-          <SqueezeCarousel height="100%" slides={[
-              {
-                id: "coding",
-                title: "Online Seminars",
-                description: "Teaching coding fundamentals to eager students across the country.",
-                image: "https://images.unsplash.com/photo-1571260899304-42507011bb6b?q=80&w=800",
-                imageAlt: "Student looking at code",
-              },
-              {
-                id: "mentorship",
-                title: "1-on-1 Mentorship",
-                description: "Guiding students through complex programming logic and game development.",
-                image: "https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=800",
-                imageAlt: "Team working on laptops",
-              },
-              {
-                id: "metaverse",
-                title: "Metaverse Classes",
-                description: "Interactive virtual learning sessions built on top of the Firestorm engine.",
-                image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=800",
-                imageAlt: "Collaborative learning",
-              },
-              {
-                id: "curriculum",
-                title: "Curriculum Design",
-                description: "Developing scalable, hands-on learning materials for hybrid environments.",
-                image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=800",
-                imageAlt: "Education tools",
-              }
-            ]}
-            height={260}
-            gap={16}
-            slatGap={8}
-            slatWidth={12}
-            radius={16}
-            duration={800}
-            hoverGrow={true}
-            autoplay={false}
-            accent="var(--color-brand)"
-            accentForeground="white"
-            label="Classroom Moments"
-            panelClassName="border border-brand/20 shadow-md"
-          />
-        </div>
-      </BentoCard>
-        </StackedSection>
-
-      {/* 4. Projects Card */}
-      <StackedSection zIndex={50}>
-        <BentoCard id="projects" className="w-full h-full flex flex-col" delay={0.4}>
-        <div className=" mb-8 flex items-center gap-2">
-          <motion.div whileHover={{ scale: 1.2, rotate: 15 }} transition={{ type: "spring", stiffness: 260, damping: 20 }}>
-            <Code className="w-5 h-5 text-brand cursor-pointer" />
-          </motion.div>
-          <h2 className="text-3xl font-bold">Selected Projects</h2>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {[
-            {
-              title: "Automated Mentor Reporting",
-              hook: "Cut reporting from multi-hour manual process to auto-generated PDFs.",
-              tags: ["Next.js", "Prisma", "Tailwind", "Puppeteer"]
-            },
-            {
-              title: "Privacy-First PDF Toolkit",
-              hook: "Client-side only OCR & tools for sensitive documents.",
-              tags: ["React", "Vite", "WebAssembly"],
-              url: "#"
-            },
-            {
-              title: "Metaverse Curriculum",
-              hook: "Full-year history curriculum replacing lectures with 3D interactive roleplay.",
-              tags: ["Firestorm", "Instructional Design"],
-              url: "#"
-            }
-          ].map((project, i) => (
-            <motion.div 
-              key={i}
-              whileHover={{ y: -8 }}
-              className="h-full"
-            >
-              <a href={project.url} target="_blank" rel="noopener noreferrer" className="group cursor-pointer flex flex-col bg-[var(--background)]/40 rounded-3xl border border-card-border overflow-hidden hover:border-cyan-400/40 transition-colors shadow-sm h-full">
-                <div className="w-full aspect-[4/3] bg-slate-800/50 border-b border-card-border flex items-center justify-center relative overflow-hidden">
-                  <div className="absolute inset-0 bg-brand/5 group-hover:bg-cyan-500/10 transition-colors duration-500 z-10" />
-                  
-                  {/* Mockup Window Effect */}
-                  <div className="absolute top-8 left-8 right-8 bottom-0 bg-[var(--card)] rounded-t-xl border-t border-l border-r border-blue-400/20 shadow-2xl flex items-center justify-center transform origin-bottom group-hover:scale-105 transition-transform duration-500 overflow-hidden">
-                    <div className="absolute top-0 left-0 right-0 h-6 bg-blue-900/30 border-b border-blue-400/10 flex items-center px-3 gap-1.5">
-                      <div className="w-2 h-2 rounded-full bg-blue-400/30"></div>
-                      <div className="w-2 h-2 rounded-full bg-blue-400/50"></div>
-                      <div className="w-2 h-2 rounded-full bg-cyan-400/50"></div>
-                    </div>
-                    <p className="text-muted font-mono text-xs text-center px-4 text-blue-200">Screenshot:<br/>{project.title}</p>
-                  </div>
-
-                  <div className="absolute top-4 right-4 z-20 opacity-0 group-hover:opacity-100 transition-opacity bg-cyan-500 text-white p-2 rounded-full transform translate-x-2 -translate-y-2 group-hover:translate-x-0 group-hover:translate-y-0 duration-300 shadow-lg shadow-cyan-500/20">
-                    <ArrowUpRight className="w-4 h-4" />
-                  </div>
-                </div>
-                
-                <div className="p-6 md:p-8 flex flex-col flex-1">
-                  <h3 className="font-bold text-xl mb-3 group-hover:text-cyan-300 transition-colors text-white">{project.title}</h3>
-                  <p className="text-sm text-muted mb-8 flex-1 leading-relaxed">{project.hook}</p>
-                  <div className="flex flex-wrap gap-2 mt-auto">
-                    {project.tags.map(tag => (
-                      <span key={tag} className="text-xs px-3 py-1 bg-blue-500/20 text-cyan-300 rounded-md font-semibold tracking-wide">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </a>
-            </motion.div>
-          ))}
-        </div>
-      </BentoCard>
-        </StackedSection>
-
-      {/* 5. Case Study Card */}
-      <StackedSection zIndex={60}>
-        <BentoCard className="w-full h-full flex flex-col" delay={0.5}>
-        <div className=" mb-8 flex items-center gap-2">
-          <motion.div whileHover={{ scale: 1.2, rotate: 15 }} transition={{ type: "spring", stiffness: 260, damping: 20 }}>
-            <Star className="w-5 h-5 text-brand cursor-pointer fill-brand/20" />
-          </motion.div>
-          <h2 className="text-3xl font-bold">Case Study: Mentor Reporting System</h2>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="flex flex-col gap-4 h-full">
-            <h3 className="text-xl font-bold text-brand flex items-center gap-2"><span className="w-6 h-6 rounded-full bg-brand/20 flex items-center justify-center text-sm">1</span> Problem</h3>
-            <p className="text-muted text-sm leading-relaxed">
-              Generating monthly reports was a manual, multi-hour nightmare for the entire EdTech mentoring org. Mentors struggled with formatting, tracking sessions, and bilingual requirements.
-            </p>
-            <div className="w-full aspect-video bg-slate-200 dark:bg-slate-800 rounded-xl border border-card-border flex items-center justify-center relative mt-auto">
-               <p className="text-muted font-mono text-xs">Screenshot: Old Process</p>
-            </div>
-          </div>
+        <div className="relative z-10 w-full">
           
-          <div className="flex flex-col gap-4 h-full">
-            <h3 className="text-xl font-bold text-brand flex items-center gap-2"><span className="w-6 h-6 rounded-full bg-brand/20 flex items-center justify-center text-sm">2</span> Process</h3>
-            <p className="text-muted text-sm leading-relaxed">
-              Built an internal platform to track mentor lifecycles and session recaps. Used Puppeteer to automatically generate perfectly formatted bilingual PDFs from the database.
-            </p>
-            <div className="w-full aspect-video bg-slate-200 dark:bg-slate-800 rounded-xl border border-card-border flex items-center justify-center relative mt-auto">
-               <p className="text-muted font-mono text-xs">Screenshot: Dashboard UI</p>
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-4 h-full">
-            <h3 className="text-xl font-bold text-brand flex items-center gap-2"><span className="w-6 h-6 rounded-full bg-brand/20 flex items-center justify-center text-sm">3</span> Impact</h3>
-            <p className="text-muted text-sm leading-relaxed">
-              Reduced reporting time from hours to minutes. Standardized the output quality across the organization and eliminated formatting errors entirely.
-            </p>
-            <div className="w-full aspect-video bg-slate-200 dark:bg-slate-800 rounded-xl border border-card-border flex items-center justify-center relative mt-auto">
-               <p className="text-muted font-mono text-xs">Screenshot: Generated PDF</p>
-            </div>
-          </div>
-        </div>
-      </BentoCard>
-        </StackedSection>
-
-      {/* Testimonials Card */}
-      <StackedSection zIndex={70}>
-        <BentoCard className="w-full h-full flex flex-col" delay={0.55}>
-        <div className=" mb-6 flex items-center gap-2">
-          <motion.div whileHover={{ scale: 1.2, rotate: 15 }} transition={{ type: "spring", stiffness: 260, damping: 20 }}>
-            <MessageSquareQuote className="w-5 h-5 text-brand cursor-pointer" />
-          </motion.div>
-          <h2 className="text-3xl font-bold">Testimonials</h2>
-        </div>
-        
-        <Testimonials />
-      </BentoCard>
-        </StackedSection>
-
-      {/* 6. Contact Card */}
-      <StackedSection zIndex={80}>
-        <BentoCard id="contact" className="w-full h-full flex flex-col" innerClassName="bg-brand text-white border-none" delay={0.6} noPadding>
-        <div className="p-10 md:p-16 flex flex-col items-center text-center">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white">Let's build together.</h2>
-          <p className="text-white/80 max-w-xl mx-auto mb-10 text-lg">
-            Whether you need an educator to shape a curriculum, or a developer to engineer an EdTech solution—I'm open for new opportunities.
-          </p>
-          <div className="flex gap-4 mt-4">
-            <Magnetic>
-              <a href="mailto:hello@example.com" className="bg-white text-blue-700 px-8 py-4 rounded-full font-bold hover:shadow-lg hover:bg-cyan-400 hover:text-white hover:scale-105 transition-all flex items-center gap-2">
-                <Mail className="w-5 h-5" /> Get In Touch
-              </a>
-            </Magnetic>
-            <a href="https://github.com" className="bg-blue-900/50 text-white p-4 rounded-full hover:bg-cyan-500 hover:text-white transition-colors flex items-center justify-center">
-              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+          {/* 1. Hero Card (White) */}
+          <SectionShell header={
+<nav className="w-full max-w-7xl mx-auto px-6 md:px-8 lg:px-12 py-6 flex items-center justify-between shrink-0 relative z-20">
+            <h1 className="text-xl font-black tracking-tighter cursor-pointer text-slate-900 dark:text-zinc-100 transition-colors">
+              RYAN<span className="text-blue-600">.</span>
+            </h1>
+            <a href="#contact" className="bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 px-6 py-2.5 rounded-full text-sm font-bold hover:bg-blue-600 dark:hover:bg-zinc-300 transition-colors shadow-lg">
+              Let's Talk
             </a>
-            <a href="https://linkedin.com" className="bg-blue-900/50 text-white p-4 rounded-full hover:bg-cyan-500 hover:text-white transition-colors flex items-center justify-center">
-              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-            </a>
-          </div>
-        </div>
-      </BentoCard>
-        </StackedSection>
-      
-      {/* Footer */}
-      <footer className="col-span-1 md:col-span-2 mt-8 flex flex-col sm:flex-row justify-between items-center text-sm text-muted opacity-60 hover:opacity-100 transition-opacity">
-        <p>© {new Date().getFullYear()} Gabriel Ryan Prima. All rights reserved.</p>
-        <button 
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          className="mt-4 sm:mt-0 hover:text-cyan-400 transition-colors flex items-center gap-1 group"
-        >
-          Back to top <ArrowUp className="w-4 h-4 group-hover:-translate-y-1 transition-transform" />
-        </button>
-      </footer>
+          </nav>
+          } dark={false}>
+            <motion.div variants={staggerContainer} initial="hidden" animate="visible" className="w-full flex flex-col items-center justify-center relative h-full">
+              {/* Grouped Center Content */}
+              <div className="flex flex-col items-center justify-center w-full z-10 relative">
+                
+                
 
-      </div>
+                <motion.h1 variants={fadeUp} className="relative text-center text-6xl md:text-[9rem] font-black leading-none flex gap-4 md:gap-8 items-center justify-center z-10">
+                  <span className="text-transparent [-webkit-text-stroke:2px_#09090b] md:[-webkit-text-stroke:3px_#09090b] dark:[-webkit-text-stroke:2px_#fafafa] dark:md:[-webkit-text-stroke:3px_#fafafa]">GABRIEL</span>
+                  <span className="text-slate-900 dark:text-zinc-100">RYAN</span>
+                </motion.h1>
+
+                {/* Overlapping Photo with Negative Margin */}
+                <motion.div variants={fadeUp} className="mx-auto w-[280px] md:w-[350px] aspect-[3/4] -mt-8 md:-mt-16 rounded-t-full bg-slate-200 shadow-2xl shadow-slate-900/20 overflow-hidden relative z-0 ring-1 ring-slate-900/5 transition-transform hover:-translate-y-2 duration-500">
+                  <img src="/profile_new.jpg" alt="Gabriel Ryan" className="w-full h-full object-cover object-center grayscale hover:grayscale-0 transition-all duration-500" />
+                </motion.div>
+                
+                {/* Footer text below the photo */}
+                <motion.div variants={fadeUp} className="flex flex-col md:flex-row items-center md:items-end justify-between w-full max-w-5xl mx-auto mt-12 md:mt-20 gap-10 md:gap-8 z-10 px-4">
+                  
+                  <div className="space-y-5 text-center md:text-left flex-1">
+                    <h2 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-zinc-100 tracking-tight leading-tight">
+                      Educator & <br className="hidden md:block" />
+                      <RotatingText words={["Developer", "Designer", "Creator", "Problem Solver"]} />
+                    </h2>
+                    <p className="text-base md:text-lg text-slate-500 dark:text-zinc-400 max-w-sm mx-auto md:mx-0 leading-relaxed font-medium">
+                      Shaping digital learning through engineered platforms and teaching that are clear, engaging, and impactful.
+                    </p>
+                  </div>
+                  
+                  <div className="flex flex-row gap-4 md:gap-6 text-center items-center justify-center md:justify-end pb-2">
+                    <a href="#" className="group flex items-center gap-3 text-slate-500 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-100 font-bold transition-all duration-300">
+                      <span className="w-10 h-10 rounded-full border-2 border-slate-200 group-hover:border-blue-600 group-hover:bg-blue-600 group-hover:text-white flex items-center justify-center text-xs transition-all duration-300 shadow-sm"><Linkedin className="w-4 h-4" /></span> 
+                      <span className="hidden lg:block text-sm tracking-wide">LinkedIn</span>
+                    </a>
+                    <a href="#" className="group flex items-center gap-3 text-slate-500 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-100 font-bold transition-all duration-300">
+                      <span className="w-10 h-10 rounded-full border-2 border-slate-200 group-hover:border-slate-900 group-hover:bg-slate-900 group-hover:text-white flex items-center justify-center text-xs transition-all duration-300 shadow-sm"><Github className="w-4 h-4" /></span> 
+                      <span className="hidden lg:block text-sm tracking-wide">GitHub</span>
+                    </a>
+                    <a href="#" className="group flex items-center gap-3 text-slate-500 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-100 font-bold transition-all duration-300">
+                      <span className="w-10 h-10 rounded-full border-2 border-slate-200 group-hover:border-pink-600 group-hover:bg-pink-600 group-hover:text-white flex items-center justify-center text-xs transition-all duration-300 shadow-sm"><Instagram className="w-4 h-4" /></span> 
+                      <span className="hidden lg:block text-sm tracking-wide">Instagram</span>
+                    </a>
+                  </div>
+
+                </motion.div>
+              </div>
+            </motion.div>
+          </SectionShell>
+
+          {/* About Me */}
+          <SectionShell id="about-me" label="/ABOUT ME" watermark="ABOUT" dark={true}>
+              <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.2 }} className="w-full max-w-6xl mx-auto flex flex-col lg:flex-row items-stretch gap-8 lg:gap-16 px-4">
+                
+                {/* Left: Personal Story */}
+                <div className="w-full lg:w-1/2 flex flex-col justify-center space-y-6">
+                  <div>
+                    <motion.h3 variants={fadeUp} className="text-3xl md:text-5xl font-black text-[var(--foreground)] tracking-tight mb-3">
+                      Gabriel Ryan Prima
+                    </motion.h3>
+                    <motion.p variants={fadeUp} className="text-lg md:text-xl text-[var(--color-brand)] font-bold">
+                      Educator, Developer, & System Builder.
+                    </motion.p>
+                  </div>
+                  
+                  <motion.div variants={fadeUp} className="space-y-5 text-[var(--foreground-muted)] text-sm md:text-base leading-relaxed">
+                    <p>
+                      I work at the intersection of technology and education based in Yogyakarta, Indonesia. My background is in computer engineering, but somewhere along the way teaching became the thing I actually care about, and combining the two has become my life's focus ever since.
+                    </p>
+                    
+                    <div>
+                      <h4 className="text-[var(--foreground)] font-bold mb-1 tracking-wide">Background</h4>
+                      <p>
+                        I graduated in Computer Engineering, and that technical foundation is why I approach education the way I do: not as content delivery, but as a system you design with intention, one that has to hold up in practice, not just in theory.
+                      </p>
+                    </div>
+                    
+                    <div>
+                      <h4 className="text-[var(--foreground)] font-bold mb-1 tracking-wide">Outside of Work</h4>
+                      <p>
+                        When I'm not building or teaching, I'm usually gaming, gardening, or digging into personal finance and investing.
+                      </p>
+                    </div>
+                  </motion.div>
+                  
+                </div>
+
+                {/* Right: Core Pillars Bento Box */}
+                <motion.div variants={fadeUp} className="w-full lg:w-1/2 grid grid-cols-2 gap-4 mt-8 lg:mt-0">
+                   <div className="col-span-2 bg-[var(--background-secondary)] border border-[var(--card-border)] rounded-3xl p-6 md:p-8 flex flex-col justify-center shadow-lg hover:border-[var(--color-brand)]/50 transition-colors group">
+                      <div className="w-12 h-12 rounded-2xl bg-blue-500/10 text-blue-500 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                         <span className="font-mono font-bold text-lg">01</span>
+                      </div>
+                      <h4 className="text-xl md:text-2xl font-black text-[var(--foreground)] mb-2 tracking-tight">Curriculum Development</h4>
+                      <p className="text-[var(--foreground-muted)] text-sm md:text-base leading-relaxed">Designing structured, engaging, and industry-aligned tech learning paths for students of all levels.</p>
+                   </div>
+                   
+                   <div className="col-span-1 bg-[var(--background-secondary)] border border-[var(--card-border)] rounded-3xl p-5 md:p-6 flex flex-col shadow-lg hover:border-pink-500/50 transition-colors group">
+                      <div className="w-10 h-10 rounded-xl bg-pink-500/10 text-pink-500 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                         <span className="font-mono font-bold text-base">02</span>
+                      </div>
+                      <h4 className="text-lg md:text-xl font-black text-[var(--foreground)] mb-1.5 tracking-tight">Modern Web</h4>
+                      <p className="text-[var(--foreground-muted)] text-xs md:text-sm leading-relaxed">Building fast, scalable full-stack applications.</p>
+                   </div>
+                   
+                   <div className="col-span-1 bg-[var(--color-brand)] text-white rounded-3xl p-5 md:p-6 flex flex-col shadow-xl shadow-blue-500/20 hover:scale-[1.03] transition-transform group">
+                      <div className="w-10 h-10 rounded-xl bg-white/20 text-white flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                         <span className="font-mono font-bold text-base">03</span>
+                      </div>
+                      <h4 className="text-lg md:text-xl font-black mb-1.5 tracking-tight">Mentoring</h4>
+                      <p className="text-white/80 text-xs md:text-sm leading-relaxed">Guiding the next generation of software engineers.</p>
+                   </div>
+                </motion.div>
+                
+              </motion.div>
+          </SectionShell>
+
+          {/* Gallery */}
+          <SectionShell label="/CLASSROOM" watermark="GALLERY" dark={false}>
+              <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.2 }} className="w-full h-full flex items-center justify-center relative">
+                 <motion.div variants={fadeUp} className="w-full h-full relative">
+                    <HoverExpandGallery images={carouselSlides} />
+                 </motion.div>
+              </motion.div>
+          </SectionShell>
+
+          {/* 2. Selected Work (Dark) */}
+          <SectionShell id="work" label="/SELECTED WORK" watermark="WORK" dark={true}>
+            <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.2 }} className="w-full max-w-5xl mx-auto px-0 md:px-6 relative flex items-center justify-center min-h-[500px]">
+              
+              {/* Left Arrow */}
+              <button onClick={prevWork} className="absolute left-2 md:-left-8 lg:-left-16 z-20 p-2 md:p-3 rounded-full bg-[var(--background)]/80 backdrop-blur border border-[var(--card-border)] hover:bg-[var(--card)] text-[var(--foreground)] transition-all shadow-lg hover:scale-110">
+                <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
+              </button>
+              
+              {/* Main Card */}
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={workIndex}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.3 }}
+                  className="w-full bg-[var(--background-secondary)] border border-[var(--card-border)] rounded-3xl md:rounded-[2.5rem] overflow-hidden flex flex-col md:flex-row shadow-2xl group mx-4 md:mx-0 min-h-[500px]"
+                >
+                  {/* Image Half */}
+                  <div className="w-full md:w-5/12 lg:w-1/2 h-[200px] md:h-auto relative overflow-hidden bg-zinc-950">
+                    <motion.img 
+                      src={workProjects[workIndex].img} 
+                      alt={workProjects[workIndex].title}
+                      className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/90 via-transparent to-transparent opacity-60 md:hidden" />
+                    {/* Desktop gradient fade on the right side */}
+                    <div className="hidden md:block absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-[var(--background-secondary)] to-transparent" />
+                  </div>
+                  
+                  {/* Content Half */}
+                  <div className="w-full md:w-7/12 lg:w-1/2 p-6 md:p-8 lg:p-12 flex flex-col justify-center">
+                    <p className="text-[var(--color-brand)] text-xs md:text-sm font-black tracking-widest uppercase mb-2">{workProjects[workIndex].tag}</p>
+                    <h3 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4 text-[var(--foreground)] tracking-tight leading-tight">{workProjects[workIndex].title}</h3>
+                    <p className="text-[var(--foreground-muted)] text-sm md:text-base leading-relaxed mb-8">{workProjects[workIndex].desc}</p>
+                    
+                    {/* Tech Stack */}
+                    <div className="flex flex-wrap gap-2 mb-8">
+                      {workProjects[workIndex].tech.map(tech => (
+                        <span key={tech} className="px-3 py-1.5 bg-[var(--background)] border border-[var(--card-border)] text-[var(--foreground)] text-[10px] md:text-xs font-bold tracking-wide rounded-lg whitespace-nowrap">
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+
+                    <a href={workProjects[workIndex].url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 px-6 py-3.5 bg-[var(--color-brand)] text-white font-bold rounded-xl w-fit hover:shadow-[0_0_20px_rgba(37,99,235,0.4)] transition-all hover:-translate-y-1">
+                       Visit Project <ExternalLink className="w-4 h-4" />
+                    </a>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+              
+              {/* Right Arrow */}
+              <button onClick={nextWork} className="absolute right-2 md:-right-8 lg:-right-16 z-20 p-2 md:p-3 rounded-full bg-[var(--background)]/80 backdrop-blur border border-[var(--card-border)] hover:bg-[var(--card)] text-[var(--foreground)] transition-all shadow-lg hover:scale-110">
+                <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
+              </button>
+              
+            </motion.div>
+            
+            {/* Indicators */}
+            <div className="flex items-center justify-center gap-3 mt-8">
+              {workProjects.map((_, i) => (
+                <button key={i} onClick={() => setWorkIndex(i)} className={`h-2.5 rounded-full transition-all duration-300 ${i === workIndex ? 'bg-[var(--color-brand)] w-8' : 'bg-[var(--card-border)] w-2.5 hover:bg-[var(--foreground-muted)]'}`} aria-label="Go to slide" />
+              ))}
+            </div>
+          </SectionShell>
+
+          {/* Case Study */}
+          <SectionShell label="/CASE STUDY" watermark="SYSTEM" dark={false}>
+              <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.3 }} className="w-full max-w-7xl mx-auto z-10">
+                 <motion.div variants={fadeUp}>
+                    <MentorReportingFeatures />
+                 </motion.div>
+              </motion.div>
+          </SectionShell>
+
+          {/* 3. Service (White) */}
+          <SectionShell id="service" label="/SERVICE" watermark="SERVICE" dark={true}>
+              <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.2 }} className="w-full flex flex-col justify-center z-10 divide-y divide-gray-200 overflow-y-auto h-full max-h-full custom-scrollbar pr-4">
+                {[
+                  { title: "CUSTOM WEB PLATFORMS", desc: "Building fast, scalable, and robust web applications, internal dashboards, and custom platforms tailored to your business needs.", images: ["https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=400&q=80", "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400&q=80", "https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=400&q=80"] },
+                  { title: "EDTECH SOLUTIONS", desc: "Developing custom learning management systems (LMS) and student progress trackers designed with pedagogical best practices.", images: ["https://images.unsplash.com/photo-1501504905252-473c47e087f8?w=400&q=80", "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&q=80", "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=400&q=80"] },
+                  { title: "CURRICULUM DEV", desc: "Crafting structured, tech-focused syllabi and scalable learning materials for online, hybrid, and offline educational environments.", images: ["https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400&q=80", "https://images.unsplash.com/photo-1531403009284-440f080d1e12?w=400&q=80", "https://images.unsplash.com/photo-1503694978374-8a2fa686963a?w=400&q=80"] },
+                  { title: "1-ON-1 TECH MENTORING", desc: "Providing personalized coaching in programming, 3D modeling, and game development for students and professionals looking to level up their skills.", images: ["https://images.unsplash.com/photo-1531482615713-2afd69097998?w=400&q=80", "https://images.unsplash.com/photo-1573164713988-8665fc963095?w=400&q=80", "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=400&q=80"] }
+                ].map((service, index) => {
+                  const isOpen = activeServiceIndex === index;
+                  return (
+                    <motion.div key={service.title} layout variants={fadeUp} className="overflow-hidden">
+                      <motion.button
+                        layout
+                        onClick={() => setActiveServiceIndex(isOpen ? null : index)}
+                        className={`w-full flex items-center justify-between py-6 md:py-8 px-4 rounded-3xl transition-colors duration-300 ${
+                          isOpen ? "bg-[var(--card)] border-[var(--card-border)] text-slate-900 dark:text-zinc-100" : "bg-transparent text-slate-300"
+                        }`}
+                      >
+                        <motion.span layout="position" className="text-2xl md:text-5xl font-black">
+                          {service.title}
+                        </motion.span>
+                        <motion.span
+                          animate={{ rotate: isOpen ? 135 : 0 }}
+                          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                        >
+                          <ArrowUpRight className="w-8 h-8" />
+                        </motion.span>
+                      </motion.button>
+          
+                      <AnimatePresence initial={false}>
+                        {isOpen && (
+                          <motion.div
+                            key="content"
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                            className="bg-[var(--card)] border-[var(--card-border)] text-slate-900 dark:text-zinc-100 rounded-b-3xl px-4 md:px-8"
+                          >
+                            <div className="pb-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                              <p className="text-slate-600 dark:text-zinc-400 dark:text-zinc-300 max-w-md">{service.desc}</p>
+                              {service.images.length > 0 && (
+                                <div className="relative flex items-center justify-center shrink-0 w-40 h-40 md:w-56 md:h-40 ml-4 hidden sm:flex">
+                                  {index === 0 && (
+                                    /* Layout 1: Fan spread */
+                                    service.images.map((src, imgIndex) => (
+                                      <motion.img
+                                        key={src} src={src} alt="Web Platform"
+                                        initial={{ opacity: 0, x: 20 }}
+                                        animate={{ opacity: 1, x: (imgIndex - 1) * 20, rotate: (imgIndex - 1) * 10 }}
+                                        transition={{ delay: 0.15 + imgIndex * 0.1, duration: 0.5, type: "spring" }}
+                                        className="absolute w-24 h-32 md:w-28 md:h-36 object-cover rounded-xl shadow-xl border border-black/10 dark:border-white/10"
+                                      />
+                                    ))
+                                  )}
+                                  {index === 1 && (
+                                    /* Layout 2: Floating staggered grid */
+                                    service.images.map((src, imgIndex) => (
+                                      <motion.img
+                                        key={src} src={src} alt="EdTech Solution"
+                                        initial={{ opacity: 0, scale: 0.5 }}
+                                        animate={{ opacity: 1, scale: 1, x: imgIndex === 0 ? -30 : imgIndex === 1 ? 30 : 0, y: imgIndex === 0 ? -20 : imgIndex === 1 ? -20 : 20 }}
+                                        transition={{ delay: 0.15 + imgIndex * 0.15, duration: 0.5, type: "spring" }}
+                                        className={`absolute object-cover rounded-xl shadow-lg border border-black/10 dark:border-white/10 ${imgIndex === 2 ? 'w-28 h-20 md:w-36 md:h-24 z-10' : 'w-20 h-20 md:w-24 md:h-24'}`}
+                                      />
+                                    ))
+                                  )}
+                                  {index === 2 && (
+                                    /* Layout 3: Diagonal stepped */
+                                    service.images.map((src, imgIndex) => (
+                                      <motion.img
+                                        key={src} src={src} alt="Curriculum Dev"
+                                        initial={{ opacity: 0, y: 50 }}
+                                        animate={{ opacity: 1, y: (imgIndex - 1) * -15, x: (imgIndex - 1) * 15 }}
+                                        transition={{ delay: 0.2 + imgIndex * 0.1, duration: 0.5 }}
+                                        className="absolute w-20 h-28 md:w-24 md:h-32 object-cover rounded-lg shadow-md border border-black/10 dark:border-white/10"
+                                        style={{ zIndex: 3 - imgIndex }}
+                                      />
+                                    ))
+                                  )}
+                                  {index === 3 && (
+                                    /* Layout 4: Central large with two orbiting small circles */
+                                    service.images.map((src, imgIndex) => (
+                                      <motion.img
+                                        key={src} src={src} alt="Mentoring"
+                                        initial={{ opacity: 0, rotate: -45, scale: 0.5 }}
+                                        animate={{ opacity: 1, rotate: 0, scale: 1, 
+                                          x: imgIndex === 0 ? 0 : imgIndex === 1 ? -40 : 40,
+                                          y: imgIndex === 0 ? 0 : imgIndex === 1 ? 30 : -30
+                                        }}
+                                        transition={{ delay: 0.1 + imgIndex * 0.15, duration: 0.6, type: "spring" }}
+                                        className={`absolute object-cover shadow-xl border border-black/10 dark:border-white/10 ${imgIndex === 0 ? 'w-28 h-28 md:w-32 md:h-32 rounded-2xl z-10' : 'w-16 h-16 md:w-20 md:h-20 rounded-full'}`}
+                                      />
+                                    ))
+                                  )}
+                                </div>
+                              )}
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </motion.div>
+                  );
+                })}
+              </motion.div>
+          </SectionShell>
+
+          {/* 4. Experience (Dark) */}
+          <SectionShell id="experience" label="/EXPERIENCE" watermark="EXPERIENCE" dark={false} footer={
+            <div className="w-full flex justify-end">
+                <p className="text-blue-600 font-medium"></p>
+            </div>
+          }>
+              <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.4 }} className="w-full flex-1 overflow-y-auto scrollbar-hide space-y-6 md:space-y-8 h-full max-h-full">
+                {experienceJobs.map((job, i) => (
+                  <motion.div key={i} variants={fadeUp} className={`flex flex-col md:flex-row justify-between gap-4 p-6 rounded-3xl transition-colors ${job.isActive ? 'bg-blue-50 border border-blue-200 shadow-sm' : 'hover:bg-slate-50 dark:hover:bg-zinc-800 dark:bg-zinc-800/50'}`}>
+                    <div className="flex-1">
+                      <h3 className={`text-xl md:text-2xl font-bold mb-2 ${job.isActive ? 'text-blue-900 dark:text-blue-300' : 'text-slate-900 dark:text-zinc-100'}`}>{job.company}</h3>
+                      <p className={`text-base md:text-lg ${job.isActive ? 'text-blue-600' : 'text-slate-600 dark:text-zinc-400 dark:text-zinc-300'}`}>{job.title}</p>
+                    </div>
+                    <div className="md:text-right flex-1 md:flex-none">
+                      <div className="inline-flex items-center gap-2 mb-3">
+                        <span className={`w-2 h-2 rounded-full ${job.isActive ? 'bg-blue-600 animate-pulse' : 'bg-slate-300'}`}></span>
+                        <span className={`font-mono text-sm font-semibold ${job.isActive ? 'text-blue-600' : 'text-slate-500 dark:text-zinc-400'}`}>{job.date}</span>
+                      </div>
+                      <p className={`text-sm max-w-sm ml-0 md:ml-auto leading-relaxed ${job.isActive ? 'text-slate-600 dark:text-zinc-400 dark:text-zinc-300' : 'text-slate-500 dark:text-zinc-400'}`}>
+                        {job.desc}
+                      </p>
+                    </div>
+                  </motion.div>
+                ))}
+              </motion.div>
+          </SectionShell>
+
+          {/* Testimonials */}
+          <SectionShell label="/TESTIMONIALS" watermark="STORIES" dark={true}>
+              <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.2 }} className="w-full relative z-10 flex flex-col justify-center h-full">
+                 <motion.div variants={fadeUp} className="w-full">
+                    <Testimonials />
+                 </motion.div>
+              </motion.div>
+          </SectionShell>
+
+          {/* 5. Contact (White) */}
+          <div id="contact">
+            <LetsWorkTogether />
+          </div>
+
+        </div>
       </div>
     </>
   );
