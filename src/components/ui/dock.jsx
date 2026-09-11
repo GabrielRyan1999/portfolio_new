@@ -122,7 +122,7 @@ export function FloatingDock() {
             })}
 
             {/* Separator */}
-            <div className="w-[1px] h-6 bg-white/20 mx-1 md:mx-2"></div>
+            <div className="w-[1px] h-6 bg-slate-300 dark:bg-white/20 mx-1 md:mx-2"></div>
 
             {/* Theme Toggle Button */}
             <div 
