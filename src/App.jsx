@@ -4,7 +4,7 @@ import { HoverExpandGallery } from './components/ui/hover-expand-gallery';
 import { MentorReportingFeatures } from './components/ui/features-2';
 import { Testimonials } from './components/ui/unique-testimonial';
 import { Linkedin, Github, Instagram } from './components/ui/brand-icons';
-import { Mail, ArrowUpRight, ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react';
+import { Mail, ArrowUpRight, ChevronLeft, ChevronRight, ExternalLink, Plus } from 'lucide-react';
 import CountUpPkg from 'react-countup';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { FloatingDock } from './components/ui/dock';
