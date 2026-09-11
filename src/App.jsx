@@ -310,11 +310,6 @@ function App() {
 
           {/* About Me */}
           <SectionShell id="about-me" label="/ABOUT ME" watermark="ABOUT" dark={true}>
-              {/* Background Avatar Watermarks */}
-              <div className="absolute inset-0 pointer-events-none z-[0] overflow-hidden flex items-center justify-between opacity-[0.06] dark:opacity-[0.03] grayscale">
-                <img src="/favicon.jpg" alt="" className="w-[300px] md:w-[500px] lg:w-[600px] blur-[2px] -rotate-12 -translate-x-1/3 -translate-y-1/4 rounded-full" />
-                <img src="/favicon.jpg" alt="" className="w-[350px] md:w-[600px] lg:w-[700px] blur-[2px] rotate-12 translate-x-1/4 translate-y-1/4 rounded-full" />
-              </div>
               <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.2 }} className="w-full max-w-6xl mx-auto flex flex-col lg:flex-row items-stretch gap-8 lg:gap-16 px-4 relative z-10">
                 
                 {/* Left: Personal Story */}
