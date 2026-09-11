@@ -1,5 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <rect width="100" height="100" rx="24" fill="#0a0a0a" />
-  <text x="50%" y="54%" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="900" font-size="38" fill="#ffffff" text-anchor="middle" dominant-baseline="middle" letter-spacing="-1">GRP</text>
-  <path d="M 30 75 L 70 75" stroke="#2563eb" stroke-width="6" stroke-linecap="round" />
-</svg>
