@@ -396,10 +396,10 @@ function App() {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ duration: 0.3 }}
-                  className="w-full bg-[var(--background-secondary)] border border-[var(--card-border)] rounded-3xl md:rounded-[2.5rem] overflow-hidden flex flex-col md:flex-row shadow-2xl group mx-4 md:mx-0 min-h-[500px]"
+                  className="w-full bg-[var(--background-secondary)] border border-[var(--card-border)] rounded-3xl md:rounded-[2.5rem] overflow-hidden flex flex-col md:flex-row shadow-2xl group mx-4 md:mx-0 h-[550px] md:h-[480px] lg:h-[500px]"
                 >
                   {/* Image Half */}
-                  <div className="w-full md:w-5/12 lg:w-1/2 h-[200px] md:h-auto relative overflow-hidden bg-zinc-950">
+                  <div className="w-full md:w-5/12 lg:w-1/2 h-[220px] md:h-full relative overflow-hidden bg-zinc-950 shrink-0">
                     <motion.img 
                       src={workProjects[workIndex].img} 
                       alt={workProjects[workIndex].title}
@@ -411,7 +411,7 @@ function App() {
                   </div>
                   
                   {/* Content Half */}
-                  <div className="w-full md:w-7/12 lg:w-1/2 p-6 md:p-8 lg:p-12 flex flex-col justify-center">
+                  <div className="w-full md:w-7/12 lg:w-1/2 p-6 md:p-8 lg:p-12 flex flex-col justify-center h-full">
                     <p className="text-[var(--color-brand)] text-xs md:text-sm font-black tracking-widest uppercase mb-2">{workProjects[workIndex].tag}</p>
                     <h3 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4 text-[var(--foreground)] tracking-tight leading-tight">{workProjects[workIndex].title}</h3>
                     <p className="text-[var(--foreground-muted)] text-sm md:text-base leading-relaxed mb-8">{workProjects[workIndex].desc}</p>
