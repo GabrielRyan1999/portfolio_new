@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Home, Briefcase, Layers, User, Moon, Sun, Star, Mail, Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export function FloatingDock() {
+export function FloatingDock({ onContactClick }) {
   const [hovered, setHovered] = useState(null);
   const [isDark, setIsDark] = useState(false);
   
@@ -32,10 +32,15 @@ export function FloatingDock() {
   }, [isDark]);
 
   const scrollTo = (id) => {
-    const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
+    if (id === 'contact' && onContactClick) {
+      onContactClick();
+    } else {
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
     }
+    
     // Auto collapse after clicking a link if we are scrolled down
     if (isScrolled) {
       setIsExpanded(false);

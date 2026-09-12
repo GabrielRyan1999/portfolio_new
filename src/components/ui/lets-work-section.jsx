@@ -2,14 +2,12 @@ import React, { useState } from "react"
 import { ArrowUpRight } from "lucide-react"
 import { Linkedin, Github, Instagram } from "./brand-icons"
 import { SectionShell } from "./SectionShell"
-import { useForm, ValidationError } from "@formspree/react"
 
-export function LetsWorkTogether() {
+export function LetsWorkTogether({ onContactClick }) {
   const [isHovered, setIsHovered] = useState(false)
   const [isClicked, setIsClicked] = useState(false)
   const [showSuccess, setShowSuccess] = useState(false)
   
-  const [state, handleFormSubmit] = useForm("xgaekynq")
 
   const handleClick = (e) => {
     e.preventDefault()
@@ -86,37 +84,17 @@ export function LetsWorkTogether() {
                   <p className="text-slate-500 dark:text-zinc-500 dark:text-zinc-400 text-sm mt-2">I'll get back to you as soon as possible.</p>
                </div>
             ) : (
-               <form onSubmit={handleFormSubmit} className="flex flex-col gap-4 w-full text-left">
-                 <div>
-                   <input 
-                     type="email" 
-                     name="email" 
-                     placeholder="Your email address"
-                     required 
-                     className="w-full bg-slate-50 dark:bg-zinc-800/50 border border-slate-200 text-slate-900 dark:text-zinc-100 text-sm rounded-xl px-4 py-3 outline-none focus:border-slate-400 focus:bg-white dark:focus:bg-zinc-900 transition-all"
-                   />
-                   <ValidationError field="email" prefix="Email" errors={state.errors} className="text-red-500 text-xs mt-1" />
-                 </div>
-                 
-                 <div>
-                   <textarea 
-                     name="message" 
-                     placeholder="How can we work together?"
-                     required 
-                     rows="3"
-                     className="w-full bg-slate-50 dark:bg-zinc-800/50 border border-slate-200 text-slate-900 dark:text-zinc-100 text-sm rounded-xl px-4 py-3 outline-none focus:border-slate-400 focus:bg-white dark:focus:bg-zinc-900 transition-all resize-none"
-                   />
-                   <ValidationError field="message" prefix="Message" errors={state.errors} className="text-red-500 text-xs mt-1" />
-                 </div>
-                 
+               <div className="flex flex-col items-center md:items-start justify-center h-full space-y-6">
+                 <p className="text-slate-500 dark:text-zinc-400 text-lg md:text-xl font-medium max-w-md">
+                   Have a project in mind or want to explore an opportunity? I'm currently open for new collaborations.
+                 </p>
                  <button 
-                   type="submit" 
-                   disabled={state.submitting}
-                   className="w-full bg-slate-900 text-white rounded-xl px-4 py-3 flex items-center justify-center gap-2 text-sm font-medium hover:bg-slate-800 focus:scale-[0.98] transition-all disabled:opacity-70 disabled:cursor-not-allowed"
+                   onClick={onContactClick}
+                   className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-8 py-4 flex items-center justify-center gap-3 text-lg font-bold transition-all shadow-xl shadow-blue-600/20 hover:scale-105"
                  >
-                   {state.submitting ? "Sending..." : "Send Message"}
+                   Open Contact Form <ArrowUpRight className="w-5 h-5" />
                  </button>
-               </form>
+               </div>
             )}
           </div>
 

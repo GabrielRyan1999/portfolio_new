@@ -10,6 +10,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FloatingDock } from './components/ui/dock';
 import { SectionShell } from './components/ui/SectionShell';
 import { LetsWorkTogether } from './components/ui/lets-work-section';
+import { ContactModal } from './components/ui/ContactModal';
 
 
 
@@ -178,7 +179,7 @@ function App() {
 
   return (
     <>
-      <FloatingDock />
+      <FloatingDock onContactClick={() => setIsContactOpen(true)} />
       <AnimatePresence>
         {!hasEntered && <IntroScreen key="intro" onEnter={() => setHasEntered(true)} />}
       </AnimatePresence>
@@ -564,11 +565,12 @@ function App() {
 
           {/* 5. Contact (White) */}
           <div id="contact">
-            <LetsWorkTogether />
+            <LetsWorkTogether onContactClick={() => setIsContactOpen(true)} />
           </div>
 
         </div>
       </div>
+      <ContactModal isOpen={isContactOpen} onClose={() => setIsContactOpen(false)} />
     </>
   );
 }
