@@ -12,7 +12,6 @@ import { SectionShell } from './components/ui/SectionShell';
 import { LetsWorkTogether } from './components/ui/lets-work-section';
 
 
-const roles = ["Developer.", "Mentor.", "Innovator.", "Creator."];
 
 const experienceJobs = [
   {
@@ -176,12 +175,6 @@ function App() {
     window.scrollTo(0, 0);
   }, []);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setRoleIndex((prev) => (prev + 1) % roles.length);
-    }, 2500);
-    return () => clearInterval(interval);
-  }, []);
 
   return (
     <>
