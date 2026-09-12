@@ -54,15 +54,15 @@ export function FloatingDock() {
   const showFullMenu = !isScrolled || isExpanded;
 
   return (
-    <div className="fixed top-6 md:top-5 left-1/2 -translate-x-1/2 z-[100] flex flex-col items-center">
+    <div className="fixed bottom-6 md:bottom-auto md:top-5 left-1/2 -translate-x-1/2 z-[100] flex flex-col items-center">
       <AnimatePresence mode="wait">
         {!showFullMenu ? (
           // Collapsed State (Dynamic Island)
           <motion.button
             key="collapsed"
-            initial={{ opacity: 0, scale: 0.8, y: -20 }}
+            initial={{ opacity: 0, scale: 0.8, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.8, y: -20 }}
+            exit={{ opacity: 0, scale: 0.8, y: 20 }}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => setIsExpanded(true)}
@@ -78,7 +78,7 @@ export function FloatingDock() {
             initial={{ opacity: 0, scale: 0.9, y: -10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: -10 }}
-            className={`flex items-center gap-2 md:gap-3 ${isScrolled ? 'px-4 py-3 bg-[#111111]/80 backdrop-blur-xl border border-white/10 rounded-full shadow-2xl' : ''}`}
+            className={`flex items-center gap-1 md:gap-3 ${isScrolled ? 'px-4 py-3 bg-[#111111]/80 backdrop-blur-xl border border-white/10 rounded-full shadow-2xl' : ''}`}
           >
             {myNavItems.map((item) => {
               const Icon = item.icon;
@@ -97,7 +97,7 @@ export function FloatingDock() {
                         initial={{ opacity: 0, y: -10, scale: 0.8 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: -10, scale: 0.8 }}
-                        className="absolute top-14 left-1/2 -translate-x-1/2 px-3 py-1.5 bg-[#1a1a1a] border border-white/10 text-white text-xs font-medium rounded-lg whitespace-nowrap shadow-xl z-50"
+                        className="absolute -top-10 md:top-14 left-1/2 -translate-x-1/2 px-3 py-1.5 bg-[#1a1a1a] border border-white/10 text-white text-xs font-medium rounded-lg whitespace-nowrap shadow-xl z-50"
                       >
                         {item.label}
                       </motion.div>
@@ -106,7 +106,7 @@ export function FloatingDock() {
 
                   <button
                     onClick={() => scrollTo(item.id)}
-                    className={`relative flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full ${isScrolled ? 'hover:bg-white/10' : 'bg-[#111111] border border-white/5'} transition-all duration-300 text-slate-300`}
+                    className={`relative flex items-center justify-center w-9 h-9 md:w-12 md:h-12 rounded-full ${isScrolled ? 'hover:bg-white/10' : 'bg-[#111111] border border-white/5'} transition-all duration-300 text-slate-300`}
                   >
                     {!isScrolled && isHovered && (
                       <motion.div 
@@ -136,7 +136,7 @@ export function FloatingDock() {
                     initial={{ opacity: 0, y: -10, scale: 0.8 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: -10, scale: 0.8 }}
-                    className="absolute top-14 left-1/2 -translate-x-1/2 px-3 py-1.5 bg-[#1a1a1a] border border-white/10 text-white text-xs font-medium rounded-lg whitespace-nowrap shadow-xl z-50"
+                    className="absolute -top-10 md:top-14 left-1/2 -translate-x-1/2 px-3 py-1.5 bg-[#1a1a1a] border border-white/10 text-white text-xs font-medium rounded-lg whitespace-nowrap shadow-xl z-50"
                   >
                     {isDark ? 'Light Mode' : 'Dark Mode'}
                   </motion.div>
@@ -144,7 +144,7 @@ export function FloatingDock() {
               </AnimatePresence>
               <button
                 onClick={() => setIsDark(!isDark)}
-                className={`relative flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full ${isScrolled ? 'hover:bg-white/10' : 'bg-[#111111] border border-white/5'} transition-all duration-300 text-slate-300`}
+                className={`relative flex items-center justify-center w-9 h-9 md:w-12 md:h-12 rounded-full ${isScrolled ? 'hover:bg-white/10' : 'bg-[#111111] border border-white/5'} transition-all duration-300 text-slate-300`}
               >
                 {!isScrolled && hovered === 'theme' && (
                   <motion.div 
