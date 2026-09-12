@@ -54,7 +54,7 @@ export function FloatingDock() {
   const showFullMenu = !isScrolled || isExpanded;
 
   return (
-    <div className="fixed top-8 md:top-12 left-1/2 -translate-x-1/2 z-[100] flex flex-col items-center">
+    <div className="fixed top-6 md:top-5 left-1/2 -translate-x-1/2 z-[100] flex flex-col items-center">
       <AnimatePresence mode="wait">
         {!showFullMenu ? (
           // Collapsed State (Dynamic Island)
