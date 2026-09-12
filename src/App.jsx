@@ -1,17 +1,17 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { IntroScreen } from './components/IntroScreen';
 import { HoverExpandGallery } from './components/ui/hover-expand-gallery';
 import { MentorReportingFeatures } from './components/ui/features-2';
 import { Testimonials } from './components/ui/unique-testimonial';
 import { Linkedin, Github, Instagram } from './components/ui/brand-icons';
-import { Mail, ArrowUpRight, ChevronLeft, ChevronRight, ExternalLink, Plus } from 'lucide-react';
-import CountUpPkg from 'react-countup';
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import { ChevronLeft, ChevronRight, ExternalLink, Plus } from 'lucide-react';
+
+import { motion, AnimatePresence } from 'framer-motion';
 import { FloatingDock } from './components/ui/dock';
 import { SectionShell } from './components/ui/SectionShell';
 import { LetsWorkTogether } from './components/ui/lets-work-section';
 
-const CountUp = CountUpPkg.default ?? CountUpPkg;
+
 const roles = ["Developer.", "Mentor.", "Innovator.", "Creator."];
 
 const experienceJobs = [
@@ -74,36 +74,6 @@ const carouselSlides = [
 
 
 
-function StepCard({ number, title, color, bg, description, imageSrc, imageLabel }) {
-  return (
-    <div className="rounded-3xl border border-slate-100 p-6 flex flex-col h-full bg-[var(--card)] border-[var(--card-border)] shadow-xl shadow-slate-200/50">
-      <div className="flex items-center gap-3 mb-3">
-        <span className="w-8 h-8 shrink-0 rounded-full bg-slate-100 text-sm font-black flex items-center justify-center text-slate-900 dark:text-zinc-100">
-          {number}
-        </span>
-        <h3 className="font-bold text-2xl" style={{ color }}>
-          {title}
-        </h3>
-      </div>
-
-      {/* teks di flow normal */}
-      <p className="text-sm md:text-base text-slate-600 dark:text-zinc-400 dark:text-zinc-300 leading-relaxed mb-6">
-        {description}
-      </p>
-
-      {/* gambar ngisi SISA ruang card */}
-      <div className={`flex-1 min-h-[120px] rounded-2xl flex items-center justify-center overflow-hidden border border-slate-100 ${bg}`}>
-        {imageSrc ? (
-          <img src={imageSrc} alt={title} className="w-full h-full object-cover" />
-        ) : (
-          <span className="text-xs font-mono font-bold" style={{ color }}>
-            {imageLabel}
-          </span>
-        )}
-      </div>
-    </div>
-  );
-}
 
 
 function RotatingText({ words }) {
@@ -195,20 +165,8 @@ function App() {
     }
   };
 
-  const slideRight = {
-    hidden: { opacity: 0, x: -60, filter: 'blur(10px)' },
-    visible: { 
-      opacity: 1, 
-      x: 0, 
-      filter: 'blur(0px)',
-      transition: { 
-        duration: 1.0, 
-        ease: [0.16, 1, 0.3, 1] 
-      } 
-    }
-  };
-
-  const [roleIndex, setRoleIndex] = useState(0);
+  
+  
 
   // Force scroll to top on refresh
   useEffect(() => {

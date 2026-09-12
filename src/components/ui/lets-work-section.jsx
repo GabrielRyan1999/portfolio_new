@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { ArrowUpRight, Calendar, Send } from "lucide-react"
+import { ArrowUpRight } from "lucide-react"
 import { Linkedin, Github, Instagram } from "./brand-icons"
 import { SectionShell } from "./SectionShell"
 import { useForm, ValidationError } from "@formspree/react"
@@ -8,7 +8,7 @@ export function LetsWorkTogether() {
   const [isHovered, setIsHovered] = useState(false)
   const [isClicked, setIsClicked] = useState(false)
   const [showSuccess, setShowSuccess] = useState(false)
-  const [isButtonHovered, setIsButtonHovered] = useState(false)
+  
   const [state, handleFormSubmit] = useForm("xgaekynq")
 
   const handleClick = (e) => {
@@ -20,10 +20,7 @@ export function LetsWorkTogether() {
     }, 500)
   }
 
-  const handleBookCall = () => {
-    window.open("https://cal.com/jatin-yadav05/15min", "_blank")
-  }
-
+  
   return (
     <SectionShell dark={false} footer={
         <div className="flex flex-col md:flex-row items-center justify-between w-full border-t border-slate-200 pt-6 mt-8 text-slate-500 dark:text-zinc-500 dark:text-zinc-400">
