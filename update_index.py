@@ -1,4 +1,6 @@
-<!doctype html>
+import re
+
+html_content = """<!doctype html>
 <html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
@@ -30,3 +32,9 @@
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
+"""
+
+with open('index.html', 'w', encoding='utf-8') as f:
+    f.write(html_content)
+
+print("Updated index.html")
