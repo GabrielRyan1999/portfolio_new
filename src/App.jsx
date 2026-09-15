@@ -6,7 +6,7 @@ import { Testimonials } from './components/ui/unique-testimonial';
 import { Linkedin, Github, Instagram } from './components/ui/brand-icons';
 import { ChevronLeft, ChevronRight, ExternalLink, Plus } from 'lucide-react';
 
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion';
 import { FloatingDock } from './components/ui/dock';
 import { SectionShell } from './components/ui/SectionShell';
 import { LetsWorkTogether } from './components/ui/lets-work-section';
@@ -104,6 +104,13 @@ function RotatingText({ words }) {
 }
 
 function App() {
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
+
   const [hasEntered, setHasEntered] = useState(false);
   const [activeServiceIndex, setActiveServiceIndex] = useState(null);
   const [workIndex, setWorkIndex] = useState(0);
@@ -178,6 +185,10 @@ function App() {
 
   return (
     <>
+      <motion.div
+        className="fixed top-0 left-0 right-0 h-1 md:h-1.5 bg-blue-600 origin-left z-[9999]"
+        style={{ scaleX }}
+      />
       <FloatingDock />
       <AnimatePresence>
         {!hasEntered && <IntroScreen key="intro" onEnter={() => setHasEntered(true)} />}
