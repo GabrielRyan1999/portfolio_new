@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 | Page Not Found</title>
+  <link rel="icon" type="image/jpeg" href="/favicon.jpg" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+    
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: #020617; /* slate-950 */
+      color: #f8fafc; /* slate-50 */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      overflow: hidden;
+      text-align: center;
+      position: relative;
+    }
+    
+    /* Subtle background glow */
+    body::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 40vw;
+      height: 40vw;
+      background: rgba(37, 99, 235, 0.15); /* blue-600 with opacity */
+      filter: blur(100px);
+      border-radius: 50%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .container {
+      position: relative;
+      z-index: 10;
+      padding: 2rem;
+    }
+
+    h1 {
+      font-size: 8rem;
+      font-weight: 900;
+      margin: 0;
+      line-height: 1;
+      letter-spacing: -0.05em;
+      background: linear-gradient(to right, #f8fafc, #94a3b8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin: 1rem 0;
+      color: #f8fafc;
+    }
+
+    p {
+      font-size: 1.125rem;
+      color: #94a3b8; /* slate-400 */
+      margin-bottom: 2.5rem;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #2563eb; /* blue-600 */
+      color: white;
+      text-decoration: none;
+      padding: 1rem 2rem;
+      border-radius: 9999px;
+      font-weight: 700;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.4);
+    }
+
+    a:hover {
+      background-color: #1d4ed8; /* blue-700 */
+      transform: translateY(-2px);
+      box-shadow: 0 20px 25px -5px rgba(37, 99, 235, 0.5);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>404</h1>
+    <h2>Lost in the Void</h2>
+    <p>The page you are looking for doesn't exist, has been moved, or is temporarily unavailable.</p>
+    <a href="/">Return to Home</a>
+  </div>
+</body>
+</html>
