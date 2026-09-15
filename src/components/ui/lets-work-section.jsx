@@ -87,6 +87,9 @@ export function LetsWorkTogether() {
                </div>
             ) : (
                <form onSubmit={handleFormSubmit} className="flex flex-col gap-4 w-full text-left">
+                 {/* Formspree Honeypot for Anti-Spam */}
+                 <input type="text" name="_gotcha" style={{ display: 'none' }} />
+                 
                  <div>
                    <input 
                      type="email" 
