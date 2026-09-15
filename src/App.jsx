@@ -434,12 +434,21 @@ function App() {
                 ].map((service, index) => {
                   const isOpen = activeServiceIndex === index;
                   return (
-                    <motion.div key={service.title} layout variants={fadeUp} className="overflow-hidden">
+                    <motion.div 
+                      key={service.title} 
+                      layout 
+                      variants={fadeUp} 
+                      className={`overflow-hidden transition-all duration-300 rounded-3xl border border-transparent ${
+                        isOpen 
+                          ? "bg-[var(--card)] !border-[var(--card-border)] shadow-xl shadow-slate-200/50 dark:shadow-none" 
+                          : "bg-transparent"
+                      }`}
+                    >
                       <motion.button
                           layout
                           onClick={() => setActiveServiceIndex(isOpen ? null : index)}
-                          className={`group w-full flex items-center justify-between py-6 md:py-8 px-4 rounded-3xl transition-all duration-300 hover:px-6 ${
-                            isOpen ? "bg-[var(--card)] border-[var(--card-border)] text-slate-900 dark:text-zinc-100 shadow-xl shadow-slate-200/50 dark:shadow-none" : "bg-transparent text-slate-400 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-zinc-800/50"
+                          className={`group w-full flex items-center justify-between py-6 md:py-8 px-4 md:px-8 transition-colors ${
+                            isOpen ? "text-slate-900 dark:text-zinc-100" : "text-slate-400 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-zinc-800/50"
                           }`}
                         >
                           <motion.div layout="position" className="flex items-center gap-4 md:gap-8">
@@ -467,7 +476,7 @@ function App() {
                             animate={{ height: "auto", opacity: 1 }}
                             exit={{ height: 0, opacity: 0 }}
                             transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                            className="bg-[var(--card)] border-[var(--card-border)] text-slate-900 dark:text-zinc-100 rounded-b-3xl px-4 md:px-8"
+                            className="text-slate-900 dark:text-zinc-100 px-4 md:px-8"
                           >
                             <div className="pb-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                               <p className="text-slate-600 dark:text-zinc-400 dark:text-zinc-300 max-w-md">{service.desc}</p>
