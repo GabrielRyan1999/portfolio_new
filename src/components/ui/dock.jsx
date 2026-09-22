@@ -6,6 +6,7 @@ import { Link, useLocation } from 'react-router-dom';
 export function FloatingDock() {
   const [hovered, setHovered] = useState(null);
   const [isDark, setIsDark] = useState(false);
+  const location = useLocation();
   
   // Collapse state
   const [isScrolled, setIsScrolled] = useState(false);
@@ -32,24 +33,13 @@ export function FloatingDock() {
     }
   }, [isDark]);
 
-  const scrollTo = (id) => {
-    const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-    }
-    // Auto collapse after clicking a link if we are scrolled down
-    if (isScrolled) {
-      setIsExpanded(false);
-    }
-  };
-
   const myNavItems = [
-    { id: 'about', label: 'Home', icon: Home },
-    { id: 'about-me', label: 'About', icon: User },
-    { id: 'work', label: 'Work', icon: Briefcase },
-    { id: 'service', label: 'Service', icon: Layers },
-    { id: 'experience', label: 'Experience', icon: Star },
-    { id: 'contact', label: 'Contact', icon: Mail },
+    { path: '/', label: 'Home', icon: Home },
+    { path: '/about', label: 'About', icon: User },
+    { path: '/work', label: 'Work', icon: Briefcase },
+    { path: '/service', label: 'Service', icon: Layers },
+    { path: '/experience', label: 'Experience', icon: Star },
+    { path: '/contact', label: 'Contact', icon: Mail },
   ];
 
   const showFullMenu = !isScrolled || isExpanded;
@@ -83,13 +73,14 @@ export function FloatingDock() {
           >
             {myNavItems.map((item) => {
               const Icon = item.icon;
-              const isHovered = hovered === item.id;
+              const isHovered = hovered === item.path;
+              const isActive = location.pathname === item.path;
 
               return (
                 <div 
-                  key={item.id} 
+                  key={item.path} 
                   className="relative"
-                  onMouseEnter={() => setHovered(item.id)}
+                  onMouseEnter={() => setHovered(item.path)}
                   onMouseLeave={() => setHovered(null)}
                 >
                   <AnimatePresence>
@@ -98,16 +89,20 @@ export function FloatingDock() {
                         initial={{ opacity: 0, y: -10, scale: 0.8 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: -10, scale: 0.8 }}
-                        className="absolute -top-10 md:top-14 left-1/2 -translate-x-1/2 px-3 py-1.5 bg-[#1a1a1a] border border-white/10 text-white text-xs font-medium rounded-lg whitespace-nowrap shadow-xl z-50"
+                        className="absolute -top-10 md:top-14 left-1/2 -translate-x-1/2 px-3 py-1.5 bg-[#1a1a1a] border border-white/10 text-white text-xs font-medium rounded-lg whitespace-nowrap shadow-xl z-50 pointer-events-none"
                       >
                         {item.label}
                       </motion.div>
                     )}
                   </AnimatePresence>
 
-                  <button
-                    onClick={() => scrollTo(item.id)}
-                    className={`relative flex items-center justify-center w-9 h-9 md:w-12 md:h-12 rounded-full ${isScrolled ? 'hover:bg-white/10' : 'bg-[#111111] border border-white/5'} transition-all duration-300 text-slate-300`}
+                  <Link
+                    to={item.path}
+                    onClick={() => {
+                        if (isScrolled) setIsExpanded(false);
+                        window.scrollTo(0, 0); // Ensure top of page when changing routes
+                    }}
+                    className={`relative flex items-center justify-center w-9 h-9 md:w-12 md:h-12 rounded-full ${isScrolled ? 'hover:bg-white/10' : 'bg-[#111111] border border-white/5'} transition-all duration-300 ${isActive ? 'text-blue-500' : 'text-slate-300'}`}
                   >
                     {!isScrolled && isHovered && (
                       <motion.div 
@@ -116,8 +111,8 @@ export function FloatingDock() {
                         transition={{ type: "spring", stiffness: 300, damping: 25 }}
                       />
                     )}
-                    <Icon className={`w-4 h-4 md:w-5 md:h-5 relative z-10 ${isHovered ? 'text-white' : 'text-slate-300'}`} />
-                  </button>
+                    <Icon className={`w-4 h-4 md:w-5 md:h-5 relative z-10 ${isHovered || isActive ? 'text-white' : 'text-slate-300'}`} />
+                  </Link>
                 </div>
               );
             })}
@@ -137,7 +132,7 @@ export function FloatingDock() {
                     initial={{ opacity: 0, y: -10, scale: 0.8 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: -10, scale: 0.8 }}
-                    className="absolute -top-10 md:top-14 left-1/2 -translate-x-1/2 px-3 py-1.5 bg-[#1a1a1a] border border-white/10 text-white text-xs font-medium rounded-lg whitespace-nowrap shadow-xl z-50"
+                    className="absolute -top-10 md:top-14 left-1/2 -translate-x-1/2 px-3 py-1.5 bg-[#1a1a1a] border border-white/10 text-white text-xs font-medium rounded-lg whitespace-nowrap shadow-xl z-50 pointer-events-none"
                   >
                     {isDark ? 'Light Mode' : 'Dark Mode'}
                   </motion.div>
