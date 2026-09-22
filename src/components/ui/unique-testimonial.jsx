@@ -1,170 +1,137 @@
-"use client"
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Quote, ChevronLeft, ChevronRight } from "lucide-react";
 
-import { useState } from "react"
-import { cn } from "../../lib/utils"
-
-const testimonials = [
+const TESTIMONIALS = [
   {
     id: 1,
-    quote: "This interactive metaverse session completely changed how our students learn.",
+    quote: "This interactive metaverse session completely changed how our students learn. The engagement was off the charts and the students loved every second.",
     author: "Sekolah Bintang Mayantara",
     role: "School Partner",
-    screenshot: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=800",
   },
   {
     id: 2,
-    quote: "The programming curriculum was so easy to follow and incredibly engaging.",
+    quote: "The programming curriculum was so easy to follow and incredibly engaging. Our teachers feel so much more confident delivering this material now.",
     author: "Krya Global",
     role: "EdTech Partner",
-    screenshot: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=800",
   },
   {
     id: 3,
-    quote: "Ryan's approach to game development mentorship is outstanding.",
+    quote: "Ryan's approach to game development mentorship is outstanding. He breaks down complex logic perfectly for absolute beginners.",
     author: "Teman Belajar Krya",
     role: "Mentorship Platform",
-    screenshot: "https://images.unsplash.com/photo-1542831371-29b0f74f9713?q=80&w=800",
   },
   {
     id: 4,
-    quote: "Great attention to detail and patience with beginners.",
-    author: "Dharma Mulya",
-    role: "Educational Institution",
-    screenshot: "https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=800",
-  },
-  {
-    id: 5,
-    quote: "Highly recommend for any kids coding events.",
+    quote: "Great attention to detail and patience with beginners. Highly recommend him for any youth coding events or workshops.",
     author: "Xingzhong School",
     role: "School Partner",
-    screenshot: "https://images.unsplash.com/photo-1516321497487-e288fb19713f?q=80&w=800",
   },
-  {
-    id: 6,
-    quote: "The 3D modeling class was a huge hit with the students.",
-    author: "Parent A",
-    role: "Student Parent",
-    screenshot: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=800",
-  },
-  {
-    id: 7,
-    quote: "We saw an immediate improvement in logical thinking.",
-    author: "Parent B",
-    role: "Student Parent",
-    screenshot: "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?q=80&w=800",
-  },
-  {
-    id: 8,
-    quote: "Very professional and always brings fresh ideas to the table.",
-    author: "Tech Edu",
-    role: "Collaborator",
-    screenshot: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=800",
-  },
-  {
-    id: 9,
-    quote: "Managed our IT systems flawlessly during the online transition.",
-    author: "Krya Operations",
-    role: "Internal Team",
-    screenshot: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=800",
-  },
-  {
-    id: 10,
-    quote: "Our students successfully built their first games in just 4 weeks!",
-    author: "Coding Bootcamp",
-    role: "Event Partner",
-    screenshot: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=800",
-  }
-]
+];
 
 export function Testimonials() {
-  const [activeIndex, setActiveIndex] = useState(0)
-  const [isAnimating, setIsAnimating] = useState(false)
-  
-  const activeTestimonial = testimonials[activeIndex];
+  const [cards, setCards] = useState(TESTIMONIALS);
 
-  const handleSelect = (index) => {
-    if (index === activeIndex || isAnimating) return
-    setIsAnimating(true)
-    setTimeout(() => {
-      setActiveIndex(index)
-      setTimeout(() => setIsAnimating(false), 300)
-    }, 150)
-  }
+  // Auto-play the stack
+  useEffect(() => {
+    const interval = setInterval(() => {
+      handleNext();
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [cards]);
+
+  const handleNext = () => {
+    setCards((prevCards) => {
+      const newCards = [...prevCards];
+      const first = newCards.shift();
+      newCards.push(first);
+      return newCards;
+    });
+  };
+
+  const handlePrev = () => {
+    setCards((prevCards) => {
+      const newCards = [...prevCards];
+      const last = newCards.pop();
+      newCards.unshift(last);
+      return newCards;
+    });
+  };
 
   return (
-    <div className="flex flex-col items-center gap-6 w-full py-0">
-      {/* Screenshot & Text Container */}
-      <div className="relative w-full max-w-4xl px-2 flex flex-col items-center gap-6 md:gap-10">
-        <div 
-           className={cn(
-            "w-full aspect-[16/9] md:aspect-[21/9] rounded-3xl overflow-hidden shadow-2xl border border-[var(--color-brand)]/20 bg-muted transition-all duration-300 ease-out",
-            isAnimating ? "opacity-0 blur-sm scale-[0.98]" : "opacity-100 blur-0 scale-100"
-          )}
-        >
-          <img 
-            src={activeTestimonial.screenshot} 
-            alt={`Screenshot from ${activeTestimonial.author}`} 
-            className="w-full h-full object-cover"
-          />
-        </div>
+    <div className="w-full flex flex-col items-center justify-center py-20 px-4 relative z-10">
+      
+      {/* Card Stack Container */}
+      <div className="relative w-full max-w-xl h-[320px] md:h-[280px] flex justify-center items-center perspective-1000 mt-10">
+        <AnimatePresence initial={false}>
+          {cards.map((card, index) => {
+            const isTop3 = index < 3;
+            if (!isTop3) return null;
 
-        <div className="relative px-6">
-            <span className="absolute -left-4 md:-left-8 -top-6 md:-top-10 text-6xl md:text-8xl font-serif text-black/10 dark:text-white/10 select-none pointer-events-none">
-              "
-            </span>
-            <p
-              className={cn(
-                "text-xl md:text-3xl font-light text-[var(--foreground)] text-center max-w-3xl leading-relaxed transition-all duration-300 ease-out",
-                isAnimating ? "opacity-0 blur-sm scale-[0.98]" : "opacity-100 blur-0 scale-100",
-              )}
-            >
-              {activeTestimonial.quote}
-            </p>
-            <span className="absolute -right-4 md:-right-8 -bottom-8 md:-bottom-12 text-6xl md:text-8xl font-serif text-black/10 dark:text-white/10 select-none pointer-events-none">
-              "
-            </span>
-        </div>
+            return (
+              <motion.div
+                key={card.id}
+                layout
+                initial={{ opacity: 0, scale: 0.8, y: 50 }}
+                animate={{
+                  y: index * -25, // Stack cards upwards
+                  scale: 1 - index * 0.06, // Cards in back get smaller
+                  zIndex: cards.length - index,
+                  opacity: 1 - index * 0.25, // Cards in back fade out
+                }}
+                exit={{ opacity: 0, scale: 0.8, y: 50 }}
+                transition={{
+                  duration: 0.5,
+                  ease: "easeInOut",
+                }}
+                className="absolute w-full h-full bg-[#0a0f1e] border border-white/10 dark:bg-zinc-900/90 dark:border-white/10 rounded-3xl p-8 md:p-10 shadow-2xl flex flex-col justify-between backdrop-blur-sm cursor-grab active:cursor-grabbing"
+                style={{
+                  transformOrigin: "top center",
+                }}
+                drag="x"
+                dragConstraints={{ left: 0, right: 0 }}
+                onDragEnd={(e, { offset, velocity }) => {
+                  const swipe = offset.x;
+                  if (swipe < -50) {
+                    handleNext(); // swipe left goes next
+                  } else if (swipe > 50) {
+                    handlePrev(); // swipe right goes prev
+                  }
+                }}
+              >
+                <div className="relative z-10 pointer-events-none">
+                  <Quote className="w-12 h-12 text-blue-600/30 absolute -top-4 -left-4 md:-top-2 md:-left-2 rotate-180" />
+                  <p className="text-lg md:text-xl text-slate-200 dark:text-zinc-200 font-medium leading-relaxed mt-6 relative z-10">
+                    "{card.quote}"
+                  </p>
+                </div>
+
+                <div className="mt-8 flex flex-col pointer-events-none">
+                  <p className="text-white dark:text-white font-bold text-lg md:text-xl">{card.author}</p>
+                  <p className="text-blue-400 dark:text-blue-400 font-mono text-sm uppercase tracking-wider mt-1">{card.role}</p>
+                </div>
+              </motion.div>
+            );
+          })}
+        </AnimatePresence>
       </div>
 
-      <div className="flex flex-col items-center gap-4 mt-2 w-full">
-        <p
-          className={cn(
-            "text-xs md:text-sm text-blue-600 dark:text-blue-400 font-bold tracking-[0.2em] uppercase transition-all duration-400 ease-out",
-            isAnimating ? "opacity-0 translate-y-1" : "opacity-100 translate-y-0",
-          )}
+      {/* Controls */}
+      <div className="flex items-center gap-4 mt-8 md:mt-12 z-20">
+        <button
+          onClick={handlePrev}
+          className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/5 transition-all active:scale-95"
         >
-          {activeTestimonial.role}
-        </p>
-
-        {/* Auto-scrolling buttons container */}
-        <div className="w-full overflow-hidden relative mt-4 md:mt-8 rounded-full">
-          {/* Fading edges to blend with the card background */}
-          <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-[var(--card)] to-transparent z-10 pointer-events-none" />
-          <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-[var(--card)] to-transparent z-10 pointer-events-none" />
-          
-          <div className="flex items-center gap-2 w-max animate-slide-left pause-on-hover px-4">
-            {/* Render list twice for infinite scrolling illusion */}
-            {[...testimonials, ...testimonials].map((testimonial, index) => {
-              const actualIndex = index % testimonials.length;
-              const isActive = activeIndex === actualIndex;
-
-              return (
-                <button
-                  key={`${testimonial.id}-${index}`}
-                  onClick={() => handleSelect(actualIndex)}
-                  className={cn(
-                    "relative flex items-center shrink-0 px-6 py-2.5 md:py-3 md:px-8 rounded-full cursor-pointer",
-                    "transition-all duration-400 ease-[cubic-bezier(0.4,0,0.2,1)] font-bold text-sm md:text-base border",
-                    isActive ? "bg-[var(--color-brand)] text-white border-[var(--color-brand)] shadow-[0_0_10px_rgba(37,99,235,0.4)]" : "bg-[var(--background)] border-[var(--card-border)] text-foreground hover:bg-[var(--card)] hover:border-[var(--color-brand)]/50",
-                  )}
-                >
-                  {testimonial.author}
-                </button>
-              )
-            })}
-          </div>
-        </div>
+          <ChevronLeft className="w-6 h-6" />
+        </button>
+        <button
+          onClick={handleNext}
+          className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/5 transition-all active:scale-95"
+        >
+          <ChevronRight className="w-6 h-6" />
+        </button>
       </div>
+
     </div>
-  )
+  );
 }
