@@ -62,7 +62,7 @@ export function Testimonials() {
     <div className="w-full flex flex-col items-center justify-center py-20 px-4 relative z-10">
       
       {/* Card Stack Container */}
-      <div className="relative w-full max-w-xl h-[320px] md:h-[280px] flex justify-center items-center perspective-1000 mt-10">
+      <div className="relative w-full max-w-4xl h-[380px] md:h-[350px] lg:h-[450px] flex justify-center items-center perspective-1000 mt-10 md:mt-20">
         <AnimatePresence initial={false}>
           {cards.map((card, index) => {
             const isTop3 = index < 3;
@@ -73,7 +73,7 @@ export function Testimonials() {
                 key={card.id}
                 initial={{ opacity: 0, scale: 0.8, y: 50 }}
                 animate={{
-                  y: index * -25, // Stack cards upwards
+                  y: index * -35, // Stack cards upwards
                   scale: 1 - index * 0.06, // Cards in back get smaller
                   zIndex: cards.length - index,
                   opacity: 1 - index * 0.25, // Cards in back fade out
@@ -84,7 +84,7 @@ export function Testimonials() {
                   duration: 0.5,
                   ease: "easeInOut",
                 }}
-                className="absolute w-full h-full bg-[#0a0f1e] border border-white/10 dark:bg-zinc-900/90 dark:border-white/10 rounded-3xl p-8 md:p-10 shadow-2xl flex flex-col justify-between backdrop-blur-sm cursor-grab active:cursor-grabbing"
+                className="absolute w-full h-full bg-[#0a0f1e] border border-white/10 dark:bg-zinc-900/90 dark:border-white/10 rounded-3xl p-8 md:p-12 lg:p-16 shadow-2xl flex flex-col justify-between backdrop-blur-sm cursor-grab active:cursor-grabbing"
                 style={{
                   transformOrigin: "top center",
                 }}
@@ -98,15 +98,15 @@ export function Testimonials() {
                 }}
               >
                 <div className="relative z-10 pointer-events-none">
-                  <Quote className="w-12 h-12 text-blue-600/30 absolute -top-4 -left-4 md:-top-2 md:-left-2 rotate-180" />
-                  <p className="text-lg md:text-xl text-slate-200 dark:text-zinc-200 font-medium leading-relaxed mt-6 relative z-10">
+                  <Quote className="w-16 h-16 md:w-24 md:h-24 lg:w-32 lg:h-32 text-blue-600/20 absolute -top-4 -left-4 md:-top-6 md:-left-6 rotate-180" />
+                  <p className="text-lg md:text-2xl lg:text-4xl text-slate-200 dark:text-zinc-200 font-medium leading-relaxed mt-6 relative z-10">
                     "{card.quote}"
                   </p>
                 </div>
 
                 <div className="mt-8 flex flex-col pointer-events-none">
-                  <p className="text-white dark:text-white font-bold text-lg md:text-xl">{card.author}</p>
-                  <p className="text-blue-400 dark:text-blue-400 font-mono text-sm uppercase tracking-wider mt-1">{card.role}</p>
+                  <p className="text-white dark:text-white font-bold text-xl md:text-2xl lg:text-3xl">{card.author}</p>
+                  <p className="text-blue-400 dark:text-blue-400 font-mono text-sm md:text-base uppercase tracking-wider mt-1 md:mt-2">{card.role}</p>
                 </div>
               </motion.div>
             );
