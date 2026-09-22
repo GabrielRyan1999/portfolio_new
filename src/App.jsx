@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion, useScroll, useSpring } from 'framer-motion';
 import { FloatingDock } from './components/ui/dock';
 import { Home, About, Work, Service, Experience, Contact } from './pages/Pages';
 
@@ -22,8 +22,19 @@ function AnimatedRoutes() {
 }
 
 function App() {
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
+
   return (
     <BrowserRouter>
+      <motion.div
+        className="fixed top-0 left-0 right-0 h-1 md:h-1.5 bg-blue-600 origin-left z-[9999]"
+        style={{ scaleX }}
+      />
       {/* Background Elements (fixed so they stay behind everything) */}
       <div className="fixed inset-0 z-0 pointer-events-none">
         <div className="absolute inset-0 bg-grid opacity-50 dark:opacity-30"></div>

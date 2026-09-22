@@ -6,7 +6,7 @@ import { HoverExpandGallery } from '../components/ui/hover-expand-gallery';
 import { MentorReportingFeatures } from '../components/ui/features-2';
 import { Testimonials } from '../components/ui/unique-testimonial';
 import { Linkedin, Github, Instagram } from '../components/ui/brand-icons';
-import { ChevronLeft, ChevronRight, ExternalLink, Plus } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ChevronDown, ExternalLink, Plus } from 'lucide-react';
 import { LetsWorkTogether } from '../components/ui/lets-work-section';
 import { experienceJobs, carouselSlides, workProjects } from '../data';
 
@@ -51,6 +51,24 @@ function RotatingText({ words }) {
     </div>
   );
 }
+
+
+const ScrollIndicator = () => (
+  <motion.div 
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ delay: 1, duration: 1 }}
+    className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center justify-center text-slate-400 dark:text-zinc-500 z-50 pointer-events-none"
+  >
+    <span className="text-xs font-semibold tracking-[0.2em] mb-2 uppercase">Scroll</span>
+    <motion.div
+      animate={{ y: [0, 8, 0] }}
+      transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+    >
+      <ChevronDown className="w-5 h-5 opacity-70" />
+    </motion.div>
+  </motion.div>
+);
 
 export const PageTransition = ({ children }) => (
   <motion.div
@@ -143,7 +161,8 @@ export function About() {
               </div>
               <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.2 }} className="w-full max-w-6xl mx-auto flex flex-col lg:flex-row items-stretch gap-8 lg:gap-16 px-4 relative z-10">
                 
-                {/* Left: Personal Story */}
+                <ScrollIndicator />
+          {/* Left: Personal Story */}
                 <div className="w-full lg:w-1/2 flex flex-col justify-center space-y-6">
                   <div>
                     <motion.h3 variants={fadeUp} className="text-3xl md:text-5xl font-black text-[var(--foreground)] tracking-tight mb-3">
@@ -447,6 +466,7 @@ export function Experience() {
             </div>
           }>
               <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.4 }} className="w-full flex-1 overflow-y-auto scrollbar-hide space-y-6 md:space-y-8 h-full max-h-full">
+                <ScrollIndicator />
                 {experienceJobs.map((job, i) => (
                   <motion.div key={i} variants={fadeUp} className={`flex flex-col md:flex-row justify-between gap-4 p-6 rounded-3xl transition-colors ${job.isActive ? 'bg-blue-50 border border-blue-200 shadow-sm' : 'hover:bg-slate-50 dark:hover:bg-zinc-800 dark:bg-zinc-800/50'}`}>
                     <div className="flex-1">
