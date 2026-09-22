@@ -78,19 +78,17 @@ const ScrollIndicator = () => {
 
 
 const GlobalFooter = () => (
-  <div className="w-full max-w-7xl mx-auto px-6 md:px-8 lg:px-12 pb-8 pt-4">
-    <div className="flex flex-col md:flex-row items-center justify-between w-full border-t border-slate-200/20 pt-6 text-slate-500 dark:text-zinc-500 dark:text-zinc-400 z-10 relative">
-      <div className="text-sm font-medium text-center md:text-left">
-        &copy; {new Date().getFullYear()} Gabriel Ryan.<br className="block md:hidden"/> All rights reserved.
-      </div>
-      <div className="flex flex-row gap-6 my-4 md:my-0">
-        <a href="https://www.linkedin.com/in/gabrielryan1999/" target="_blank" rel="noreferrer" aria-label="LinkedIn" className="hover:text-blue-600 transition-colors"><Linkedin className="w-5 h-5" /></a>
-        <a href="https://github.com/GabrielRyan1999" target="_blank" rel="noreferrer" aria-label="GitHub" className="hover:text-slate-900 dark:hover:text-zinc-100 transition-colors"><Github className="w-5 h-5" /></a>
-        <a href="https://www.instagram.com/heyitsgabrielryan/" target="_blank" rel="noreferrer" aria-label="Instagram" className="hover:text-pink-600 transition-colors"><Instagram className="w-5 h-5" /></a>
-      </div>
-      <div className="text-sm text-center md:text-right hidden md:block">
-        Created with 💙 by Ryan
-      </div>
+  <div className="flex flex-col md:flex-row items-center justify-between w-full border-t border-[var(--card-border)] pt-6 mt-8 text-[var(--foreground-muted)] z-10 relative">
+    <div className="text-sm font-medium text-center md:text-left">
+      &copy; {new Date().getFullYear()} Gabriel Ryan.<br className="block md:hidden"/> All rights reserved.
+    </div>
+    <div className="flex flex-row gap-6 my-4 md:my-0">
+      <a href="https://www.linkedin.com/in/gabrielryan1999/" target="_blank" rel="noreferrer" aria-label="LinkedIn" className="hover:text-[var(--color-brand)] transition-colors"><Linkedin className="w-5 h-5" /></a>
+      <a href="https://github.com/GabrielRyan1999" target="_blank" rel="noreferrer" aria-label="GitHub" className="hover:text-[var(--foreground)] transition-colors"><Github className="w-5 h-5" /></a>
+      <a href="https://www.instagram.com/heyitsgabrielryan/" target="_blank" rel="noreferrer" aria-label="Instagram" className="hover:text-pink-600 transition-colors"><Instagram className="w-5 h-5" /></a>
+    </div>
+    <div className="text-sm text-center md:text-right hidden md:block">
+      Created with 💙 by Ryan
     </div>
   </div>
 );
@@ -122,7 +120,7 @@ export function Home() {
               Let's Talk
             </a>
           </nav>
-          } dark={false}>
+          } dark={false} footer={<GlobalFooter />}>
             <motion.div variants={staggerContainer} initial="hidden" animate="visible" className="w-full flex flex-col items-center justify-center relative h-full">
               {/* Grouped Center Content */}
               <div className="flex flex-col items-center justify-center w-full z-10 relative">
@@ -171,7 +169,7 @@ export function Home() {
               </div>
             </motion.div>
           </SectionShell>
-      <GlobalFooter />
+      
 </PageTransition>
   );
 }
@@ -179,7 +177,7 @@ export function Home() {
 export function About() {
   return (
     <PageTransition>
-              <SectionShell id="about-me" label="/ABOUT ME" watermark="ABOUT" dark={true}>
+              <SectionShell id="about-me" label="/ABOUT ME" watermark="ABOUT" dark={true} footer={<GlobalFooter />}>
               {/* Background Avatar Watermarks */}
               <div className="absolute inset-0 pointer-events-none z-[0] overflow-hidden">
                 <img src="/favicon.jpg" alt="" className="absolute top-10 md:top-20 -left-4 md:left-0 w-[250px] md:w-[400px] lg:w-[500px] blur-[2px] -rotate-12 rounded-full opacity-[0.05] dark:opacity-[0.03] grayscale" />
@@ -255,7 +253,7 @@ export function About() {
           
 
           {/* 2. Selected Work (Dark) */}
-      <GlobalFooter />
+      
     </PageTransition>
   );
 }
@@ -347,14 +345,14 @@ export function Work() {
 
 
             {/* Case Study */}
-            <SectionShell id="case-study" label="/CASE STUDY" watermark="SYSTEM" dark={false}>
+            <SectionShell id="case-study" label="/CASE STUDY" watermark="SYSTEM" dark={false} footer={<GlobalFooter />}>
                 <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.3 }} className="w-full max-w-7xl mx-auto z-10">
                    <motion.div variants={fadeUp}>
                       <MentorReportingFeatures />
                    </motion.div>
                 </motion.div>
             </SectionShell>
-      <GlobalFooter />
+      
     </PageTransition>
   );
 }
@@ -363,7 +361,7 @@ export function Service() {
   const [activeServiceIndex, setActiveServiceIndex] = useState(null);
   return (
     <PageTransition>
-              <SectionShell id="service" label="/SERVICE" watermark="SERVICE" dark={true}>
+              <SectionShell id="service" label="/SERVICE" watermark="SERVICE" dark={true} footer={<GlobalFooter />}>
               <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.2 }} className="w-full flex flex-col justify-center z-10 divide-y divide-gray-200">
                 {[
                   { title: "CUSTOM WEB PLATFORMS", desc: "Building fast, scalable, and robust web applications, internal dashboards, and custom platforms tailored to your business needs.", images: ["https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=400&q=80", "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400&q=80", "https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=400&q=80"] },
@@ -486,7 +484,7 @@ export function Service() {
           </SectionShell>
 
           {/* 4. Experience (Dark) */}
-      <GlobalFooter />
+      
     </PageTransition>
   );
 }
@@ -522,7 +520,7 @@ export function Experience() {
           </SectionShell>
 
           {/* Testimonials */}
-        <SectionShell label="/TESTIMONIALS" watermark="STORIES" dark={true}>
+        <SectionShell label="/TESTIMONIALS" watermark="STORIES" dark={true} footer={<GlobalFooter />}>
               <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.2 }} className="w-full relative z-10 flex flex-col justify-center h-full">
                  <motion.div variants={fadeUp} className="w-full">
                     <Testimonials />
@@ -531,7 +529,7 @@ export function Experience() {
           </SectionShell>
 
           {/* 5. Contact (White) */}
-      <GlobalFooter />
+      
     </PageTransition>
   );
 }
