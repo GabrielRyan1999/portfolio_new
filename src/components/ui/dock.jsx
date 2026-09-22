@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Home, Briefcase, Layers, User, Moon, Sun, Star, Mail, Menu, X } from 'lucide-react';
+import { Home, Briefcase, Layers, User, Moon, Sun, Star, Mail, Menu, X, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 export function FloatingDock() {
   const [hovered, setHovered] = useState(null);
   const [isDark, setIsDark] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   
   // Collapse state
   const [isScrolled, setIsScrolled] = useState(false);
@@ -36,9 +37,25 @@ export function FloatingDock() {
   const myNavItems = [
     { path: '/', label: 'Home', icon: Home },
     { path: '/about', label: 'About', icon: User },
-    { path: '/work', label: 'Work', icon: Briefcase },
+    { 
+      path: '/work', 
+      label: 'Work', 
+      icon: Briefcase,
+      subItems: [
+        { id: 'work', label: 'Selected Work' },
+        { id: 'classroom', label: 'Classroom' }
+      ]
+    },
     { path: '/service', label: 'Service', icon: Layers },
-    { path: '/experience', label: 'Experience', icon: Star },
+    { 
+      path: '/experience', 
+      label: 'Experience', 
+      icon: Star,
+      subItems: [
+        { id: 'experience', label: 'Timeline' },
+        { id: 'testimonials', label: 'Testimonials' }
+      ]
+    },
     { path: '/contact', label: 'Contact', icon: Mail },
   ];
 
@@ -89,9 +106,36 @@ export function FloatingDock() {
                         initial={{ opacity: 0, y: -10, scale: 0.8 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: -10, scale: 0.8 }}
-                        className="absolute -top-10 md:top-14 left-1/2 -translate-x-1/2 px-3 py-1.5 bg-[#1a1a1a] border border-white/10 text-white text-xs font-medium rounded-lg whitespace-nowrap shadow-xl z-50 pointer-events-none"
+                        className="absolute bottom-full mb-2 md:mb-0 md:bottom-auto md:top-full md:mt-2 left-1/2 -translate-x-1/2 z-50 py-2"
                       >
-                        {item.label}
+                        <div className="bg-[#1a1a1a] border border-white/10 text-white rounded-xl shadow-2xl overflow-hidden flex flex-col min-w-[140px]">
+                        {item.subItems ? (
+                          <div className="flex flex-col py-1">
+                            <div className="px-3 py-2 text-[10px] uppercase tracking-wider text-slate-400 font-bold border-b border-white/10">
+                              {item.label}
+                            </div>
+                            {item.subItems.map(sub => (
+                              <button
+                                key={sub.id}
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  setHovered(null);
+                                  if (isScrolled) setIsExpanded(false);
+                                  navigate(`${item.path}#${sub.id}`);
+                                }}
+                                className="px-4 py-2 text-sm hover:bg-white/10 hover:text-blue-400 text-left transition-colors flex items-center justify-between group"
+                              >
+                                {sub.label}
+                                <ChevronRight className="w-3 h-3 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
+                              </button>
+                            ))}
+                          </div>
+                        ) : (
+                          <div className="px-3 py-1.5 text-xs font-medium whitespace-nowrap text-center">
+                            {item.label}
+                          </div>
+                        )}
+                        </div>
                       </motion.div>
                     )}
                   </AnimatePresence>
@@ -100,7 +144,8 @@ export function FloatingDock() {
                     to={item.path}
                     onClick={() => {
                         if (isScrolled) setIsExpanded(false);
-                        window.scrollTo(0, 0); // Ensure top of page when changing routes
+                        // If it has sub-items, we don't necessarily want to scroll to top, 
+                        // but Link click should go to top if no hash.
                     }}
                     className={`relative flex items-center justify-center w-9 h-9 md:w-12 md:h-12 rounded-full ${isScrolled ? 'hover:bg-white/10' : 'bg-[#111111] border border-white/5'} transition-all duration-300 ${isActive ? 'text-blue-500' : 'text-slate-300'}`}
                   >
@@ -132,7 +177,7 @@ export function FloatingDock() {
                     initial={{ opacity: 0, y: -10, scale: 0.8 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: -10, scale: 0.8 }}
-                    className="absolute -top-10 md:top-14 left-1/2 -translate-x-1/2 px-3 py-1.5 bg-[#1a1a1a] border border-white/10 text-white text-xs font-medium rounded-lg whitespace-nowrap shadow-xl z-50 pointer-events-none"
+                    className="absolute bottom-full mb-4 md:mb-0 md:bottom-auto md:top-full md:mt-4 left-1/2 -translate-x-1/2 px-3 py-1.5 bg-[#1a1a1a] border border-white/10 text-white text-xs font-medium rounded-lg whitespace-nowrap shadow-xl z-50 pointer-events-none"
                   >
                     {isDark ? 'Light Mode' : 'Dark Mode'}
                   </motion.div>

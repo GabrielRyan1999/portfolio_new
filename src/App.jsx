@@ -1,8 +1,30 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion, useScroll, useSpring } from 'framer-motion';
 import { FloatingDock } from './components/ui/dock';
 import { Home, About, Work, Service, Experience, Contact } from './pages/Pages';
+
+// Component to handle scroll restoration and hash scrolling
+function ScrollHandler() {
+  const { pathname, hash } = useLocation();
+
+  useEffect(() => {
+    if (hash) {
+      // Small delay to ensure the page has rendered before scrolling
+      setTimeout(() => {
+        const id = hash.replace('#', '');
+        const element = document.getElementById(id);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [pathname, hash]);
+
+  return null;
+}
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -31,6 +53,7 @@ function App() {
 
   return (
     <BrowserRouter>
+      <ScrollHandler />
       <motion.div
         className="fixed top-0 left-0 right-0 h-1 md:h-1.5 bg-blue-600 origin-left z-[9999]"
         style={{ scaleX }}

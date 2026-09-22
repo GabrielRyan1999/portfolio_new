@@ -232,13 +232,7 @@ export function About() {
           </SectionShell>
 
           {/* Gallery */}
-          <SectionShell label="/CLASSROOM" watermark="GALLERY" dark={false}>
-              <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.2 }} className="w-full h-full flex items-center justify-center relative">
-                 <motion.div variants={fadeUp} className="w-full h-full relative">
-                    <HoverExpandGallery images={carouselSlides} />
-                 </motion.div>
-              </motion.div>
-          </SectionShell>
+          
 
           {/* 2. Selected Work (Dark) */}
     </PageTransition>
@@ -316,6 +310,14 @@ export function Work() {
                 <button key={i} onClick={() => setWorkIndex(i)} className={`h-2.5 rounded-full transition-all duration-300 ${i === workIndex ? 'bg-[var(--color-brand)] w-8' : 'bg-[var(--card-border)] w-2.5 hover:bg-[var(--foreground-muted)]'}`} aria-label="Go to slide" />
               ))}
             </div>
+          </SectionShell>
+
+<SectionShell id="classroom" label="/CLASSROOM" watermark="GALLERY" dark={false}>
+              <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.2 }} className="w-full h-full flex items-center justify-center relative">
+                 <motion.div variants={fadeUp} className="w-full h-full relative">
+                    <HoverExpandGallery images={carouselSlides} />
+                 </motion.div>
+              </motion.div>
           </SectionShell>
 
           {/* Case Study */}
