@@ -76,6 +76,25 @@ const ScrollIndicator = () => {
   );
 };
 
+
+const GlobalFooter = () => (
+  <div className="w-full max-w-7xl mx-auto px-6 md:px-8 lg:px-12 pb-8 pt-4">
+    <div className="flex flex-col md:flex-row items-center justify-between w-full border-t border-slate-200/20 pt-6 text-slate-500 dark:text-zinc-500 dark:text-zinc-400 z-10 relative">
+      <div className="text-sm font-medium text-center md:text-left">
+        &copy; {new Date().getFullYear()} Gabriel Ryan.<br className="block md:hidden"/> All rights reserved.
+      </div>
+      <div className="flex flex-row gap-6 my-4 md:my-0">
+        <a href="https://www.linkedin.com/in/gabrielryan1999/" target="_blank" rel="noreferrer" aria-label="LinkedIn" className="hover:text-blue-600 transition-colors"><Linkedin className="w-5 h-5" /></a>
+        <a href="https://github.com/GabrielRyan1999" target="_blank" rel="noreferrer" aria-label="GitHub" className="hover:text-slate-900 dark:hover:text-zinc-100 transition-colors"><Github className="w-5 h-5" /></a>
+        <a href="https://www.instagram.com/heyitsgabrielryan/" target="_blank" rel="noreferrer" aria-label="Instagram" className="hover:text-pink-600 transition-colors"><Instagram className="w-5 h-5" /></a>
+      </div>
+      <div className="text-sm text-center md:text-right hidden md:block">
+        Created with 💙 by Ryan
+      </div>
+    </div>
+  </div>
+);
+
 export const PageTransition = ({ children }) => (
   <motion.div
     initial={{ opacity: 0, y: 20 }}
@@ -152,7 +171,7 @@ export function Home() {
               </div>
             </motion.div>
           </SectionShell>
-      <LetsWorkTogether />
+      <GlobalFooter />
 </PageTransition>
   );
 }
@@ -236,7 +255,7 @@ export function About() {
           
 
           {/* 2. Selected Work (Dark) */}
-      <LetsWorkTogether />
+      <GlobalFooter />
     </PageTransition>
   );
 }
@@ -335,7 +354,7 @@ export function Work() {
                    </motion.div>
                 </motion.div>
             </SectionShell>
-      <LetsWorkTogether />
+      <GlobalFooter />
     </PageTransition>
   );
 }
@@ -467,7 +486,7 @@ export function Service() {
           </SectionShell>
 
           {/* 4. Experience (Dark) */}
-      <LetsWorkTogether />
+      <GlobalFooter />
     </PageTransition>
   );
 }
@@ -512,7 +531,7 @@ export function Experience() {
           </SectionShell>
 
           {/* 5. Contact (White) */}
-      <LetsWorkTogether />
+      <GlobalFooter />
     </PageTransition>
   );
 }
