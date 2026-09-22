@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { IntroScreen } from './components/IntroScreen';
 import { HoverExpandGallery } from './components/ui/hover-expand-gallery';
 import { MentorReportingFeatures } from './components/ui/features-2';
 import { Testimonials } from './components/ui/unique-testimonial';
@@ -111,7 +110,6 @@ function App() {
     restDelta: 0.001
   });
 
-  const [hasEntered, setHasEntered] = useState(false);
   const [activeServiceIndex, setActiveServiceIndex] = useState(null);
   const [workIndex, setWorkIndex] = useState(0);
 
@@ -190,9 +188,7 @@ function App() {
         style={{ scaleX }}
       />
       <FloatingDock />
-      <AnimatePresence>
-        {!hasEntered && <IntroScreen key="intro" onEnter={() => setHasEntered(true)} />}
-      </AnimatePresence>
+
 
       <div className="relative" id="about">
         {/* Background Elements (fixed so they stay behind everything) */}
