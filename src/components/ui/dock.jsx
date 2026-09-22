@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Home, Briefcase, Layers, User, Moon, Sun, Star, Mail, Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Link, useLocation } from 'react-router-dom';
 
 export function FloatingDock() {
   const [hovered, setHovered] = useState(null);
