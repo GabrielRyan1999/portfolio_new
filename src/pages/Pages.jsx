@@ -152,6 +152,7 @@ export function Home() {
               </div>
             </motion.div>
           </SectionShell>
+      <LetsWorkTogether />
 </PageTransition>
   );
 }
@@ -235,6 +236,7 @@ export function About() {
           
 
           {/* 2. Selected Work (Dark) */}
+      <LetsWorkTogether />
     </PageTransition>
   );
 }
@@ -320,14 +322,7 @@ export function Work() {
               </motion.div>
           </SectionShell>
 
-          {/* Case Study */}
-          <SectionShell label="/CASE STUDY" watermark="SYSTEM" dark={false}>
-              <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.3 }} className="w-full max-w-7xl mx-auto z-10">
-                 <motion.div variants={fadeUp}>
-                    <MentorReportingFeatures />
-                 </motion.div>
-              </motion.div>
-          </SectionShell>
+
 
           {/* 3. Service (White) */}
 
@@ -340,6 +335,7 @@ export function Work() {
                    </motion.div>
                 </motion.div>
             </SectionShell>
+      <LetsWorkTogether />
     </PageTransition>
   );
 }
@@ -471,6 +467,7 @@ export function Service() {
           </SectionShell>
 
           {/* 4. Experience (Dark) */}
+      <LetsWorkTogether />
     </PageTransition>
   );
 }
@@ -515,6 +512,7 @@ export function Experience() {
           </SectionShell>
 
           {/* 5. Contact (White) */}
+      <LetsWorkTogether />
     </PageTransition>
   );
 }
