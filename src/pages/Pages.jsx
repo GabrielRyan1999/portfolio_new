@@ -53,8 +53,6 @@ function RotatingText({ words }) {
 }
 
 
-import { useTransform } from 'framer-motion';
-
 const ScrollIndicator = () => {
   const { scrollY } = useScroll();
   const opacity = useTransform(scrollY, [0, 100], [1, 0]);
