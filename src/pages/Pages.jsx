@@ -185,7 +185,7 @@ export function About() {
               </div>
               <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.2 }} className="w-full max-w-6xl mx-auto flex flex-col lg:flex-row items-stretch gap-8 lg:gap-16 px-4 relative z-10">
                 
-                <ScrollIndicator />
+                
           {/* Left: Personal Story */}
                 <div className="w-full lg:w-1/2 flex flex-col justify-center space-y-6">
                   <div>
