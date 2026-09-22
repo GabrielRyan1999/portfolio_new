@@ -135,8 +135,7 @@ export function Home() {
 export function About() {
   return (
     <PageTransition>
-      <div className="pt-20">
-        <SectionShell id="about-me" label="/ABOUT ME" watermark="ABOUT" dark={true}>
+              <SectionShell id="about-me" label="/ABOUT ME" watermark="ABOUT" dark={true}>
               {/* Background Avatar Watermarks */}
               <div className="absolute inset-0 pointer-events-none z-[0] overflow-hidden">
                 <img src="/favicon.jpg" alt="" className="absolute top-10 md:top-20 -left-4 md:left-0 w-[250px] md:w-[400px] lg:w-[500px] blur-[2px] -rotate-12 rounded-full opacity-[0.05] dark:opacity-[0.03] grayscale" />
@@ -217,17 +216,17 @@ export function About() {
           </SectionShell>
 
           {/* 2. Selected Work (Dark) */}
-      </div>
     </PageTransition>
   );
 }
 
 export function Work() {
   const [workIndex, setWorkIndex] = useState(0);
+  const nextWork = () => setWorkIndex((p) => (p + 1) % workProjects.length);
+  const prevWork = () => setWorkIndex((p) => (p - 1 + workProjects.length) % workProjects.length);
   return (
     <PageTransition>
-      <div className="pt-20">
-        <SectionShell id="work" label="/SELECTED WORK" watermark="WORK" dark={true}>
+              <SectionShell id="work" label="/SELECTED WORK" watermark="WORK" dark={true}>
             <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.2 }} className="w-full max-w-5xl mx-auto px-0 md:px-6 relative flex items-center justify-center min-h-[500px]">
               
               {/* Left Arrow */}
@@ -304,7 +303,6 @@ export function Work() {
           </SectionShell>
 
           {/* 3. Service (White) */}
-      </div>
     </PageTransition>
   );
 }
@@ -313,8 +311,7 @@ export function Service() {
   const [activeServiceIndex, setActiveServiceIndex] = useState(null);
   return (
     <PageTransition>
-      <div className="pt-20">
-        <SectionShell id="service" label="/SERVICE" watermark="SERVICE" dark={true}>
+              <SectionShell id="service" label="/SERVICE" watermark="SERVICE" dark={true}>
               <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.2 }} className="w-full flex flex-col justify-center z-10 divide-y divide-gray-200">
                 {[
                   { title: "CUSTOM WEB PLATFORMS", desc: "Building fast, scalable, and robust web applications, internal dashboards, and custom platforms tailored to your business needs.", images: ["https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=400&q=80", "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400&q=80", "https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=400&q=80"] },
@@ -437,7 +434,6 @@ export function Service() {
           </SectionShell>
 
           {/* 4. Experience (Dark) */}
-      </div>
     </PageTransition>
   );
 }
@@ -445,8 +441,7 @@ export function Service() {
 export function Experience() {
   return (
     <PageTransition>
-      <div className="pt-20">
-        <SectionShell id="experience" label="/EXPERIENCE" watermark="EXPERIENCE" dark={false} footer={
+              <SectionShell id="experience" label="/EXPERIENCE" watermark="EXPERIENCE" dark={false} footer={
             <div className="w-full flex justify-end">
                 <p className="text-blue-600 font-medium"></p>
             </div>
@@ -482,7 +477,6 @@ export function Experience() {
           </SectionShell>
 
           {/* 5. Contact (White) */}
-      </div>
     </PageTransition>
   );
 }
@@ -490,11 +484,9 @@ export function Experience() {
 export function Contact() {
   return (
     <PageTransition>
-      <div className="pt-20">
-        <div id="contact">
+              <div id="contact">
             <LetsWorkTogether />
           </div>
-      </div>
     </PageTransition>
   );
 }
