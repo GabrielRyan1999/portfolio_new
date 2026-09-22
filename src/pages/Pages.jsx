@@ -330,6 +330,16 @@ export function Work() {
           </SectionShell>
 
           {/* 3. Service (White) */}
+
+
+            {/* Case Study */}
+            <SectionShell id="case-study" label="/CASE STUDY" watermark="SYSTEM" dark={false}>
+                <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.3 }} className="w-full max-w-7xl mx-auto z-10">
+                   <motion.div variants={fadeUp}>
+                      <MentorReportingFeatures />
+                   </motion.div>
+                </motion.div>
+            </SectionShell>
     </PageTransition>
   );
 }

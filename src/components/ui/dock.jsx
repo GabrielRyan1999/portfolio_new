@@ -43,7 +43,8 @@ export function FloatingDock() {
       icon: Briefcase,
       subItems: [
         { id: 'work', label: 'Selected Work' },
-        { id: 'classroom', label: 'Classroom' }
+        { id: 'classroom', label: 'Classroom' },
+        { id: 'case-study', label: 'Case Study' }
       ]
     },
     { path: '/service', label: 'Service', icon: Layers },
