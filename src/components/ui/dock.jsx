@@ -132,9 +132,16 @@ export function FloatingDock() {
                             ))}
                           </div>
                         ) : (
-                          <div className="px-3 py-1.5 text-xs font-medium whitespace-nowrap text-center">
-                            {item.label}
-                          </div>
+                          <Link 
+                              to={item.path}
+                              onClick={() => {
+                                setHovered(null);
+                                if (isScrolled) setIsExpanded(false);
+                              }}
+                              className="px-4 py-2 text-sm font-medium whitespace-nowrap text-center hover:bg-white/10 hover:text-blue-400 transition-colors cursor-pointer block"
+                            >
+                              {item.label}
+                            </Link>
                         )}
                         </div>
                       </motion.div>
@@ -178,10 +185,18 @@ export function FloatingDock() {
                     initial={{ opacity: 0, y: -10, scale: 0.8 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: -10, scale: 0.8 }}
-                    className="absolute bottom-full mb-4 md:mb-0 md:bottom-auto md:top-full md:mt-4 left-1/2 -translate-x-1/2 px-3 py-1.5 bg-[#1a1a1a] border border-white/10 text-white text-xs font-medium rounded-lg whitespace-nowrap shadow-xl z-50 pointer-events-none"
-                  >
-                    {isDark ? 'Light Mode' : 'Dark Mode'}
-                  </motion.div>
+                    className="absolute bottom-full mb-4 md:mb-0 md:bottom-auto md:top-full md:mt-4 left-1/2 -translate-x-1/2 z-50 py-2 ">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setIsDark(!isDark);
+                          setHovered(null);
+                        }}
+                        className="bg-[#1a1a1a] border border-white/10 text-white rounded-xl shadow-2xl overflow-hidden px-4 py-2 text-sm font-medium whitespace-nowrap text-center hover:bg-white/10 hover:text-blue-400 transition-colors cursor-pointer block"
+                      >
+                        {isDark ? 'Light Mode' : 'Dark Mode'}
+                      </button>
+                    </motion.div>
                 )}
               </AnimatePresence>
               <button
