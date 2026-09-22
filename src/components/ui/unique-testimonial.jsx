@@ -71,13 +71,13 @@ export function Testimonials() {
             return (
               <motion.div
                 key={card.id}
-                layout
                 initial={{ opacity: 0, scale: 0.8, y: 50 }}
                 animate={{
                   y: index * -25, // Stack cards upwards
                   scale: 1 - index * 0.06, // Cards in back get smaller
                   zIndex: cards.length - index,
                   opacity: 1 - index * 0.25, // Cards in back fade out
+                  x: 0, // ensure card snaps back to center
                 }}
                 exit={{ opacity: 0, scale: 0.8, y: 50 }}
                 transition={{
@@ -88,14 +88,12 @@ export function Testimonials() {
                 style={{
                   transformOrigin: "top center",
                 }}
-                drag="x"
+                drag={index === 0 ? "x" : false}
                 dragConstraints={{ left: 0, right: 0 }}
                 onDragEnd={(e, { offset, velocity }) => {
-                  const swipe = offset.x;
-                  if (swipe < -50) {
-                    handleNext(); // swipe left goes next
-                  } else if (swipe > 50) {
-                    handlePrev(); // swipe right goes prev
+                  const swipe = Math.abs(offset.x);
+                  if (swipe > 50) {
+                    handleNext(); // swipe left or right discards the front card
                   }
                 }}
               >
