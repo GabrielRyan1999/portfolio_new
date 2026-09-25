@@ -127,7 +127,7 @@ export function Home() {
                 
 
                 <motion.h1 variants={fadeUp} className="relative text-center text-[11vw] sm:text-6xl md:text-[9rem] font-black leading-none flex flex-row gap-2 md:gap-8 items-center justify-center z-10 w-full whitespace-nowrap">
-                  <span className="text-transparent [-webkit-text-stroke:2px_#09090b] md:[-webkit-text-stroke:3px_#09090b] dark:[-webkit-text-stroke:2px_#fafafa] dark:md:[-webkit-text-stroke:3px_#fafafa]">GABRIEL</span>
+                  <span className="text-transparent tracking-widest md:tracking-normal [-webkit-text-stroke:1px_#09090b] md:[-webkit-text-stroke:3px_#09090b] dark:[-webkit-text-stroke:1px_#fafafa] dark:md:[-webkit-text-stroke:3px_#fafafa]">GABRIEL</span>
                   <span className="text-zinc-900 dark:text-zinc-100">RYAN</span>
                 </motion.h1>
 
@@ -137,7 +137,7 @@ export function Home() {
                 </motion.div>
                 
                 {/* Footer text below the photo */}
-                <motion.div variants={fadeUp} className="flex flex-col md:flex-row items-center md:items-end justify-between w-full max-w-5xl mx-auto mt-12 md:mt-20 gap-10 md:gap-8 z-10 px-4">
+                <motion.div variants={fadeUp} className="flex flex-col md:flex-row items-center md:items-end justify-between w-full max-w-5xl mx-auto mt-12 md:mt-20 pb-32 md:pb-0 gap-10 md:gap-8 z-10 px-4">
                   
                   <div className="space-y-5 text-center md:text-left flex-1">
                     <h2 className="text-3xl md:text-5xl font-black text-zinc-900 dark:text-zinc-100 tracking-tight leading-tight">
