@@ -106,17 +106,16 @@ export const PageTransition = ({ children }) => (
 );
 
 export function Home() {
-  const [index, setIndex] = useState(0);
   const words = ["INNOVATE", "CREATE", "INSPIRE"];
   
   return (
     <PageTransition>
 <SectionShell header={
 <nav className="w-full max-w-7xl mx-auto px-6 md:px-8 lg:px-12 py-6 flex items-center justify-between shrink-0 relative z-20">
-            <h1 className="text-xl font-black tracking-tighter cursor-pointer text-slate-900 dark:text-zinc-100 transition-colors">
+            <h1 className="text-xl font-black tracking-tighter cursor-pointer text-zinc-900 dark:text-zinc-100 transition-colors">
               RYAN<span className="text-blue-600">.</span>
             </h1>
-            <a href="#contact" className="bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 px-6 py-2.5 rounded-full text-sm font-bold hover:bg-blue-600 dark:hover:bg-zinc-300 transition-colors shadow-lg">
+            <a href="#contact" className="bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 px-6 py-3 rounded-full text-sm font-bold hover:bg-blue-600 dark:hover:bg-zinc-300 transition-colors shadow-lg">
               Let's Talk
             </a>
           </nav>
@@ -129,38 +128,38 @@ export function Home() {
 
                 <motion.h1 variants={fadeUp} className="relative text-center text-6xl md:text-[9rem] font-black leading-none flex gap-4 md:gap-8 items-center justify-center z-10">
                   <span className="text-transparent [-webkit-text-stroke:2px_#09090b] md:[-webkit-text-stroke:3px_#09090b] dark:[-webkit-text-stroke:2px_#fafafa] dark:md:[-webkit-text-stroke:3px_#fafafa]">GABRIEL</span>
-                  <span className="text-slate-900 dark:text-zinc-100">RYAN</span>
+                  <span className="text-zinc-900 dark:text-zinc-100">RYAN</span>
                 </motion.h1>
 
                 {/* Overlapping Photo with Negative Margin */}
-                <motion.div variants={fadeUp} className="mx-auto w-[280px] md:w-[350px] aspect-[3/4] -mt-8 md:-mt-16 rounded-t-full bg-slate-200 shadow-2xl shadow-slate-900/20 overflow-hidden relative z-0 ring-1 ring-slate-900/5 transition-transform hover:-translate-y-2 duration-500">
-                  <img src="/profile_new.jpg" alt="Gabriel Ryan" className="w-full h-full object-cover object-center grayscale hover:grayscale-0 transition-all duration-500" />
+                <motion.div variants={fadeUp} className="mx-auto w-[280px] md:w-[350px] aspect-[3/4] -mt-8 md:-mt-16 rounded-t-full bg-zinc-200 shadow-2xl shadow-zinc-900/20 overflow-hidden relative z-0 ring-1 ring-zinc-900/5 transition-transform hover:-translate-y-2 duration-500">
+                  <img src="/profile_new.jpg" fetchpriority="high" alt="Gabriel Ryan" className="w-full h-full object-cover object-center grayscale hover:grayscale-0 transition-all duration-500" />
                 </motion.div>
                 
                 {/* Footer text below the photo */}
                 <motion.div variants={fadeUp} className="flex flex-col md:flex-row items-center md:items-end justify-between w-full max-w-5xl mx-auto mt-12 md:mt-20 gap-10 md:gap-8 z-10 px-4">
                   
                   <div className="space-y-5 text-center md:text-left flex-1">
-                    <h2 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-zinc-100 tracking-tight leading-tight">
+                    <h2 className="text-3xl md:text-5xl font-black text-zinc-900 dark:text-zinc-100 tracking-tight leading-tight">
                       Educator & <br className="hidden md:block" />
                       <RotatingText words={["Developer", "Designer", "Creator", "Problem Solver"]} />
                     </h2>
-                    <p className="text-base md:text-lg text-slate-500 dark:text-zinc-400 max-w-sm mx-auto md:mx-0 leading-relaxed font-medium">
+                    <p className="text-base md:text-lg text-zinc-500 dark:text-zinc-400 max-w-sm mx-auto md:mx-0 leading-relaxed font-medium">
                       Shaping digital learning through engineered platforms and teaching that are clear, engaging, and impactful.
                     </p>
                   </div>
                   
                   <div className="flex flex-row gap-4 md:gap-6 text-center items-center justify-center md:justify-end pb-2">
-                    <a href="#" className="group flex items-center gap-3 text-slate-500 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-100 font-bold transition-all duration-300">
-                      <span className="w-10 h-10 rounded-full border-2 border-slate-200 group-hover:border-blue-600 group-hover:bg-blue-600 group-hover:text-white flex items-center justify-center text-xs transition-all duration-300 shadow-sm"><Linkedin className="w-4 h-4" /></span> 
+                    <a href="https://www.linkedin.com/in/gabrielryan1999/" target="_blank" rel="noreferrer" aria-label="LinkedIn" className="group flex items-center gap-3 text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 font-bold transition-all duration-300">
+                      <span className="w-11 h-11 rounded-full border-2 border-zinc-200 group-hover:border-blue-600 group-hover:bg-blue-600 group-hover:text-white flex items-center justify-center text-xs transition-all duration-300 shadow-sm"><Linkedin className="w-4 h-4" /></span> 
                       <span className="hidden lg:block text-sm tracking-wide">LinkedIn</span>
                     </a>
-                    <a href="#" className="group flex items-center gap-3 text-slate-500 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-100 font-bold transition-all duration-300">
-                      <span className="w-10 h-10 rounded-full border-2 border-slate-200 group-hover:border-slate-900 group-hover:bg-slate-900 group-hover:text-white flex items-center justify-center text-xs transition-all duration-300 shadow-sm"><Github className="w-4 h-4" /></span> 
+                    <a href="https://github.com/GabrielRyan1999" target="_blank" rel="noreferrer" aria-label="GitHub" className="group flex items-center gap-3 text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 font-bold transition-all duration-300">
+                      <span className="w-11 h-11 rounded-full border-2 border-zinc-200 group-hover:border-zinc-900 group-hover:bg-zinc-900 group-hover:text-white flex items-center justify-center text-xs transition-all duration-300 shadow-sm"><Github className="w-4 h-4" /></span> 
                       <span className="hidden lg:block text-sm tracking-wide">GitHub</span>
                     </a>
-                    <a href="#" className="group flex items-center gap-3 text-slate-500 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-100 font-bold transition-all duration-300">
-                      <span className="w-10 h-10 rounded-full border-2 border-slate-200 group-hover:border-pink-600 group-hover:bg-pink-600 group-hover:text-white flex items-center justify-center text-xs transition-all duration-300 shadow-sm"><Instagram className="w-4 h-4" /></span> 
+                    <a href="https://www.instagram.com/heyitsgabrielryan/" target="_blank" rel="noreferrer" aria-label="Instagram" className="group flex items-center gap-3 text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 font-bold transition-all duration-300">
+                      <span className="w-11 h-11 rounded-full border-2 border-zinc-200 group-hover:border-pink-600 group-hover:bg-pink-600 group-hover:text-white flex items-center justify-center text-xs transition-all duration-300 shadow-sm"><Instagram className="w-4 h-4" /></span> 
                       <span className="hidden lg:block text-sm tracking-wide">Instagram</span>
                     </a>
                   </div>
