@@ -112,9 +112,7 @@ export function FloatingDock() {
                         <div className="bg-[#1a1a1a] border border-white/10 text-white rounded-xl shadow-2xl overflow-hidden flex flex-col min-w-[140px]">
                         {item.subItems ? (
                           <div className="flex flex-col py-1">
-                            <div className="px-3 py-2 text-[10px] uppercase tracking-wider text-zinc-400 font-bold border-b border-white/10">
-                              {item.label}
-                            </div>
+                            <button onClick={(e) => { e.preventDefault(); setHovered(null); if (isScrolled) setIsExpanded(false); navigate(item.path); }} className="w-full text-left px-3 py-2 text-[10px] uppercase tracking-wider text-zinc-400 font-bold border-b border-white/10 hover:text-white hover:bg-white/5 transition-colors cursor-pointer flex items-center justify-between group">{item.label} <ChevronRight className="w-3 h-3 opacity-50 group-hover:opacity-100 transition-opacity" /></button>
                             {item.subItems.map(sub => (
                               <button
                                 key={sub.id}
@@ -154,13 +152,18 @@ export function FloatingDock() {
                     onFocus={() => setHovered(item.path)}
                     onBlur={() => setHovered(null)}
                     onClick={(e) => {
-                        if (item.subItems && hovered !== item.path) {
-                            e.preventDefault();
-                            setHovered(item.path);
-                            return;
-                        }
-                        if (isScrolled) setIsExpanded(false);
-                    }}
+                          if (item.subItems && ('ontouchstart' in window || navigator.maxTouchPoints > 0)) {
+                              e.preventDefault();
+                              setHovered(item.path);
+                              return;
+                          }
+                          if (item.subItems && hovered !== item.path) {
+                              e.preventDefault();
+                              setHovered(item.path);
+                              return;
+                          }
+                          if (isScrolled) setIsExpanded(false);
+                      }}
                     className={`relative flex items-center justify-center w-11 h-11 md:w-12 md:h-12 rounded-full ${isScrolled ? 'hover:bg-white/10' : 'bg-[#111111] border border-white/5'} transition-all duration-300 ${isActive ? 'text-blue-500' : 'text-zinc-300'}`}
                   >
                     {!isScrolled && isHovered && (
