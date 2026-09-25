@@ -94,6 +94,7 @@ export function LetsWorkTogether() {
                    <input 
                      type="email" 
                      name="email" 
+                     aria-label="Email address"
                      placeholder="Your email address"
                      required 
                      className="w-full bg-slate-50 dark:bg-zinc-800/50 border border-slate-200 text-slate-900 dark:text-zinc-100 text-sm rounded-xl px-4 py-3 outline-none focus:border-slate-400 focus:bg-white dark:focus:bg-zinc-900 transition-all"
@@ -104,6 +105,7 @@ export function LetsWorkTogether() {
                  <div>
                    <textarea 
                      name="message" 
+                     aria-label="Message content"
                      placeholder="How can we work together?"
                      required 
                      rows="3"
@@ -138,10 +140,15 @@ export function LetsWorkTogether() {
 
         
 
-        <div
-          className="group relative cursor-pointer"
+        <button
+          type="button"
+          aria-label="Open contact form"
+          aria-expanded={isClicked}
+          className="group relative cursor-pointer appearance-none bg-transparent border-none p-0 outline-none w-full flex justify-center"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
+          onFocus={() => setIsHovered(true)}
+          onBlur={() => setIsHovered(false)}
           onClick={handleClick}
           style={{
             pointerEvents: isClicked ? "none" : "auto",
@@ -222,7 +229,7 @@ export function LetsWorkTogether() {
               }}
             />
           </div>
-        </div>
+        </button>
 
         <div
           className="mt-8 flex flex-col items-center gap-4 text-center transition-all duration-500 delay-100"

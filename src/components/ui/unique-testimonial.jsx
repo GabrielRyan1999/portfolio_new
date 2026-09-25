@@ -118,12 +118,14 @@ export function Testimonials() {
       <div className="flex items-center gap-4 mt-8 md:mt-12 z-20">
         <button
           onClick={handlePrev}
+          aria-label="Previous Testimonial"
           className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/5 transition-all active:scale-95"
         >
           <ChevronLeft className="w-6 h-6" />
         </button>
         <button
           onClick={handleNext}
+          aria-label="Next Testimonial"
           className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/5 transition-all active:scale-95"
         >
           <ChevronRight className="w-6 h-6" />

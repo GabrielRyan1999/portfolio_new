@@ -83,9 +83,9 @@ const GlobalFooter = () => (
       &copy; {new Date().getFullYear()} Gabriel Ryan.<br className="block md:hidden"/> All rights reserved.
     </div>
     <div className="flex flex-row gap-6 my-4 md:my-0">
-      <a href="https://www.linkedin.com/in/gabrielryan1999/" target="_blank" rel="noreferrer" aria-label="LinkedIn" className="hover:text-[var(--color-brand)] transition-colors"><Linkedin className="w-5 h-5" /></a>
-      <a href="https://github.com/GabrielRyan1999" target="_blank" rel="noreferrer" aria-label="GitHub" className="hover:text-[var(--foreground)] transition-colors"><Github className="w-5 h-5" /></a>
-      <a href="https://www.instagram.com/heyitsgabrielryan/" target="_blank" rel="noreferrer" aria-label="Instagram" className="hover:text-pink-600 transition-colors"><Instagram className="w-5 h-5" /></a>
+      <a href="https://www.linkedin.com/in/gabrielryan1999/" target="_blank" rel="noreferrer" aria-label="LinkedIn" className="p-2 -m-2 hover:text-[var(--color-brand)] transition-colors"><Linkedin className="w-5 h-5" /></a>
+      <a href="https://github.com/GabrielRyan1999" target="_blank" rel="noreferrer" aria-label="GitHub" className="p-2 -m-2 hover:text-[var(--foreground)] transition-colors"><Github className="w-5 h-5" /></a>
+      <a href="https://www.instagram.com/heyitsgabrielryan/" target="_blank" rel="noreferrer" aria-label="Instagram" className="p-2 -m-2 hover:text-pink-600 transition-colors"><Instagram className="w-5 h-5" /></a>
     </div>
     <div className="text-sm text-center md:text-right hidden md:block">
       Created with 💙 by Ryan
@@ -178,9 +178,9 @@ export function About() {
     <PageTransition>
               <SectionShell id="about-me" label="/ABOUT ME" watermark="ABOUT" dark={true} footer={<GlobalFooter />}>
               {/* Background Avatar Watermarks */}
-              <div className="absolute inset-0 pointer-events-none z-[0] overflow-hidden">
-                <img src="/favicon.jpg" alt="" className="absolute top-10 md:top-20 -left-4 md:left-0 w-[250px] md:w-[400px] lg:w-[500px] blur-[2px] -rotate-12 rounded-full opacity-[0.05] dark:opacity-[0.03] grayscale" />
-                <img src="/favicon.jpg" alt="" className="absolute bottom-10 md:bottom-32 -right-4 md:right-0 w-[280px] md:w-[450px] lg:w-[600px] blur-[2px] rotate-12 rounded-full opacity-[0.05] dark:opacity-[0.03] grayscale" />
+              <div className="absolute inset-0 pointer-events-none z-[0] overflow-hidden" aria-hidden="true">
+                <img src="/favicon.jpg" alt="" loading="lazy" className="absolute top-10 md:top-20 -left-4 md:left-0 w-[250px] md:w-[400px] lg:w-[500px] blur-[2px] -rotate-12 rounded-full opacity-[0.05] dark:opacity-[0.03] grayscale" />
+                <img src="/favicon.jpg" alt="" loading="lazy" className="absolute bottom-10 md:bottom-32 -right-4 md:right-0 w-[280px] md:w-[450px] lg:w-[600px] blur-[2px] rotate-12 rounded-full opacity-[0.05] dark:opacity-[0.03] grayscale" />
               </div>
               <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.2 }} className="w-full max-w-6xl mx-auto flex flex-col lg:flex-row items-stretch gap-8 lg:gap-16 px-4 relative z-10">
                 
@@ -386,12 +386,13 @@ export function Service() {
                       <motion.button
                           layout
                           onClick={() => setActiveServiceIndex(isOpen ? null : index)}
+                          aria-expanded={isOpen}
                           className={`group w-full flex items-center justify-between py-6 md:py-8 px-4 md:px-8 transition-colors ${
                             isOpen ? "text-slate-900 dark:text-zinc-100" : "text-slate-400 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-zinc-800/50"
                           }`}
                         >
                           <motion.div layout="position" className="flex items-center gap-4 md:gap-8">
-                            <span className="text-sm md:text-xl text-slate-400 dark:text-zinc-500 font-mono font-bold">
+                            <span className="text-sm md:text-xl text-slate-400 dark:text-zinc-500 font-mono font-bold" aria-hidden="true">
                               0{index + 1}
                             </span>
                             <span className="text-2xl md:text-4xl lg:text-5xl font-black text-left group-hover:text-blue-600 transition-colors">
@@ -402,6 +403,7 @@ export function Service() {
                             animate={{ rotate: isOpen ? 45 : 0 }}
                             transition={{ duration: 0.3, ease: "easeInOut" }}
                             className="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full bg-slate-100 dark:bg-zinc-800 text-slate-600 dark:text-zinc-300 group-hover:bg-blue-600 group-hover:text-white transition-colors shrink-0"
+                            aria-hidden="true"
                           >
                             <Plus className="w-6 h-6 md:w-8 md:h-8" />
                           </motion.span>
@@ -418,14 +420,14 @@ export function Service() {
                             className="text-slate-900 dark:text-zinc-100 px-4 md:px-8"
                           >
                             <div className="pb-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-                              <p className="text-slate-600 dark:text-zinc-400 dark:text-zinc-300 max-w-md">{service.desc}</p>
+                              <p className="text-slate-600 dark:text-zinc-300 max-w-md">{service.desc}</p>
                               {service.images.length > 0 && (
-                                <div className="relative flex items-center justify-center shrink-0 w-40 h-40 md:w-56 md:h-40 ml-4 hidden sm:flex">
+                                <div className="relative flex items-center justify-center shrink-0 w-40 h-40 md:w-56 md:h-40 ml-4 hidden sm:flex" aria-hidden="true">
                                   {index === 0 && (
                                     /* Layout 1: Fan spread */
                                     service.images.map((src, imgIndex) => (
                                       <motion.img
-                                        key={src} src={src} alt="Web Platform"
+                                        key={src} src={src} alt="" loading="lazy"
                                         initial={{ opacity: 0, x: 20 }}
                                         animate={{ opacity: 1, x: (imgIndex - 1) * 20, rotate: (imgIndex - 1) * 10 }}
                                         transition={{ delay: 0.15 + imgIndex * 0.1, duration: 0.5, type: "spring" }}
@@ -437,7 +439,7 @@ export function Service() {
                                     /* Layout 2: Floating staggered grid */
                                     service.images.map((src, imgIndex) => (
                                       <motion.img
-                                        key={src} src={src} alt="EdTech Solution"
+                                        key={src} src={src} alt="" loading="lazy"
                                         initial={{ opacity: 0, scale: 0.5 }}
                                         animate={{ opacity: 1, scale: 1, x: imgIndex === 0 ? -30 : imgIndex === 1 ? 30 : 0, y: imgIndex === 0 ? -20 : imgIndex === 1 ? -20 : 20 }}
                                         transition={{ delay: 0.15 + imgIndex * 0.15, duration: 0.5, type: "spring" }}
@@ -449,7 +451,7 @@ export function Service() {
                                     /* Layout 3: Diagonal stepped */
                                     service.images.map((src, imgIndex) => (
                                       <motion.img
-                                        key={src} src={src} alt="Curriculum Dev"
+                                        key={src} src={src} alt="" loading="lazy"
                                         initial={{ opacity: 0, y: 50 }}
                                         animate={{ opacity: 1, y: (imgIndex - 1) * -15, x: (imgIndex - 1) * 15 }}
                                         transition={{ delay: 0.2 + imgIndex * 0.1, duration: 0.5 }}
@@ -462,7 +464,7 @@ export function Service() {
                                     /* Layout 4: Central large with two orbiting small circles */
                                     service.images.map((src, imgIndex) => (
                                       <motion.img
-                                        key={src} src={src} alt="Mentoring"
+                                        key={src} src={src} alt="" loading="lazy"
                                         initial={{ opacity: 0, rotate: -45, scale: 0.5 }}
                                         animate={{ opacity: 1, rotate: 0, scale: 1, 
                                           x: imgIndex === 0 ? 0 : imgIndex === 1 ? -40 : 40,
@@ -505,14 +507,14 @@ export function Experience() {
                   <motion.div key={i} variants={fadeUp} className={`flex flex-col md:flex-row justify-between gap-4 p-6 rounded-3xl transition-colors ${job.isActive ? 'bg-blue-50 border border-blue-200 shadow-sm' : 'hover:bg-slate-50 dark:hover:bg-zinc-800 dark:bg-zinc-800/50'}`}>
                     <div className="flex-1">
                       <h3 className={`text-xl md:text-2xl font-bold mb-2 ${job.isActive ? 'text-blue-900 dark:text-blue-300' : 'text-slate-900 dark:text-zinc-100'}`}>{job.company}</h3>
-                      <p className={`text-base md:text-lg ${job.isActive ? 'text-blue-600' : 'text-slate-600 dark:text-zinc-400 dark:text-zinc-300'}`}>{job.title}</p>
+                      <p className={`text-base md:text-lg ${job.isActive ? 'text-blue-600' : 'text-slate-600 dark:text-zinc-300'}`}>{job.title}</p>
                     </div>
                     <div className="md:text-right flex-1 md:flex-none">
                       <div className="inline-flex items-center gap-2 mb-3">
                         <span className={`w-2 h-2 rounded-full ${job.isActive ? 'bg-blue-600 animate-pulse' : 'bg-slate-300'}`}></span>
                         <span className={`font-mono text-sm font-semibold ${job.isActive ? 'text-blue-600' : 'text-slate-500 dark:text-zinc-400'}`}>{job.date}</span>
                       </div>
-                      <p className={`text-sm max-w-sm ml-0 md:ml-auto leading-relaxed ${job.isActive ? 'text-slate-600 dark:text-zinc-400 dark:text-zinc-300' : 'text-slate-500 dark:text-zinc-400'}`}>
+                      <p className={`text-sm max-w-sm ml-0 md:ml-auto leading-relaxed ${job.isActive ? 'text-slate-600 dark:text-zinc-300' : 'text-slate-500 dark:text-zinc-400'}`}>
                         {job.desc}
                       </p>
                     </div>

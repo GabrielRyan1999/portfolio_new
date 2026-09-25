@@ -31,7 +31,7 @@ const caseStudySteps = [
 
 const CardDecorator = ({ image, icon }) => (
     <div className="relative mx-auto w-full h-[240px] md:h-[320px] lg:h-[360px] shrink-0 rounded-2xl overflow-hidden mb-6 group-hover:scale-[1.02] transition-transform duration-500">
-        <img src={image} alt="Placeholder" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
+        <img src={image} alt="" loading="lazy" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
         <div className="absolute inset-0 bg-slate-900/10 mix-blend-multiply" />
         <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.2)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.2)_1px,transparent_1px)] bg-[size:24px_24px] opacity-30"/>
         
@@ -46,18 +46,18 @@ export function MentorReportingFeatures() {
     return (
         <div className="w-full max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch text-center md:text-left z-10">
             {caseStudySteps.map((step) => (
-                <Card key={step.title} className="group border border-slate-100 bg-slate-50 dark:bg-zinc-800/50/50 hover:bg-slate-50 dark:bg-zinc-800/50 transition-colors shadow-xl shadow-slate-200/50 h-full flex flex-col overflow-hidden rounded-[2rem]">
+                <Card key={step.title} className="group border border-slate-100 bg-white dark:bg-zinc-900/50 hover:bg-slate-50 dark:hover:bg-zinc-800/50 transition-colors shadow-xl shadow-slate-200/50 h-full flex flex-col overflow-hidden rounded-[2rem]">
                     <CardHeader className="pb-5 md:pb-6 shrink-0 flex flex-col">
                         <CardDecorator image={step.image} icon={step.icon} />
                         <div className="flex items-center gap-3 justify-start shrink-0">
-                            <span className="w-6 h-6 rounded-full bg-slate-200 text-slate-600 dark:text-zinc-400 dark:text-zinc-300 text-xs font-bold flex items-center justify-center shrink-0">
+                            <span className="w-6 h-6 rounded-full bg-slate-200 text-slate-600 dark:text-zinc-400 text-xs font-bold flex items-center justify-center shrink-0">
                                 {step.number}
                             </span>
                             <h3 className="text-xl font-bold text-slate-900 dark:text-zinc-100">{step.title}</h3>
                         </div>
                     </CardHeader>
                     <CardContent className="flex-1">
-                        <p className="text-sm text-slate-600 dark:text-zinc-400 dark:text-zinc-300 leading-relaxed text-center md:text-left">
+                        <p className="text-sm text-slate-600 dark:text-zinc-300 leading-relaxed text-center md:text-left">
                             {step.description}
                         </p>
                     </CardContent>
