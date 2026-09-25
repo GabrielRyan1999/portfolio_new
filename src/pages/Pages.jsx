@@ -127,7 +127,7 @@ export function Home() {
                 
 
                 <motion.h1 variants={fadeUp} className="relative text-center text-[9.5vw] sm:text-6xl md:text-[9rem] font-black leading-none flex flex-row gap-2 md:gap-8 items-center justify-center z-10 w-full whitespace-nowrap">
-                  <span className="shrink-0 text-transparent tracking-widest md:tracking-normal [-webkit-text-stroke:1px_#09090b] md:[-webkit-text-stroke:3px_#09090b] dark:[-webkit-text-stroke:1px_#fafafa] dark:md:[-webkit-text-stroke:3px_#fafafa]">GABRIEL</span>
+                  <span className="shrink-0 tracking-normal text-white dark:text-[#111111] md:text-transparent [text-shadow:-1px_-1px_0_#09090b,1px_-1px_0_#09090b,-1px_1px_0_#09090b,1px_1px_0_#09090b] dark:[text-shadow:-1px_-1px_0_#fafafa,1px_-1px_0_#fafafa,-1px_1px_0_#fafafa,1px_1px_0_#fafafa] md:[text-shadow:none] dark:md:[text-shadow:none] md:[-webkit-text-stroke:3px_#09090b] dark:md:[-webkit-text-stroke:3px_#fafafa]">GABRIEL</span>
                   <span className="shrink-0 text-zinc-900 dark:text-zinc-100">RYAN</span>
                 </motion.h1>
 
