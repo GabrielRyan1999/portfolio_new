@@ -267,7 +267,7 @@ export function Work() {
             <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.2 }} className="w-full max-w-5xl mx-auto px-0 md:px-6 relative flex items-center justify-center min-h-[500px]">
               
               {/* Left Arrow */}
-              <button onClick={prevWork} className="absolute left-2 md:-left-8 lg:-left-16 z-20 p-2 md:p-3 rounded-full bg-[var(--background)]/80 backdrop-blur border border-[var(--card-border)] hover:bg-[var(--card)] text-[var(--foreground)] transition-all shadow-lg hover:scale-110">
+              <button onClick={prevWork} aria-label="Previous Project" className="absolute left-2 md:-left-8 lg:-left-16 z-20 p-3 md:p-4 rounded-full bg-[var(--background)]/80 backdrop-blur border border-[var(--card-border)] hover:bg-[var(--card)] text-[var(--foreground)] transition-all shadow-lg hover:scale-110">
                 <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
               </button>
               
@@ -279,13 +279,14 @@ export function Work() {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ duration: 0.3 }}
-                  className="w-full bg-[var(--background-secondary)] border border-[var(--card-border)] rounded-3xl md:rounded-[2.5rem] overflow-hidden flex flex-col md:flex-row shadow-2xl group mx-4 md:mx-0 h-[550px] md:h-[480px] lg:h-[500px]"
+                  className="w-full bg-[var(--background-secondary)] border border-[var(--card-border)] rounded-3xl md:rounded-[2.5rem] overflow-hidden flex flex-col md:flex-row items-stretch shadow-2xl group mx-4 md:mx-0 min-h-[550px] md:min-h-[480px] lg:min-h-[500px]"
                 >
                   {/* Image Half */}
-                  <div className="w-full md:w-5/12 lg:w-1/2 h-[220px] md:h-full relative overflow-hidden bg-zinc-950 shrink-0">
+                  <div className="w-full md:w-5/12 lg:w-1/2 min-h-[220px] relative overflow-hidden bg-zinc-950 shrink-0">
                     <motion.img 
                       src={workProjects[workIndex].img} 
                       alt={workProjects[workIndex].title}
+                      loading="lazy"
                       className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/90 via-transparent to-transparent opacity-60 md:hidden" />
@@ -316,7 +317,7 @@ export function Work() {
               </AnimatePresence>
               
               {/* Right Arrow */}
-              <button onClick={nextWork} className="absolute right-2 md:-right-8 lg:-right-16 z-20 p-2 md:p-3 rounded-full bg-[var(--background)]/80 backdrop-blur border border-[var(--card-border)] hover:bg-[var(--card)] text-[var(--foreground)] transition-all shadow-lg hover:scale-110">
+              <button onClick={nextWork} aria-label="Next Project" className="absolute right-2 md:-right-8 lg:-right-16 z-20 p-3 md:p-4 rounded-full bg-[var(--background)]/80 backdrop-blur border border-[var(--card-border)] hover:bg-[var(--card)] text-[var(--foreground)] transition-all shadow-lg hover:scale-110">
                 <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
               </button>
               
@@ -325,7 +326,9 @@ export function Work() {
             {/* Indicators */}
             <div className="flex items-center justify-center gap-3 mt-8">
               {workProjects.map((_, i) => (
-                <button key={i} onClick={() => setWorkIndex(i)} className={`h-2.5 rounded-full transition-all duration-300 ${i === workIndex ? 'bg-[var(--color-brand)] w-8' : 'bg-[var(--card-border)] w-2.5 hover:bg-[var(--foreground-muted)]'}`} aria-label="Go to slide" />
+                <button key={i} onClick={() => setWorkIndex(i)} className="w-10 h-10 flex items-center justify-center group" aria-label={`Go to project ${i + 1}`}>
+                <span className={`block h-2.5 rounded-full transition-all duration-300 ${i === workIndex ? 'bg-[var(--color-brand)] w-8' : 'bg-[var(--card-border)] w-2.5 group-hover:bg-[var(--foreground-muted)]'}`} />
+              </button>
               ))}
             </div>
           </SectionShell>
