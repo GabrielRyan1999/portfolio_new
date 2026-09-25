@@ -126,7 +126,7 @@ export function Home() {
                 
                 
 
-                <motion.h1 variants={fadeUp} className="relative text-center text-6xl md:text-[9rem] font-black leading-none flex gap-4 md:gap-8 items-center justify-center z-10">
+                <motion.h1 variants={fadeUp} className="relative text-center text-[15vw] sm:text-6xl md:text-[9rem] font-black leading-none flex flex-col md:flex-row -space-y-2 sm:-space-y-4 md:space-y-0 gap-0 md:gap-8 items-center justify-center z-10 w-full overflow-hidden">
                   <span className="text-transparent [-webkit-text-stroke:2px_#09090b] md:[-webkit-text-stroke:3px_#09090b] dark:[-webkit-text-stroke:2px_#fafafa] dark:md:[-webkit-text-stroke:3px_#fafafa]">GABRIEL</span>
                   <span className="text-zinc-900 dark:text-zinc-100">RYAN</span>
                 </motion.h1>
