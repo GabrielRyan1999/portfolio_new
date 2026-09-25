@@ -98,8 +98,8 @@ export function FloatingDock() {
                 <div 
                   key={item.path} 
                   className="relative"
-                  onMouseEnter={() => setHovered(item.path)}
-                  onMouseLeave={() => setHovered(null)}
+                  onMouseEnter={() => { if (!('ontouchstart' in window || navigator.maxTouchPoints > 0)) setHovered(item.path); }}
+                  onMouseLeave={() => { if (!('ontouchstart' in window || navigator.maxTouchPoints > 0)) setHovered(null); }}
                 >
                   <AnimatePresence>
                     {isHovered && (
@@ -149,12 +149,12 @@ export function FloatingDock() {
                   <Link
                     to={item.path}
                     aria-label={item.label}
-                    onFocus={() => setHovered(item.path)}
-                    onBlur={() => setHovered(null)}
+                    onFocus={() => { if (!('ontouchstart' in window || navigator.maxTouchPoints > 0)) setHovered(item.path); }}
+                    onBlur={() => { if (!('ontouchstart' in window || navigator.maxTouchPoints > 0)) setHovered(null); }}
                     onClick={(e) => {
-                          if (item.subItems && ('ontouchstart' in window || navigator.maxTouchPoints > 0)) {
+                          if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
                               e.preventDefault();
-                              setHovered(item.path);
+                              setHovered(hovered === item.path ? null : item.path);
                               return;
                           }
                           if (item.subItems && hovered !== item.path) {
@@ -186,7 +186,7 @@ export function FloatingDock() {
             <div 
               className="relative"
               onMouseEnter={() => setHovered('theme')}
-              onMouseLeave={() => setHovered(null)}
+              onMouseLeave={() => { if (!('ontouchstart' in window || navigator.maxTouchPoints > 0)) setHovered(null); }}
             >
               <AnimatePresence>
                 {hovered === 'theme' && (
@@ -212,7 +212,7 @@ export function FloatingDock() {
                 onClick={() => setIsDark(!isDark)}
                 aria-label={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
                 onFocus={() => setHovered('theme')}
-                onBlur={() => setHovered(null)}
+                onBlur={() => { if (!('ontouchstart' in window || navigator.maxTouchPoints > 0)) setHovered(null); }}
                 className={`relative flex items-center justify-center w-11 h-11 md:w-12 md:h-12 rounded-full ${isScrolled ? 'hover:bg-white/10' : 'bg-[#111111] border border-white/5'} transition-all duration-300 text-zinc-300`}
               >
                 {!isScrolled && hovered === 'theme' && (
