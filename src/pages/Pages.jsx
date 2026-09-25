@@ -141,8 +141,8 @@ export function Home() {
                   
                   <div className="space-y-5 text-center md:text-left flex-1">
                     <h2 className="text-3xl md:text-5xl font-black text-zinc-900 dark:text-zinc-100 tracking-tight leading-tight">
-                      Educator & <br className="hidden md:block" />
-                      <RotatingText words={["Developer", "Designer", "Creator", "Problem Solver"]} />
+                      Educator & <br />
+                      <RotatingText words={["Developer", "Designer", "Creator", "Engineer"]} />
                     </h2>
                     <p className="text-base md:text-lg text-zinc-500 dark:text-zinc-400 max-w-sm mx-auto md:mx-0 leading-relaxed font-medium">
                       Shaping digital learning through engineered platforms and teaching that are clear, engaging, and impactful.
