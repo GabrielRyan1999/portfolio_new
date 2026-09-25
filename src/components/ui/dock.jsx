@@ -77,7 +77,7 @@ export function FloatingDock() {
             onClick={() => setIsExpanded(true)}
             className="flex items-center gap-2 px-5 py-3 rounded-full bg-[#111111]/90 backdrop-blur-md border border-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.5)] text-white group"
           >
-            <Menu className="w-5 h-5 text-slate-300 group-hover:text-white transition-colors" />
+            <Menu className="w-5 h-5 text-zinc-300 group-hover:text-white transition-colors" />
             <span className="text-sm font-semibold tracking-wide pr-1">Menu</span>
           </motion.button>
         ) : (
@@ -112,7 +112,7 @@ export function FloatingDock() {
                         <div className="bg-[#1a1a1a] border border-white/10 text-white rounded-xl shadow-2xl overflow-hidden flex flex-col min-w-[140px]">
                         {item.subItems ? (
                           <div className="flex flex-col py-1">
-                            <div className="px-3 py-2 text-[10px] uppercase tracking-wider text-slate-400 font-bold border-b border-white/10">
+                            <div className="px-3 py-2 text-[10px] uppercase tracking-wider text-zinc-400 font-bold border-b border-white/10">
                               {item.label}
                             </div>
                             {item.subItems.map(sub => (
@@ -150,12 +150,18 @@ export function FloatingDock() {
 
                   <Link
                     to={item.path}
-                    onClick={() => {
+                    aria-label={item.label}
+                    onFocus={() => setHovered(item.path)}
+                    onBlur={() => setHovered(null)}
+                    onClick={(e) => {
+                        if (item.subItems && hovered !== item.path) {
+                            e.preventDefault();
+                            setHovered(item.path);
+                            return;
+                        }
                         if (isScrolled) setIsExpanded(false);
-                        // If it has sub-items, we don't necessarily want to scroll to top, 
-                        // but Link click should go to top if no hash.
                     }}
-                    className={`relative flex items-center justify-center w-9 h-9 md:w-12 md:h-12 rounded-full ${isScrolled ? 'hover:bg-white/10' : 'bg-[#111111] border border-white/5'} transition-all duration-300 ${isActive ? 'text-blue-500' : 'text-slate-300'}`}
+                    className={`relative flex items-center justify-center w-11 h-11 md:w-12 md:h-12 rounded-full ${isScrolled ? 'hover:bg-white/10' : 'bg-[#111111] border border-white/5'} transition-all duration-300 ${isActive ? 'text-blue-500' : 'text-zinc-300'}`}
                   >
                     {!isScrolled && isHovered && (
                       <motion.div 
@@ -164,14 +170,14 @@ export function FloatingDock() {
                         transition={{ type: "spring", stiffness: 300, damping: 25 }}
                       />
                     )}
-                    <Icon className={`w-4 h-4 md:w-5 md:h-5 relative z-10 ${isHovered || isActive ? 'text-white' : 'text-slate-300'}`} />
+                    <Icon className={`w-4 h-4 md:w-5 md:h-5 relative z-10 ${isHovered || isActive ? 'text-white' : 'text-zinc-300'}`} />
                   </Link>
                 </div>
               );
             })}
 
             {/* Separator */}
-            <div className="w-[1px] h-6 bg-slate-300 dark:bg-white/20 mx-1 md:mx-2"></div>
+            <div className="w-[1px] h-6 bg-zinc-300 dark:bg-white/20 mx-1 md:mx-2"></div>
 
             {/* Theme Toggle Button */}
             <div 
@@ -201,7 +207,10 @@ export function FloatingDock() {
               </AnimatePresence>
               <button
                 onClick={() => setIsDark(!isDark)}
-                className={`relative flex items-center justify-center w-9 h-9 md:w-12 md:h-12 rounded-full ${isScrolled ? 'hover:bg-white/10' : 'bg-[#111111] border border-white/5'} transition-all duration-300 text-slate-300`}
+                aria-label={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
+                onFocus={() => setHovered('theme')}
+                onBlur={() => setHovered(null)}
+                className={`relative flex items-center justify-center w-11 h-11 md:w-12 md:h-12 rounded-full ${isScrolled ? 'hover:bg-white/10' : 'bg-[#111111] border border-white/5'} transition-all duration-300 text-zinc-300`}
               >
                 {!isScrolled && hovered === 'theme' && (
                   <motion.div 
@@ -211,9 +220,9 @@ export function FloatingDock() {
                   />
                 )}
                 {isDark ? (
-                  <Sun className={`w-4 h-4 md:w-5 md:h-5 relative z-10 ${hovered === 'theme' ? 'text-white' : 'text-slate-300'}`} />
+                  <Sun className={`w-4 h-4 md:w-5 md:h-5 relative z-10 ${hovered === 'theme' ? 'text-white' : 'text-zinc-300'}`} />
                 ) : (
-                  <Moon className={`w-4 h-4 md:w-5 md:h-5 relative z-10 ${hovered === 'theme' ? 'text-white' : 'text-slate-300'}`} />
+                  <Moon className={`w-4 h-4 md:w-5 md:h-5 relative z-10 ${hovered === 'theme' ? 'text-white' : 'text-zinc-300'}`} />
                 )}
               </button>
             </div>
@@ -222,7 +231,8 @@ export function FloatingDock() {
             {isScrolled && (
               <button 
                 onClick={() => setIsExpanded(false)}
-                className="ml-1 flex items-center justify-center w-8 h-8 rounded-full bg-red-500/20 hover:bg-red-500/40 text-red-300 hover:text-red-100 transition-colors"
+                aria-label="Close Navigation"
+                className="ml-1 flex items-center justify-center w-10 h-10 rounded-full bg-red-500/20 hover:bg-red-500/40 text-red-300 hover:text-red-100 transition-colors"
               >
                 <X className="w-4 h-4" />
               </button>
