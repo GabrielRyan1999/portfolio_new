@@ -189,7 +189,7 @@ export function Home() {
       */}
       <div className="absolute inset-0 z-0">
         {/* Background Shape */}
-        <div className="absolute top-[-10vw] right-[-5vw] w-[45vw] h-[45vw] rounded-full bg-[#D7C4A5]"></div>
+        <div className="absolute top-[-10vw] right-[-5vw] w-[45vw] h-[45vw] rounded-full bg-[#E5D8C5]"></div>
         
         {/* Texts */}
         <HomeContent side="right" />
@@ -208,11 +208,11 @@ export function Home() {
       </div>
 
       {/* LAYER 3: PORTRAIT (Topmost) */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[95%] md:w-[750px] max-w-4xl flex justify-center z-20 pointer-events-none">
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[85%] md:w-[550px] xl:w-[600px] max-w-2xl flex justify-center z-20 pointer-events-none">
         <img 
           src="/profile-nobg.png" 
           alt="Gabriel Ryan" 
-          className="w-full h-auto object-contain object-bottom grayscale drop-shadow-2xl brightness-105 contrast-125" 
+          className="w-full h-auto max-h-[65vh] md:max-h-[70vh] object-contain object-bottom grayscale drop-shadow-2xl brightness-105 contrast-125" 
         />
       </div>
 
@@ -225,20 +225,20 @@ function HomeContent({ side }) {
   
   // Exact color mapping based on side
   const gabrielColor = isLeft ? 'text-[#F5F2EB]' : 'text-[#213555]';
-  const ryanColor = isLeft ? 'text-[#F5F2EB]' : 'text-[#D7C4A5]';
+  const ryanColor = isLeft ? 'text-[#F5F2EB]' : 'text-[#E5D8C5]';
   const metaColor = isLeft ? 'text-[#F5F2EB]' : 'text-[#213555]';
   
   return (
     <div className={`absolute inset-0 flex flex-col pointer-events-none ${metaColor}`}>
       
       {/* Center Typography (Absolutely positioned to top) */}
-      <div className="absolute top-[12%] md:top-[15%] left-0 w-full flex flex-col items-center justify-start">
+      <div className="absolute top-[8%] md:top-[10%] left-0 w-full flex flex-col items-center justify-start">
         <h1 className={`font-serif text-[20vw] md:text-[17vw] font-black tracking-[-0.03em] leading-[0.8] uppercase z-10 relative ${gabrielColor}`}>
           GABRIEL
         </h1>
         {/* Cursive text overlapping */}
-        <div className={`absolute top-[50%] md:top-[60%] left-1/2 -translate-x-1/2 mt-[2vw] ml-[4vw] z-20 opacity-90 ${ryanColor}`}>
-          <span className="font-mayonice text-[18vw] md:text-[14vw] leading-none whitespace-nowrap -rotate-[5deg] inline-block drop-shadow-sm">
+        <div className={`absolute top-[35%] md:top-[40%] left-1/2 -translate-x-1/2 ml-[3vw] z-20 opacity-90 ${ryanColor}`}>
+          <span className="font-mayonice text-[22vw] md:text-[17vw] leading-none whitespace-nowrap -rotate-[5deg] inline-block drop-shadow-sm">
             Ryan
           </span>
         </div>
