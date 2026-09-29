@@ -208,11 +208,11 @@ export function Home() {
       </div>
 
       {/* LAYER 3: PORTRAIT (Topmost) */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[95%] md:w-[650px] lg:w-[750px] xl:w-[850px] flex justify-center z-20 pointer-events-none">
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full flex justify-center z-20 pointer-events-none">
         <img 
           src="/profile-nobg.png" 
           alt="Gabriel Ryan" 
-          className="w-full h-auto object-contain object-bottom grayscale drop-shadow-2xl brightness-105 contrast-125" 
+          className="h-[65vh] md:h-[75vh] xl:h-[80vh] w-auto max-w-none object-contain object-bottom grayscale drop-shadow-2xl brightness-105 contrast-125" 
         />
       </div>
 
