@@ -227,12 +227,12 @@ function HomeContent({ side }) {
       
       {/* Center Typography (Adjusted for mobile to drop down to meet the smaller portrait) */}
       <div className="absolute top-[25%] md:top-[12%] left-0 w-full flex flex-col items-center justify-start">
-        <h1 className={`font-serif text-[32vw] md:text-[23.5vw] font-black tracking-[-0.04em] leading-[0.8] uppercase z-10 relative ${gabrielColor}`}>
+        <h1 className={`font-serif text-[26vw] md:text-[17vw] font-black tracking-[-0.04em] leading-[0.8] uppercase z-10 relative ${gabrielColor}`}>
           GABRIEL
         </h1>
         {/* Cursive text overlapping */}
-        <div className={`absolute top-[60%] md:top-[65%] left-1/2 -translate-x-1/2 mt-[2vw] ml-[6vw] z-20 opacity-90 ${ryanColor}`}>
-          <span className="font-mayonice text-[35vw] md:text-[22vw] leading-none whitespace-nowrap -rotate-[5deg] inline-block drop-shadow-sm">
+        <div className={`absolute top-[60%] md:top-[40%] left-1/2 -translate-x-1/2 mt-[2vw] ml-[6vw] z-20 opacity-90 ${ryanColor}`}>
+          <span className="font-mayonice text-[35vw] md:text-[17vw] leading-none whitespace-nowrap -rotate-[5deg] inline-block drop-shadow-sm">
             Ryan
           </span>
         </div>
