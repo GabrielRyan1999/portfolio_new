@@ -26,18 +26,26 @@ function ScrollHandler() {
   return null;
 }
 
+function IndexPage() {
+  return (
+    <div className="flex flex-col w-full">
+      <Home />
+      <About />
+      <Work />
+      <Service />
+      <Experience />
+      <Contact />
+    </div>
+  );
+}
+
 function AnimatedRoutes() {
   const location = useLocation();
   
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/work" element={<Work />} />
-        <Route path="/service" element={<Service />} />
-        <Route path="/experience" element={<Experience />} />
-        <Route path="/contact" element={<Contact />} />
+        <Route path="/" element={<IndexPage />} />
       </Routes>
     </AnimatePresence>
   );
