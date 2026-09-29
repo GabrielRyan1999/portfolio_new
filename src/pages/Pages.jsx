@@ -188,7 +188,7 @@ export function Home() {
         LAYER 1: BASE (Right Side)
       */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute top-[-25vw] right-[-15vw] w-[55vw] h-[55vw] rounded-full bg-[#E5D8C5]"></div>
+        <div className="absolute top-[-25vw] right-[-15vw] w-[55vw] h-[55vw] rounded-full bg-[#DDC6A7]"></div>
         <HomeContent side="right" />
       </div>
 
@@ -219,7 +219,7 @@ function HomeContent({ side }) {
   const isLeft = side === 'left';
   
   const gabrielColor = isLeft ? 'text-[#F5F2EB]' : 'text-[#213555]';
-  const ryanColor = isLeft ? 'text-[#F5F2EB]' : 'text-[#E5D8C5]';
+  const ryanColor = isLeft ? 'text-[#F5F2EB]' : 'text-[#DDC6A7]';
   const metaColor = isLeft ? 'text-[#F5F2EB]' : 'text-[#213555]';
   
   return (
@@ -270,7 +270,19 @@ function HomeContent({ side }) {
           FIG. 01 &mdash; AUTHOR
         </div>
       </div>
-
+      {/* Scroll Hint (Bottom Center) */}
+      <div className="absolute bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 z-30 opacity-70">
+        <span className="text-[7px] md:text-[9px] font-bold tracking-[0.4em] uppercase whitespace-nowrap">
+          Scroll to explore
+        </span>
+        <div className="w-[1px] h-8 md:h-12 bg-current overflow-hidden relative opacity-50">
+          <motion.div 
+            className="absolute top-0 left-0 w-full h-[50%] bg-current"
+            animate={{ y: ["-100%", "200%"] }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+          />
+        </div>
+      </div>
     </div>
   );
 }
