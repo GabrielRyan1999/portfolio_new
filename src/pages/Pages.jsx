@@ -182,59 +182,106 @@ export const PageTransition = ({ children }) => (<>{children}</>);
 
 export function Home() {
   return (
-    <section id="home" className="relative min-h-screen w-full bg-cream text-[#111C2B] overflow-hidden pt-24 md:pt-32 px-6 md:px-16 flex flex-col justify-between">
+    <section id="home" className="relative w-full h-[100svh] min-h-[600px] overflow-hidden bg-cream font-sans">
       
-      {/* Top Editorial Meta Bar */}
-      <div className="w-full flex justify-between items-end uppercase tracking-[0.2em] text-[10px] md:text-xs font-semibold pb-4 border-b border-[#111C2B]/20 relative z-20">
-        <span>Archive / 2026</span>
-        <span className="text-right">Tech & Education<br/>Visual Study</span>
-      </div>
-
-      {/* Main Content Grid */}
-      <div className="flex-1 grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 mt-8 md:mt-12 relative z-20">
+      {/* 
+        LAYER 1: BASE (Right Side)
+        Background: Cream, Text: Navy 
+      */}
+      <div className="absolute inset-0 z-0">
+        {/* Background Shape */}
+        <div className="absolute top-[-10vw] right-[-5vw] w-[40vw] h-[40vw] rounded-full bg-[#E5D5C5]"></div>
         
-        {/* Left: Giant Typography & Intro */}
-        <div className="md:col-span-7 flex flex-col justify-center pb-12 md:pb-24">
-          <h1 className="font-serif text-[18vw] md:text-[9.5vw] font-bold leading-[0.85] tracking-tight">
-            GABRIEL
-            <br />
-            RYAN<span className="text-blue-700">.</span>
-          </h1>
-          
-          <div className="mt-8 md:mt-16 max-w-lg border-l-2 border-[#111C2B]/20 pl-6">
-            <h2 className="text-lg md:text-2xl font-light leading-relaxed text-slate-800">
-              Bridging the gap between complex engineering and human comprehension.
-            </h2>
-            <div className="mt-6 flex items-baseline space-x-2 text-sm md:text-base font-medium tracking-widest uppercase text-blue-800">
-              <span>I AM A</span>
-              <span className="border-b border-blue-800 pb-1">
-                <AnimatedWords />
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* Right: Anchored Portrait */}
-        <div className="md:col-span-5 h-[50vh] md:h-auto relative flex items-end justify-center md:justify-end">
-          {/* Architectural Arch Backdrop */}
-          <div className="absolute bottom-0 w-[80%] md:w-full h-[90%] bg-[#E5D5C5] rounded-t-full shadow-inner border border-[#111C2B]/10"></div>
-          
-          {/* Portrait Image */}
-          <div className="relative z-10 w-[90%] md:w-[110%] h-full flex items-end">
-             <img 
-               src="/profile-nobg.png" 
-               alt="Gabriel Ryan" 
-               className="w-full h-auto max-h-[75vh] object-contain object-bottom drop-shadow-2xl grayscale contrast-125 hover:grayscale-0 transition-all duration-700" 
-             />
-          </div>
-        </div>
+        {/* Texts */}
+        <HomeContent side="right" />
       </div>
 
-      {/* Background Ambient Decor (Extremely Subtle) */}
-      <div className="absolute top-[20%] left-[-10vw] w-[40vw] aspect-square rounded-full border-[1px] border-[#111C2B] opacity-5 pointer-events-none"></div>
+      {/* 
+        LAYER 2: OVERLAY (Left Side)
+        Background: Navy, Text: Cream 
+        Clipped to precisely 50% width.
+      */}
+      <div className="absolute inset-0 bg-navy z-10" style={{ clipPath: 'polygon(0 0, 50% 0, 50% 100%, 0 100%)' }}>
+        {/* Background Lines (Concentric Circles) */}
+        <div className="absolute bottom-[-20vw] left-[-10vw] w-[40vw] h-[40vw] rounded-full border border-cream/20"></div>
+        <div className="absolute bottom-[-30vw] left-[-20vw] w-[60vw] h-[60vw] rounded-full border border-cream/10"></div>
+        
+        {/* Texts (Exact same component, colors invert due to text-current and bg-navy) */}
+        <HomeContent side="left" />
+      </div>
+
+      {/* LAYER 3: PORTRAIT (Topmost) */}
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[90%] md:w-[600px] max-w-3xl flex justify-center z-20 pointer-events-none">
+        <img 
+          src="/profile-nobg.png" 
+          alt="Gabriel Ryan" 
+          className="w-full h-auto max-h-[85vh] object-contain object-bottom grayscale drop-shadow-2xl brightness-110 contrast-125" 
+        />
+      </div>
+
     </section>
   );
 }
+
+function HomeContent({ side }) {
+  const isLeft = side === 'left';
+  const textColor = isLeft ? 'text-cream' : 'text-navy';
+  
+  return (
+    <div className={`absolute inset-0 flex flex-col items-center justify-center pointer-events-none ${textColor}`}>
+      
+      {/* Center Typography */}
+      <div className="relative w-full flex flex-col items-center justify-center mt-[-15vh]">
+        <h1 className="font-serif text-[22vw] md:text-[18vw] font-black tracking-tighter leading-none uppercase z-10 relative">
+          GABRIEL
+        </h1>
+        {/* Cursive text overlapping */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 mt-[10vw] ml-[5vw] z-20 opacity-90">
+          <span className="font-mayonice text-[18vw] md:text-[14vw] leading-none whitespace-nowrap -rotate-3 inline-block drop-shadow-sm">
+            Ryan
+          </span>
+        </div>
+      </div>
+
+      {/* Top Left Meta */}
+      <div className="absolute top-8 left-8 md:top-12 md:left-12 flex flex-col gap-1 text-[10px] md:text-xs font-bold tracking-widest uppercase">
+        <span>VOL. 01</span>
+        <span>OCT / 2026</span>
+      </div>
+
+      {/* Top Right Meta */}
+      <div className="absolute top-8 right-8 md:top-12 md:right-12 flex flex-col gap-1 text-[10px] md:text-xs font-bold tracking-widest uppercase text-right">
+        <span>VISUAL STUDY</span>
+        <span>BY GABRIEL RYAN</span>
+      </div>
+
+      {/* Bottom Left Meta */}
+      <div className="absolute bottom-12 left-8 md:bottom-24 md:left-12 flex flex-col gap-6 text-[10px] md:text-xs font-bold tracking-widest uppercase">
+        <span className="opacity-70">ROLE //</span>
+        <span className="text-sm md:text-base font-black tracking-widest">EDUCATOR & DEVELOPER.</span>
+        <div className="w-12 h-[1px] bg-current opacity-50"></div>
+        <span>EST. 2026</span>
+      </div>
+
+      {/* Middle Right Stamp */}
+      <div className="absolute top-1/2 -translate-y-1/2 right-4 md:right-16 flex items-center gap-2 md:gap-4 mt-24">
+        {/* The Stamp Box */}
+        <div className="w-20 h-20 md:w-28 md:h-28 bg-[#F5F2EB] p-1.5 md:p-2 shadow-xl border border-navy/10 transform rotate-3 flex items-center justify-center relative">
+          <div className="w-full h-full border border-navy/20 flex items-center justify-center overflow-hidden">
+             <img src="/favicon.jpg" alt="Author" className="w-full h-full object-cover grayscale contrast-125" onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'block'; }} />
+             <span className="hidden font-serif font-bold text-navy opacity-50 text-2xl">GR</span>
+          </div>
+        </div>
+        {/* Vertical Text */}
+        <div className="flex items-center gap-2 text-[8px] md:text-[10px] font-bold tracking-widest uppercase opacity-70" style={{ writingMode: 'vertical-rl' }}>
+          <span>FIG. 01 — AUTHOR</span>
+        </div>
+      </div>
+
+    </div>
+  );
+}
+
 export function About() {
   return (
     <PageTransition>
