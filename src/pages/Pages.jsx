@@ -444,7 +444,15 @@ export function Service() {
     const [activeServiceIndex, setActiveServiceIndex] = useState(null);
     return (
       <PageTransition>
-        <section id="service" className="relative w-full min-h-[100svh] bg-cream py-24 md:py-32 flex flex-col border-t-2 border-navy overflow-hidden">
+        <section id="service" className="relative w-full min-h-[100svh] bg-cream flex flex-col border-t-2 border-navy overflow-hidden">
+          
+          {/* Header Row */}
+          <div className="w-full flex items-center justify-between px-6 md:px-12 py-4 border-b border-navy shrink-0 z-20 relative">
+             <span className="text-xs font-bold tracking-widest uppercase">Chapter 03 // Services &amp; Expertise</span>
+             <span className="text-xs font-bold tracking-widest uppercase hidden md:inline-block">Yogyakarta, ID</span>
+          </div>
+
+          <div className="flex-1 flex flex-col w-full py-16 md:py-24 relative">
           
           {/* Header */}
           <div className="w-full max-w-7xl mx-auto px-6 mb-16 md:mb-24 flex flex-col md:flex-row md:items-end justify-between gap-8 z-10">
@@ -537,6 +545,7 @@ export function Service() {
               );
             })}
           </div>
+          </div>
         </section>
       </PageTransition>
     );
@@ -545,9 +554,16 @@ export function Service() {
 export function Experience() {
     return (
       <PageTransition>
-        <section id="experience" className="relative w-full min-h-[100svh] bg-navy py-24 md:py-32 flex flex-col border-t-2 border-cream overflow-hidden text-cream">
+        <section id="experience" className="relative w-full min-h-[100svh] bg-navy flex flex-col border-t-2 border-cream overflow-hidden text-cream">
           
-          {/* Header */}
+          {/* Header Row */}
+          <div className="w-full flex items-center justify-between px-6 md:px-12 py-4 border-b border-cream shrink-0 z-20 relative">
+             <span className="text-xs font-bold tracking-widest uppercase text-cream">Chapter 04 // Professional Record</span>
+             <span className="text-xs font-bold tracking-widest uppercase hidden md:inline-block text-cream">Yogyakarta, ID</span>
+          </div>
+
+          <div className="flex-1 flex flex-col w-full py-16 md:py-24 relative">
+            {/* Header */}
           <div className="w-full max-w-7xl mx-auto px-6 mb-16 md:mb-24 flex flex-col md:flex-row md:items-end justify-between gap-8 z-10">
              <div>
                 <h2 className="font-serif text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-[0.85]">PROFESSIONAL<br/>RECORD</h2>
@@ -587,6 +603,7 @@ export function Experience() {
               </div>
             ))}
           </div>
+          </div>
         </section>
 
         {/* Testimonials Wrapper */}
@@ -619,6 +636,10 @@ export function Contact() {
     </PageTransition>
   );
 }
+
+
+
+
 
 
 
