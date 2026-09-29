@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion, useScroll, useSpring } from 'framer-motion';
-import { FloatingDock } from './components/ui/dock';
 import { Home, About, Work, Service, Experience, Contact } from './pages/Pages';
 
 // Component to handle scroll restoration and hash scrolling
@@ -75,7 +74,6 @@ function App() {
       </div>
       
       <div className="relative z-10 w-full min-h-screen">
-        <FloatingDock />
         <AnimatedRoutes />
       </div>
     </BrowserRouter>
