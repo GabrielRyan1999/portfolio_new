@@ -8,13 +8,13 @@ import { experienceJobs, workProjects } from '../data';
 const heroEase = [0.16, 1, 0.3, 1];
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 40 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: heroEase } }
+  hidden: { opacity: 0, y: 24 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: heroEase } }
 };
 
 const staggerContainer = {
   hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.1, delayChildren: 0.1 } }
+  visible: { opacity: 1, transition: { staggerChildren: 0.08, delayChildren: 0.05 } }
 };
 
 const createHeroVariants = (shouldReduce) => ({
@@ -299,7 +299,7 @@ export function About() {
                </div>
 
                <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true }} className="relative z-10">
-                   <motion.h2 variants={fadeUp} className="font-sans font-black text-6xl md:text-7xl lg:text-8xl tracking-tighter uppercase leading-[0.85] mb-4">
+                   <motion.h2 variants={fadeUp} className="font-sans font-black text-5xl sm:text-6xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl tracking-tighter uppercase leading-[0.85] mb-4">
                        Gabriel Ryan<br/>Prima
                    </motion.h2>
                    <motion.div variants={fadeUp} className="font-sans font-bold text-lg md:text-xl text-navy tracking-tight uppercase mb-12">
@@ -327,36 +327,42 @@ export function About() {
            </div>
 
            {/* Right Column: 3 Cards (Editorial Grid) */}
-           <div className="w-full md:w-1/2 flex flex-col bg-cream">
+           <motion.div 
+             variants={staggerContainer}
+             initial="hidden"
+             whileInView="visible"
+             viewport={{ once: true, margin: "-60px" }}
+             className="w-full md:w-1/2 flex flex-col bg-cream"
+           >
               
               {/* Row 1: Curriculum Development */}
-              <div className="w-full flex-1 min-h-[250px] border-b border-navy p-8 md:p-12 flex flex-col justify-center relative group hover:bg-navy hover:text-cream transition-colors duration-500 cursor-default">
+              <motion.div variants={fadeUp} className="w-full flex-1 min-h-[250px] border-b border-navy p-8 md:p-12 flex flex-col justify-center relative group hover:bg-navy hover:text-cream transition-colors duration-500 cursor-default">
                   <span className="absolute top-6 left-6 md:top-8 md:left-8 text-xs font-mono font-bold tracking-widest uppercase opacity-50 group-hover:opacity-100 transition-opacity">01</span>
                   <h3 className="font-sans font-black text-4xl md:text-5xl lg:text-6xl tracking-tighter uppercase mb-4 leading-[0.9]">Curriculum<br className="hidden md:block"/>Development</h3>
                   <p className="font-serif text-lg md:text-xl leading-relaxed opacity-90 max-w-lg">
                      Designing structured, engaging, and industry-aligned tech learning paths for students of all levels.
                   </p>
-              </div>
+              </motion.div>
 
               {/* Row 2: Modern Web */}
-              <div className="w-full flex-1 min-h-[250px] border-b border-navy p-8 md:p-12 flex flex-col justify-center relative group hover:bg-navy hover:text-cream transition-colors duration-500 cursor-default">
+              <motion.div variants={fadeUp} className="w-full flex-1 min-h-[250px] border-b border-navy p-8 md:p-12 flex flex-col justify-center relative group hover:bg-navy hover:text-cream transition-colors duration-500 cursor-default">
                   <span className="absolute top-6 left-6 md:top-8 md:left-8 text-xs font-mono font-bold tracking-widest uppercase opacity-50 group-hover:opacity-100 transition-opacity">02</span>
                   <h3 className="font-sans font-black text-4xl md:text-5xl lg:text-6xl tracking-tighter uppercase mb-4 leading-[0.9]">Modern Web</h3>
                   <p className="font-serif text-lg md:text-xl leading-relaxed opacity-90 max-w-lg">
                      Building fast, scalable full-stack applications.
                   </p>
-              </div>
+              </motion.div>
 
               {/* Row 3: Mentoring */}
-              <div className="w-full flex-1 min-h-[250px] p-8 md:p-12 flex flex-col justify-center relative group hover:bg-navy hover:text-cream transition-colors duration-500 cursor-default">
+              <motion.div variants={fadeUp} className="w-full flex-1 min-h-[250px] p-8 md:p-12 flex flex-col justify-center relative group hover:bg-navy hover:text-cream transition-colors duration-500 cursor-default">
                   <span className="absolute top-6 left-6 md:top-8 md:left-8 text-xs font-mono font-bold tracking-widest uppercase opacity-50 group-hover:opacity-100 transition-opacity">03</span>
                   <h3 className="font-sans font-black text-4xl md:text-5xl lg:text-6xl tracking-tighter uppercase mb-4 leading-[0.9]">Mentoring</h3>
                   <p className="font-serif text-lg md:text-xl leading-relaxed opacity-90 max-w-lg">
                      Guiding the next generation of software engineers.
                   </p>
-              </div>
+              </motion.div>
 
-           </div>
+           </motion.div>
 
         </div>
       </section>
@@ -395,7 +401,13 @@ export function Work() {
         </div>
 
         {/* Project Selector Tabs Strip */}
-        <div className="w-full flex flex-wrap border-b border-cream/30 bg-navy/80 shrink-0">
+        <motion.div 
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-40px" }}
+          className="w-full flex flex-wrap border-b border-cream/30 bg-navy/80 shrink-0"
+        >
           {workProjects.map((p, idx) => {
             const isSelected = workIndex === idx;
             return (
@@ -417,7 +429,7 @@ export function Work() {
               </button>
             );
           })}
-        </div>
+        </motion.div>
 
         {/* Main Spread */}
         <div className="flex-1 flex flex-col md:flex-row w-full h-full relative">
@@ -534,17 +546,29 @@ export function Service() {
           <div className="flex-1 flex flex-col w-full py-16 md:py-24 relative">
           
           {/* Header */}
-          <div className="w-full max-w-7xl mx-auto px-6 mb-16 md:mb-24 flex flex-col md:flex-row md:items-end justify-between gap-8 z-10">
-             <div>
+          <motion.div 
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-60px" }}
+            className="w-full max-w-7xl mx-auto px-6 mb-16 md:mb-24 flex flex-col md:flex-row md:items-end justify-between gap-8 z-10"
+          >
+             <motion.div variants={fadeUp}>
                 <h2 className="font-serif text-5xl md:text-7xl lg:text-8xl font-black text-navy tracking-tighter leading-[0.85]">SERVICES<br/>& EXPERTISE</h2>
-             </div>
-             <p className="max-w-md text-navy/80 font-serif text-lg leading-relaxed border-l-2 border-navy pl-6">
+             </motion.div>
+             <motion.p variants={fadeUp} className="max-w-md text-navy/80 font-serif text-lg leading-relaxed border-l-2 border-navy pl-6">
                 A rigorous approach to engineering and education. I partner with organizations to build resilient systems and the minds that maintain them.
-             </p>
-          </div>
+             </motion.p>
+          </motion.div>
 
           {/* Brutalist Accordion */}
-          <div className="w-full flex flex-col z-10 border-b-2 border-navy">
+          <motion.div 
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-40px" }}
+            className="w-full flex flex-col z-10 border-b-2 border-navy"
+          >
             {[
               { 
                 title: "CUSTOM WEB PLATFORMS", 
@@ -569,7 +593,11 @@ export function Service() {
             ].map((service, index) => {
               const isOpen = activeServiceIndex === index;
               return (
-                <div key={service.title} className={`w-full border-t-2 border-navy overflow-hidden transition-colors duration-500 ${isOpen ? 'bg-navy text-cream' : 'bg-transparent text-navy'}`}>
+                <motion.div 
+                  variants={fadeUp}
+                  key={service.title} 
+                  className={`w-full border-t-2 border-navy overflow-hidden transition-colors duration-500 ${isOpen ? 'bg-navy text-cream' : 'bg-transparent text-navy'}`}
+                >
                   
                   <button
                       id={`service-button-${index}`}
@@ -638,10 +666,10 @@ export function Service() {
                     )}
                   </AnimatePresence>
 
-                </div>
+                </motion.div>
               );
             })}
-          </div>
+          </motion.div>
           </div>
         </section>
       </PageTransition>
@@ -661,23 +689,39 @@ export function Experience() {
 
           <div className="flex-1 flex flex-col w-full py-16 md:py-24 relative">
             {/* Header */}
-          <div className="w-full max-w-7xl mx-auto px-6 mb-16 md:mb-24 flex flex-col md:flex-row md:items-end justify-between gap-8 z-10">
-             <div>
+          <motion.div 
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-60px" }}
+            className="w-full max-w-7xl mx-auto px-6 mb-16 md:mb-24 flex flex-col md:flex-row md:items-end justify-between gap-8 z-10"
+          >
+             <motion.div variants={fadeUp}>
                 <h2 className="font-serif text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-[0.85]">PROFESSIONAL<br/>RECORD</h2>
-             </div>
-             <div className="max-w-md text-cream/80 font-serif text-lg leading-relaxed border-l-2 border-cream pl-6 flex flex-col gap-4">
+             </motion.div>
+             <motion.div variants={fadeUp} className="max-w-md text-cream/80 font-serif text-lg leading-relaxed border-l-2 border-cream pl-6 flex flex-col gap-4">
                 <p>A chronological ledger of roles and responsibilities.</p>
                 <div className="flex items-center gap-3">
                    <span className="w-2 h-2 bg-rose-500 rounded-none animate-pulse"></span>
                    <span className="text-xs font-mono tracking-widest uppercase opacity-70">Indicates Current Role</span>
                 </div>
-             </div>
-          </div>
+             </motion.div>
+          </motion.div>
 
           {/* Brutalist Ledger Table */}
-          <div className="w-full flex flex-col z-10 border-b-2 border-cream">
+          <motion.div 
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-40px" }}
+            className="w-full flex flex-col z-10 border-b-2 border-cream"
+          >
             {experienceJobs.map((job, i) => (
-              <div key={i} className="flex flex-col md:flex-row border-t-2 border-cream group hover:border-navy hover:bg-cream hover:text-navy transition-colors duration-300">
+              <motion.div 
+                variants={fadeUp}
+                key={i} 
+                className="flex flex-col md:flex-row border-t-2 border-cream group hover:border-navy hover:bg-cream hover:text-navy transition-colors duration-300"
+              >
                  
                  {/* Year Cell */}
                  <div className="w-full md:w-1/4 py-6 md:py-10 px-6 border-b-2 md:border-b-0 md:border-r-2 border-cream group-hover:border-navy transition-colors flex items-center justify-between md:justify-start">
@@ -697,9 +741,9 @@ export function Experience() {
                         {job.desc}
                      </p>
                  </div>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
           </div>
         </section>
 
@@ -714,20 +758,28 @@ export function Experience() {
 
           <div className="flex-1 flex flex-col w-full py-16 md:py-24 relative">
             {/* Header */}
-            <div className="w-full max-w-7xl mx-auto px-6 mb-12 md:mb-16 flex flex-col md:flex-row md:items-end justify-between gap-8 z-10">
-               <div>
+            <motion.div 
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-60px" }}
+              className="w-full max-w-7xl mx-auto px-6 mb-12 md:mb-16 flex flex-col md:flex-row md:items-end justify-between gap-8 z-10"
+            >
+               <motion.div variants={fadeUp}>
                   <span className="text-xs font-mono font-bold tracking-widest uppercase opacity-70 block mb-2">VERIFIED FIELD REPORTS</span>
                   <h2 className="font-serif text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-[0.85]">
                      TESTIMONIALS<br/>& ARCHIVES
                   </h2>
-               </div>
-               <div className="max-w-md text-navy/80 font-serif text-lg leading-relaxed border-l-2 border-navy pl-6 flex flex-col gap-2">
+               </motion.div>
+               <motion.div variants={fadeUp} className="max-w-md text-navy/80 font-serif text-lg leading-relaxed border-l-2 border-navy pl-6 flex flex-col gap-2">
                   <p>Direct observations and endorsements from partner schools and edtech platforms.</p>
                   <span className="text-xs font-mono tracking-widest uppercase opacity-60">OFFICIAL ENDORSEMENTS</span>
-               </div>
-            </div>
+               </motion.div>
+            </motion.div>
 
-            <Testimonials />
+            <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-40px" }}>
+              <Testimonials />
+            </motion.div>
           </div>
         </section>
 

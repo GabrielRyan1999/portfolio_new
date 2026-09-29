@@ -1,7 +1,20 @@
 import React, { useState } from "react";
+import { motion } from "framer-motion";
 import { Copy, Check } from "lucide-react";
 import { Linkedin, Github, Instagram } from "./brand-icons";
 import { useForm, ValidationError } from "@formspree/react";
+
+const heroEase = [0.16, 1, 0.3, 1];
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 24 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: heroEase } }
+};
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.08, delayChildren: 0.05 } }
+};
 
 export function LetsWorkTogether() {
   const [copied, setCopied] = useState(false);
@@ -26,21 +39,27 @@ export function LetsWorkTogether() {
       <div className="flex-1 flex flex-col lg:flex-row w-full h-full relative">
         
         {/* Left Column: Direct Info & Editorial Pitch */}
-        <div className="w-full lg:w-1/2 p-6 sm:p-10 md:p-12 lg:p-14 border-b lg:border-b-0 lg:border-r border-cream/30 flex flex-col justify-between">
-          <div>
+        <motion.div 
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-60px" }}
+          className="w-full lg:w-1/2 p-6 sm:p-8 md:p-10 lg:p-10 xl:p-12 border-b lg:border-b-0 lg:border-r border-cream/30 flex flex-col justify-between overflow-hidden"
+        >
+          <motion.div variants={fadeUp}>
             <span className="text-xs font-mono font-bold tracking-[0.25em] uppercase opacity-70 block mb-3">
               01 // DIRECT INQUIRIES
             </span>
-            <h2 className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-[0.85] mb-6">
+            <h2 className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-black tracking-tighter leading-[0.88] mb-6">
               LET'S WORK<br />TOGETHER.
             </h2>
             <p className="font-serif text-lg md:text-xl leading-relaxed text-cream/90 max-w-lg mb-8">
               Available for curriculum development, tech mentorship, web platforms, and engineering collaborations with forward-thinking schools and edtech platforms.
             </p>
-          </div>
+          </motion.div>
 
           {/* Directory Ledger Table */}
-          <div className="w-full border-t border-cream/30 pt-6 flex flex-col gap-4 mt-8 lg:mt-0">
+          <motion.div variants={fadeUp} className="w-full border-t border-cream/30 pt-6 flex flex-col gap-4 mt-8 lg:mt-0">
             
             {/* Email Row */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-cream/20">
@@ -134,18 +153,24 @@ export function LetsWorkTogether() {
               </div>
             </div>
 
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
         {/* Right Column: Clean, Perfectly Aligned Brutalist Form */}
-        <div className="w-full lg:w-1/2 p-6 sm:p-10 md:p-12 lg:p-14 flex flex-col justify-between bg-navy/30">
+        <motion.div 
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-60px" }}
+          className="w-full lg:w-1/2 p-6 sm:p-8 md:p-10 lg:p-10 xl:p-12 flex flex-col justify-between bg-navy/30 overflow-hidden"
+        >
           
           <div>
             {/* Header matches left column baseline */}
             <span className="text-xs font-mono font-bold tracking-[0.25em] uppercase opacity-70 block mb-3">
               02 // DIRECT DISPATCH
             </span>
-            <h3 className="font-serif text-4xl sm:text-5xl md:text-6xl font-black tracking-tighter leading-[0.85] text-cream mb-4">
+            <h3 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-3xl xl:text-4xl 2xl:text-5xl font-black tracking-tighter leading-[0.88] text-cream mb-4">
               START A<br />CONVERSATION.
             </h3>
             <p className="font-serif text-base md:text-lg text-cream/80 mb-8 max-w-lg">
@@ -236,7 +261,7 @@ export function LetsWorkTogether() {
 
           <div className="hidden lg:block h-6"></div>
 
-        </div>
+        </motion.div>
 
       </div>
 
