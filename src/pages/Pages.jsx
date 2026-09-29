@@ -211,7 +211,37 @@ export function Home() {
         />
       </div>
 
+    
+      {/* LAYER 4: FRONT UI (Scroll Hint) */}
+      <div className="absolute inset-0 z-30 pointer-events-none">
+        {/* Right side (Navy text) */}
+        <div className="absolute inset-0 text-[#213555]">
+          <ScrollHint />
+        </div>
+        {/* Left side (Cream text masked) */}
+        <div className="absolute inset-0 text-[#F5F2EB]" style={{ clipPath: 'polygon(0 0, 50% 0, 50% 100%, 0 100%)' }}>
+          <ScrollHint />
+        </div>
+      </div>
     </section>
+  );
+}
+
+
+function ScrollHint() {
+  return (
+    <div className="absolute bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 opacity-70">
+      <span className="text-[7px] md:text-[9px] font-bold tracking-[0.4em] uppercase whitespace-nowrap">
+        Scroll to explore
+      </span>
+      <div className="w-[1px] h-8 md:h-12 bg-current overflow-hidden relative opacity-50">
+        <motion.div 
+          className="absolute top-0 left-0 w-full h-[50%] bg-current"
+          animate={{ y: ["-100%", "200%"] }}
+          transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+        />
+      </div>
+    </div>
   );
 }
 
@@ -268,19 +298,6 @@ function HomeContent({ side }) {
         </div>
         <div className="absolute right-[-4.5rem] md:right-[-5.5rem] top-1/2 -translate-y-1/2 origin-center rotate-90 text-[8px] md:text-[9px] font-bold tracking-[0.25em] uppercase opacity-70 whitespace-nowrap drop-shadow-md">
           FIG. 01 &mdash; AUTHOR
-        </div>
-      </div>
-      {/* Scroll Hint (Bottom Center) */}
-      <div className="absolute bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 z-30 opacity-70">
-        <span className="text-[7px] md:text-[9px] font-bold tracking-[0.4em] uppercase whitespace-nowrap">
-          Scroll to explore
-        </span>
-        <div className="w-[1px] h-8 md:h-12 bg-current overflow-hidden relative opacity-50">
-          <motion.div 
-            className="absolute top-0 left-0 w-full h-[50%] bg-current"
-            animate={{ y: ["-100%", "200%"] }}
-            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-          />
         </div>
       </div>
     </div>
