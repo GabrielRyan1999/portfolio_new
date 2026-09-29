@@ -1,242 +1,138 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
-import { Link } from 'react-router-dom';
-import { SectionShell } from '../components/ui/SectionShell';
-import { HoverExpandGallery } from '../components/ui/hover-expand-gallery';
-import { MentorReportingFeatures } from '../components/ui/features-2';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Testimonials } from '../components/ui/unique-testimonial';
-import { Linkedin, Github, Instagram } from '../components/ui/brand-icons';
-import { ChevronLeft, ChevronRight, ChevronDown, ExternalLink, Plus } from 'lucide-react';
 import { LetsWorkTogether } from '../components/ui/lets-work-section';
-import { experienceJobs, carouselSlides, workProjects } from '../data';
+import { experienceJobs, workProjects } from '../data';
 
 // Animation configs
-// Editorial Brutalism Premium Animations
-export function RevealLine({ children, delay = 0, className = "" }) {
-  return (
-    <motion.span
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.3 }}
-      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay }}
-      className={`inline-block ${className}`}
-    >
-      {children}
-    </motion.span>
-  );
-}
-
-export function LineDraw({ className, delay = 0 }) {
-  return (
-    <motion.div
-      initial={{ scaleX: 0 }}
-      whileInView={{ scaleX: 1 }}
-      viewport={{ once: true, amount: 0.1 }}
-      transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1], delay }}
-      style={{ transformOrigin: "left" }}
-      className={className}
-    />
-  );
-}
-
-export function ParallaxImage({ src, alt, className = "" }) {
-  const ref = React.useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"]
-  });
-  const y = useTransform(scrollYProgress, [0, 1], ["-15%", "15%"]);
-
-  return (
-    <div ref={ref} className="relative w-full h-full overflow-hidden">
-      <motion.img 
-        style={{ y, scale: 1.25 }}
-        src={src} 
-        alt={alt}
-        className={`absolute inset-0 w-full h-full object-cover ${className}`}
-      />
-    </div>
-  );
-}
-
-const Sparkle = ({ className }) => (
-  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-    <path d="M12 0L12.5 11.5L24 12L12.5 12.5L12 24L11.5 12.5L0 12L11.5 11.5L12 0Z" fill="currentColor"/>
-  </svg>
-);
-
 const fadeUp = {
   hidden: { opacity: 0, y: 40 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
-};
-
-const AnimatedWords = ({ words = ['SOFTWARE ENGINEER.', 'EDUCATOR.', 'TECHNOLOGIST.'] }) => {
-  const [index, setIndex] = useState(0);
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setIndex((prev) => (prev + 1) % words.length);
-    }, 4000);
-    return () => clearInterval(timer);
-  }, [words]);
-  
-  return (
-    <span className="relative inline-block min-w-[200px]">
-      {/* Invisible placeholder to guarantee perfect baseline alignment and height */}
-      <span className="opacity-0 pointer-events-none select-none">{words[1]}</span>
-      <AnimatePresence mode="popLayout">
-        <motion.span
-          key={index}
-          initial={{ y: 8, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: -8, opacity: 0 }}
-          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-          className="absolute top-0 left-0 text-current"
-        >
-          {words[index]}
-        </motion.span>
-      </AnimatePresence>
-    </span>
-  );
 };
 
 const staggerContainer = {
   hidden: { opacity: 0 },
   visible: { opacity: 1, transition: { staggerChildren: 0.1, delayChildren: 0.1 } }
 };
-const slideInRight = {
-  hidden: { opacity: 0, x: 50 },
-  visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
-};
-
-function RotatingText({ words }) {
-  const [index, setIndex] = useState(0);
-  
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setIndex((prev) => (prev + 1) % words.length);
-    }, 2000);
-    return () => clearInterval(interval);
-  }, [words.length]);
-
-  return (
-    <div className="inline-grid [grid-template-areas:'stack'] overflow-hidden text-blue-600">
-      <AnimatePresence mode="popLayout">
-        <motion.span
-          key={words[index]}
-          initial={{ y: "100%", opacity: 0 }}
-          animate={{ y: "0%", opacity: 1 }}
-          exit={{ y: "-100%", opacity: 0 }}
-          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="[grid-area:stack] inline-block"
-        >
-          {words[index]}
-        </motion.span>
-      </AnimatePresence>
-    </div>
-  );
-}
-
-
-const ScrollIndicator = () => {
-  const { scrollY } = useScroll();
-  const opacity = useTransform(scrollY, [0, 100], [1, 0]);
-  
-  return (
-    <motion.div 
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: 1, duration: 1 }}
-      style={{ opacity }}
-      className="fixed bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center justify-center text-slate-400 dark:text-zinc-500 z-[999] pointer-events-none"
-    >
-      <span className="text-[10px] md:text-xs font-semibold tracking-widest mb-1 md:mb-2 uppercase drop-">Scroll</span>
-      <motion.div
-        animate={{ y: [0, 8, 0] }}
-        transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-      >
-        <ChevronDown className="w-4 h-4 md:w-5 md:h-5 opacity-70 drop-" />
-      </motion.div>
-    </motion.div>
-  );
-};
-
-
-const GlobalFooter = () => (
-  <div className="flex flex-col md:flex-row items-center justify-between w-full border-t border-[var(--card-border)] pt-6 mt-8 text-[var(--foreground-muted)] z-10 relative">
-    <div className="text-sm font-medium text-center md:text-left">
-      &copy; {new Date().getFullYear()} Gabriel Ryan.<br className="block md:hidden"/> All rights reserved.
-    </div>
-    <div className="flex flex-row gap-6 my-4 md:my-0">
-      <a href="https://www.linkedin.com/in/gabrielryan1999/" target="_blank" rel="noreferrer" aria-label="LinkedIn" className="p-2 -m-2 hover:text-[var(--color-brand)] transition-colors"><Linkedin className="w-5 h-5" /></a>
-      <a href="https://github.com/GabrielRyan1999" target="_blank" rel="noreferrer" aria-label="GitHub" className="p-2 -m-2 hover:text-[var(--foreground)] transition-colors"><Github className="w-5 h-5" /></a>
-      <a href="https://www.instagram.com/heyitsgabrielryan/" target="_blank" rel="noreferrer" aria-label="Instagram" className="p-2 -m-2 hover:text-pink-600 transition-colors"><Instagram className="w-5 h-5" /></a>
-    </div>
-    <div className="text-sm text-center md:text-right hidden md:block">
-      Created with ðŸ’™ by Ryan
-    </div>
-  </div>
-);
 
 export const PageTransition = ({ children }) => (<>{children}</>);
 
 
+const ROLES = [
+  "DEVELOPER.",
+  "SYSTEM BUILDER.",
+  "CURRICULUM ARCHITECT.",
+  "TECH MENTOR.",
+  "SOFTWARE ENGINEER."
+];
+
 export function Home() {
+  const [roleIndex, setRoleIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setRoleIndex((prev) => (prev + 1) % ROLES.length);
+    }, 3200);
+    return () => clearInterval(timer);
+  }, []);
+
   return (
-    <section id="home" className="relative w-full h-[100svh] min-h-[600px] overflow-hidden bg-[#F5F2EB] font-sans">
+    <section id="home" className="relative w-full h-[100svh] min-h-[600px] overflow-hidden bg-cream font-sans">
       
       {/* 
         LAYER 1: BASE (Right Side)
       */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute top-[-25vw] right-[-15vw] w-[55vw] h-[55vw] rounded-full bg-[#DDC6A7]"></div>
-        <HomeContent side="right" />
+        <div className="absolute top-[-25vw] right-[-15vw] w-[55vw] h-[55vw] rounded-full bg-[#D4C5A5]"></div>
+        <HomeBackgroundTypography side="right" />
       </div>
 
       {/* 
         LAYER 2: OVERLAY (Left Side)
       */}
-      <div className="absolute inset-0 bg-[#213555] z-10" style={{ clipPath: 'polygon(0 0, 50% 0, 50% 100%, 0 100%)' }}>
+      <div className="absolute inset-0 bg-navy z-10" style={{ clipPath: 'polygon(0 0, 50% 0, 50% 100%, 0 100%)' }}>
         <div className="absolute bottom-[-15vw] left-[-20vw] w-[50vw] h-[50vw] rounded-full border-[0.5px] border-cream/20"></div>
         <div className="absolute bottom-[-25vw] left-[-30vw] w-[70vw] h-[70vw] rounded-full border-[0.5px] border-cream/10"></div>
-        <HomeContent side="left" />
+        <HomeBackgroundTypography side="left" />
       </div>
 
-      {/* LAYER 3: PORTRAIT (Topmost) */}
-      {/* Fixed the scaling: Mobile uses a controlled width so it doesn't become gigantically tall and cover the UI. Desktop uses vh so it accurately reaches the text. */}
+      {/* LAYER 3: PORTRAIT (Center Subject) */}
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full flex justify-center z-20 pointer-events-none">
         <img 
           src="/profile-nobg.png" 
           alt="Gabriel Ryan" 
-          className="w-[130%] sm:w-[90%] md:w-auto h-auto md:h-[75vh] xl:h-[80vh] max-w-none object-contain object-bottom grayscale drop-shadow-2xl brightness-105 contrast-125" 
+          className="w-[130%] sm:w-[85%] md:w-auto h-auto max-h-[72vh] xl:max-h-[78vh] max-w-[580px] lg:max-w-none object-contain object-bottom grayscale drop-shadow-2xl brightness-105 contrast-125" 
         />
       </div>
 
-    
-      {/* LAYER 4: FRONT UI (Scroll Hint) */}
+      {/* LAYER 4: FRONT EDITORIAL METADATA & UI (Always elevated in front of portrait) */}
       <div className="absolute inset-0 z-30 pointer-events-none">
-        {/* Right side (Navy text) */}
-        <div className="absolute inset-0 text-[#213555]">
-          <ScrollHint />
+        
+        {/* Top Left Meta (Left side -> Cream) */}
+        <div className="absolute top-8 left-8 md:top-12 md:left-12 flex flex-col gap-1 text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase text-cream">
+          <span>VOL. 01</span>
+          <span>OCT / 2026</span>
         </div>
-        {/* Left side (Cream text masked) */}
-        <div className="absolute inset-0 text-[#F5F2EB]" style={{ clipPath: 'polygon(0 0, 50% 0, 50% 100%, 0 100%)' }}>
-          <ScrollHint />
+
+        {/* Top Right Meta (Right side -> Navy) */}
+        <div className="absolute top-8 right-8 md:top-12 md:right-12 flex flex-col gap-1 text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase text-right text-navy">
+          <span>VISUAL STUDY</span>
+          <span>BY GABRIEL RYAN</span>
         </div>
+
+        {/* Bottom Left Meta (Role & Est. - 2-line vertical stack, never occluded by portrait) */}
+        <div className="absolute bottom-10 left-6 sm:left-8 md:bottom-20 md:left-12 flex flex-col gap-3 sm:gap-4 md:gap-5 text-[10px] md:text-xs font-bold tracking-[0.15em] uppercase text-cream max-w-[200px] sm:max-w-[240px] md:max-w-xs">
+          <span className="opacity-70 tracking-[0.2em] text-[9px] sm:text-[10px] md:text-xs">ROLE //</span>
+          <div className="flex flex-col text-xs sm:text-sm md:text-base font-black tracking-[0.08em] drop-shadow-md leading-tight">
+            <span className="whitespace-nowrap">EDUCATOR &amp;</span>
+            <span className="relative inline-grid [grid-template-areas:'stack'] overflow-hidden h-[1.3em]">
+              <AnimatePresence mode="popLayout" initial={false}>
+                <motion.span
+                  key={roleIndex}
+                  initial={{ y: "100%", opacity: 0 }}
+                  animate={{ y: "0%", opacity: 1 }}
+                  exit={{ y: "-100%", opacity: 0 }}
+                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                  className="[grid-area:stack] inline-block whitespace-nowrap text-cream"
+                >
+                  {ROLES[roleIndex]}
+                </motion.span>
+              </AnimatePresence>
+            </span>
+          </div>
+          <div className="w-10 sm:w-12 h-[1px] bg-cream opacity-50"></div>
+          <span className="tracking-[0.2em] text-[9px] sm:text-[10px] md:text-xs">EST. 2020</span>
+        </div>
+
+        {/* Middle Right Stamp (Right side -> Navy & Cream card) */}
+        <div className="absolute top-[45%] md:top-1/2 -translate-y-1/2 right-6 sm:right-10 md:right-24 flex items-center mt-12 md:mt-24 pointer-events-auto">
+          <div className="relative w-16 h-16 sm:w-20 sm:h-20 md:w-28 md:h-28 z-10">
+            <div className="absolute inset-0 bg-navy/15 transform translate-x-2 translate-y-2 md:translate-x-3 md:translate-y-3"></div>
+            <div className="absolute inset-0 bg-cream p-2 shadow-sm border border-navy/30 flex items-center justify-center">
+              <img src="/favicon.jpg" alt="Author" className="w-full h-full object-cover grayscale contrast-125 bg-gray-200" onError={(e) => { e.target.src = 'https://api.dicebear.com/7.x/notionists/svg?seed=Gabriel&backgroundColor=e5e5e5'; }} />
+            </div>
+          </div>
+          <div className="absolute right-[-3.8rem] sm:right-[-4.5rem] md:right-[-5.5rem] top-1/2 -translate-y-1/2 origin-center rotate-90 text-[8px] md:text-[9px] font-bold tracking-[0.25em] uppercase text-navy opacity-70 whitespace-nowrap drop-shadow-md">
+            FIG. 01 // AUTHOR
+          </div>
+        </div>
+
+        {/* Scroll Hint */}
+        <ScrollHint />
       </div>
     </section>
   );
 }
 
-
 function ScrollHint() {
   return (
-    <div className="absolute bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 opacity-70">
-      <span className="text-[7px] md:text-[9px] font-bold tracking-[0.4em] uppercase whitespace-nowrap">
+    <div className="absolute bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 opacity-90 drop-shadow-md">
+      <span className="text-[7px] md:text-[9px] font-bold tracking-[0.4em] uppercase whitespace-nowrap text-cream">
         Scroll to explore
       </span>
-      <div className="w-[1px] h-8 md:h-12 bg-current overflow-hidden relative opacity-50">
+      <div className="w-[1px] h-8 md:h-12 bg-cream/60 overflow-hidden relative">
         <motion.div 
-          className="absolute top-0 left-0 w-full h-[50%] bg-current"
+          className="absolute top-0 left-0 w-full h-[50%] bg-cream"
           animate={{ y: ["-100%", "200%"] }}
           transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
         />
@@ -245,17 +141,15 @@ function ScrollHint() {
   );
 }
 
-function HomeContent({ side }) {
+function HomeBackgroundTypography({ side }) {
   const isLeft = side === 'left';
   
-  const gabrielColor = isLeft ? 'text-[#F5F2EB]' : 'text-[#213555]';
-  const ryanColor = isLeft ? 'text-[#F5F2EB]' : 'text-[#DDC6A7]';
-  const metaColor = isLeft ? 'text-[#F5F2EB]' : 'text-[#213555]';
+  const gabrielColor = isLeft ? 'text-cream' : 'text-navy';
+  const ryanColor = isLeft ? 'text-cream' : 'text-[#C9B996]';
   
   return (
-    <div className={`absolute inset-0 flex flex-col pointer-events-none ${metaColor}`}>
-      
-      {/* Center Typography (Adjusted for mobile to drop down to meet the smaller portrait) */}
+    <div className="absolute inset-0 flex flex-col pointer-events-none">
+      {/* Center Typography */}
       <div className="absolute top-[25%] md:top-[12%] left-0 w-full flex flex-col items-center justify-start">
         <h1 className={`font-serif text-[26vw] md:text-[17vw] font-black tracking-[-0.04em] leading-[0.8] uppercase z-10 relative ${gabrielColor}`}>
           GABRIEL
@@ -267,42 +161,11 @@ function HomeContent({ side }) {
           </span>
         </div>
       </div>
-
-      {/* Top Left Meta (z-30 to stay above portrait on mobile) */}
-      <div className="absolute top-8 left-8 md:top-12 md:left-12 flex flex-col gap-1 text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase z-30">
-        <span>VOL. 01</span>
-        <span>OCT / 2026</span>
-      </div>
-
-      {/* Top Right Meta */}
-      <div className="absolute top-8 right-8 md:top-12 md:right-12 flex flex-col gap-1 text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase text-right z-30">
-        <span>VISUAL STUDY</span>
-        <span>BY GABRIEL RYAN</span>
-      </div>
-
-      {/* Bottom Left Meta (z-30 guarantees it is never covered by the suit on narrow screens) */}
-      <div className="absolute bottom-12 left-8 md:bottom-24 md:left-12 flex flex-col gap-6 text-[10px] md:text-xs font-bold tracking-[0.15em] uppercase z-30">
-        <span className="opacity-70 tracking-[0.2em]">ROLE //</span>
-        <span className="text-sm md:text-base font-black tracking-[0.1em] drop-shadow-md">EDUCATOR & DEVELOPER.</span>
-        <div className="w-12 h-[1px] bg-current opacity-50"></div>
-        <span className="tracking-[0.2em]">EST. 2026</span>
-      </div>
-
-      {/* Middle Right Stamp */}
-      <div className="absolute top-[45%] md:top-1/2 -translate-y-1/2 right-12 md:right-24 flex items-center mt-12 md:mt-24 z-30">
-        <div className="relative w-20 h-20 md:w-28 md:h-28 z-10">
-           <div className="absolute inset-0 bg-[#E0DFDC] transform translate-x-2 translate-y-2 md:translate-x-3 md:translate-y-3"></div>
-           <div className="absolute inset-0 bg-[#F5F2EB] p-2 shadow-sm border border-[#E0DFDC] flex items-center justify-center">
-              <img src="/favicon.jpg" alt="Author" className="w-full h-full object-cover grayscale contrast-125 bg-gray-200" onError={(e) => { e.target.src = 'https://api.dicebear.com/7.x/notionists/svg?seed=Gabriel&backgroundColor=e5e5e5'; }} />
-           </div>
-        </div>
-        <div className="absolute right-[-4.5rem] md:right-[-5.5rem] top-1/2 -translate-y-1/2 origin-center rotate-90 text-[8px] md:text-[9px] font-bold tracking-[0.25em] uppercase opacity-70 whitespace-nowrap drop-shadow-md">
-          FIG. 01 &mdash; AUTHOR
-        </div>
-      </div>
     </div>
   );
 }
+
+
 
 export function About() {
   return (
@@ -329,7 +192,7 @@ export function About() {
                    <motion.h2 variants={fadeUp} className="font-sans font-black text-6xl md:text-7xl lg:text-8xl tracking-tighter uppercase leading-[0.85] mb-4">
                        Gabriel Ryan<br/>Prima
                    </motion.h2>
-                   <motion.div variants={fadeUp} className="font-sans font-bold text-lg md:text-xl text-blue-700 tracking-tight uppercase mb-12">
+                   <motion.div variants={fadeUp} className="font-sans font-bold text-lg md:text-xl text-navy tracking-tight uppercase mb-12">
                        Educator, Developer, & System Builder.
                    </motion.div>
                    
@@ -395,6 +258,19 @@ export function Work() {
   const [workIndex, setWorkIndex] = useState(0);
   const nextWork = () => setWorkIndex((p) => (p + 1) % workProjects.length);
   const prevWork = () => setWorkIndex((p) => (p - 1 + workProjects.length) % workProjects.length);
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName)) return;
+      if (e.key === 'ArrowRight') {
+        nextWork();
+      } else if (e.key === 'ArrowLeft') {
+        prevWork();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
   
   return (
     <PageTransition>
@@ -406,6 +282,31 @@ export function Work() {
            <span className="text-xs font-bold tracking-widest uppercase font-mono">
               0{workIndex + 1} / 0{workProjects.length}
            </span>
+        </div>
+
+        {/* Project Selector Tabs Strip */}
+        <div className="w-full flex flex-wrap border-b border-cream/30 bg-navy/80 shrink-0">
+          {workProjects.map((p, idx) => {
+            const isSelected = workIndex === idx;
+            return (
+              <button
+                key={p.title}
+                onClick={() => setWorkIndex(idx)}
+                className={`flex-1 min-w-[200px] py-3.5 px-4 md:px-8 font-mono text-[11px] md:text-xs tracking-widest uppercase text-left transition-colors cursor-pointer border-r last:border-r-0 border-cream/30 flex items-center justify-between group ${
+                  isSelected
+                    ? 'bg-cream text-navy font-black shadow-[inset_0px_2px_0px_0px_#1E4E8C]'
+                    : 'text-cream/70 hover:text-cream hover:bg-cream/10'
+                }`}
+              >
+                <span className="truncate">
+                  0{idx + 1} // {p.title}
+                </span>
+                <span className={`text-[10px] tracking-wider ml-2 hidden sm:inline ${isSelected ? 'text-navy/70' : 'text-cream/50'}`}>
+                  {p.tag}
+                </span>
+              </button>
+            );
+          })}
         </div>
 
         {/* Main Spread */}
@@ -450,7 +351,6 @@ export function Work() {
                          <span className="text-sm font-bold tracking-widest uppercase border-b border-cream pb-1">
                            View Live Project
                          </span>
-                         <span className="font-mono text-lg leading-none group-hover:translate-x-2 transition-transform">→</span>
                       </a>
                     </motion.div>
                   </AnimatePresence>
@@ -460,13 +360,13 @@ export function Work() {
                <div className="flex border-t border-cream/30 h-16 md:h-20 shrink-0">
                   <button
                         onClick={prevWork}
-                        className="flex-1 border-r border-cream/30 flex items-center justify-center hover:bg-cream hover:text-navy transition-colors group"
+                        className="flex-1 border-r border-cream/30 flex items-center justify-center hover:bg-cream hover:text-navy transition-colors group cursor-pointer"
                     >
                      <span className="text-xs font-bold tracking-widest uppercase">Previous</span>
                   </button>
                   <button
                         onClick={nextWork}
-                        className="flex-1 flex items-center justify-center hover:bg-cream hover:text-navy transition-colors group"
+                        className="flex-1 flex items-center justify-center hover:bg-cream hover:text-navy transition-colors group cursor-pointer"
                     >
                      <span className="text-xs font-bold tracking-widest uppercase">Next</span>
                   </button>
@@ -475,7 +375,7 @@ export function Work() {
            </div>
            
            {/* Right Image Half */}
-           <div className="w-full md:w-[60%] relative h-[400px] md:h-auto bg-[#0a1526] overflow-hidden">
+           <div className="w-full md:w-[60%] relative h-[400px] md:h-auto bg-[#153966] overflow-hidden">
                <AnimatePresence mode="wait">
                   <motion.div
                       key={workIndex}
@@ -536,19 +436,37 @@ export function Service() {
           {/* Brutalist Accordion */}
           <div className="w-full flex flex-col z-10 border-b-2 border-navy">
             {[
-              { title: "CUSTOM WEB PLATFORMS", desc: "Building fast, scalable, and robust web applications, internal dashboards, and custom platforms tailored to your business needs.", images: ["https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=400&q=80", "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400&q=80", "https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=400&q=80"] },
-              { title: "EDTECH SOLUTIONS", desc: "Developing custom learning management systems (LMS) and student progress trackers designed with pedagogical best practices.", images: ["https://images.unsplash.com/photo-1501504905252-473c47e087f8?w=400&q=80", "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&q=80", "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=400&q=80"] },
-              { title: "CURRICULUM DEV", desc: "Crafting structured, tech-focused syllabi and scalable learning materials for online, hybrid, and offline educational environments.", images: ["https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400&q=80", "https://images.unsplash.com/photo-1531403009284-440f080d1e12?w=400&q=80", "https://images.unsplash.com/photo-1503694978374-8a2fa686963a?w=400&q=80"] },
-              { title: "1-ON-1 TECH MENTORING", desc: "Providing personalized coaching in programming, 3D modeling, and game development for students and professionals looking to level up their skills.", images: ["https://images.unsplash.com/photo-1531482615713-2afd69097998?w=400&q=80", "https://images.unsplash.com/photo-1573164713988-8665fc963095?w=400&q=80", "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=400&q=80"] }
+              { 
+                title: "CUSTOM WEB PLATFORMS", 
+                desc: "Building fast, scalable, and robust web applications, internal dashboards, and custom platforms tailored to your business needs.", 
+                images: ["/projects/mentor-reporting.svg", "/projects/reminder-app.svg", "/projects/ryans-toolkit.svg"] 
+              },
+              { 
+                title: "EDTECH SOLUTIONS", 
+                desc: "Developing custom learning management systems (LMS) and student progress trackers designed with pedagogical best practices.", 
+                images: ["/projects/mentor-reporting.svg", "/gallery_1.jpg", "/gallery_2.jpg"] 
+              },
+              { 
+                title: "CURRICULUM DEV", 
+                desc: "Crafting structured, tech-focused syllabi and scalable learning materials for online, hybrid, and offline educational environments.", 
+                images: ["/gallery_1.jpg", "/gallery_3.jpg", "/gallery_4.jpg"] 
+              },
+              { 
+                title: "1-ON-1 TECH MENTORING", 
+                desc: "Providing personalized coaching in programming, 3D modeling, and game development for students and professionals looking to level up their skills.", 
+                images: ["/gallery_2.jpg", "/gallery_4.jpg", "/gallery_5.jpg"] 
+              }
             ].map((service, index) => {
               const isOpen = activeServiceIndex === index;
               return (
                 <div key={service.title} className={`w-full border-t-2 border-navy overflow-hidden transition-colors duration-500 ${isOpen ? 'bg-navy text-cream' : 'bg-transparent text-navy'}`}>
                   
                   <button
+                      id={`service-button-${index}`}
                       onClick={() => setActiveServiceIndex(isOpen ? null : index)}
                       aria-expanded={isOpen}
-                      className={`w-full flex items-center justify-between py-8 md:py-12 px-6 md:px-12 transition-colors ${isOpen ? '' : 'hover:bg-navy/5'}`}
+                      aria-controls={`service-panel-${index}`}
+                      className={`w-full flex items-center justify-between py-8 md:py-12 px-6 md:px-12 transition-colors cursor-pointer ${isOpen ? '' : 'hover:bg-navy/5'}`}
                     >
                       <div className="flex items-center gap-6 md:gap-12">
                         <span className={`text-sm md:text-lg font-mono font-bold ${isOpen ? 'text-cream/50' : 'text-navy/50'}`} aria-hidden="true">
@@ -591,7 +509,7 @@ export function Service() {
                           {/* Images Side (Contact Sheet Grid) */}
                           <div className="w-full lg:w-2/3 grid grid-cols-1 sm:grid-cols-3 gap-0 border border-cream/20">
                             {service.images.map((img, i) => (
-                              <div key={i} className={`aspect-square relative overflow-hidden bg-[#0a1526] ${i > 0 ? 'border-t sm:border-t-0 sm:border-l border-cream/20' : ''}`}>
+                              <div key={i} className={`aspect-square relative overflow-hidden bg-[#153966] ${i > 0 ? 'border-t sm:border-t-0 sm:border-l border-cream/20' : ''}`}>
                                 <img
                                   src={img}
                                   alt=""
@@ -676,7 +594,7 @@ export function Experience() {
         </section>
 
         {/* Testimonials Wrapper */}
-        <section className="relative w-full min-h-[100svh] bg-cream text-navy flex flex-col border-t-2 border-navy overflow-hidden">
+        <section id="testimonials" className="relative w-full min-h-[100svh] bg-cream text-navy flex flex-col border-t-2 border-navy overflow-hidden">
           
           {/* Header Row */}
           <div className="w-full flex items-center justify-between px-6 md:px-12 py-4 border-b border-navy shrink-0 z-20 relative">
@@ -685,16 +603,27 @@ export function Experience() {
           </div>
 
           <div className="flex-1 flex flex-col w-full py-16 md:py-24 relative">
-           <Testimonials />
-        </div>
+            {/* Header */}
+            <div className="w-full max-w-7xl mx-auto px-6 mb-12 md:mb-16 flex flex-col md:flex-row md:items-end justify-between gap-8 z-10">
+               <div>
+                  <span className="text-xs font-mono font-bold tracking-widest uppercase opacity-70 block mb-2">VERIFIED FIELD REPORTS</span>
+                  <h2 className="font-serif text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-[0.85]">
+                     TESTIMONIALS<br/>& ARCHIVES
+                  </h2>
+               </div>
+               <div className="max-w-md text-navy/80 font-serif text-lg leading-relaxed border-l-2 border-navy pl-6 flex flex-col gap-2">
+                  <p>Direct observations and endorsements from partner schools and edtech platforms.</p>
+                  <span className="text-xs font-mono tracking-widest uppercase opacity-60">OFFICIAL ENDORSEMENTS</span>
+               </div>
+            </div>
+
+            <Testimonials />
+          </div>
         </section>
 
       </PageTransition>
     );
 }
-
-// Could not extract new_contact from redesign-contact.py
-
 
 export function Contact() {
   return (
@@ -705,11 +634,3 @@ export function Contact() {
     </PageTransition>
   );
 }
-
-
-
-
-
-
-
-

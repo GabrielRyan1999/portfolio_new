@@ -1,212 +1,255 @@
-import React, { useState } from "react"
-import { ArrowUpRight } from "lucide-react"
-import { Linkedin, Github, Instagram } from "./brand-icons"
-import { SectionShell } from "./SectionShell"
-import { useForm, ValidationError } from "@formspree/react"
+import React, { useState } from "react";
+import { Copy, Check } from "lucide-react";
+import { Linkedin, Github, Instagram } from "./brand-icons";
+import { useForm, ValidationError } from "@formspree/react";
 
 export function LetsWorkTogether() {
-    const [isHovered, setIsHovered] = useState(false)
-    const [isClicked, setIsClicked] = useState(false)
-    const [showSuccess, setShowSuccess] = useState(false)
-    
-    const [state, handleFormSubmit] = useForm("xgaekynq")
-  
-    const handleClick = (e) => {
-      e.preventDefault()
-      setIsClicked(true)
-  
-      setTimeout(() => {
-        setShowSuccess(true)
-      }, 500)
-    }
-  
-    return (
-      <section className="relative w-full min-h-[100svh] bg-navy flex flex-col border-t-2 border-cream text-cream overflow-hidden">
-          
-          {/* Header Row */}
-          <div className="w-full flex items-center justify-between px-6 md:px-12 py-4 border-b border-cream/30 shrink-0 z-20 relative">
-             <span className="text-xs font-bold tracking-widest uppercase">Chapter 06 // Initiate Contact</span>
-             <span className="text-xs font-bold tracking-widest uppercase hidden md:inline-block">Yogyakarta, ID</span>
+  const [copied, setCopied] = useState(false);
+  const [state, handleFormSubmit] = useForm("xgaekynq");
+
+  const copyEmail = () => {
+    navigator.clipboard.writeText("gabrielryan1999@gmail.com");
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2500);
+  };
+
+  return (
+    <section className="relative w-full min-h-[100svh] bg-navy text-cream flex flex-col justify-between border-t-2 border-cream overflow-hidden">
+      
+      {/* Header Row */}
+      <div className="w-full flex items-center justify-between px-6 md:px-12 py-4 border-b border-cream/30 shrink-0 z-20 relative">
+        <span className="text-xs font-bold tracking-widest uppercase">Chapter 06 // Contact & Inquiries</span>
+        <span className="text-xs font-bold tracking-widest uppercase hidden md:inline-block">Yogyakarta, ID</span>
+      </div>
+
+      {/* Main 2-Column Editorial Spread */}
+      <div className="flex-1 flex flex-col lg:flex-row w-full h-full relative">
+        
+        {/* Left Column: Direct Info & Editorial Pitch */}
+        <div className="w-full lg:w-1/2 p-6 sm:p-10 md:p-12 lg:p-14 border-b lg:border-b-0 lg:border-r border-cream/30 flex flex-col justify-between">
+          <div>
+            <span className="text-xs font-mono font-bold tracking-[0.25em] uppercase opacity-70 block mb-3">
+              01 // DIRECT INQUIRIES
+            </span>
+            <h2 className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-[0.85] mb-6">
+              LET'S WORK<br />TOGETHER.
+            </h2>
+            <p className="font-serif text-lg md:text-xl leading-relaxed text-cream/90 max-w-lg mb-8">
+              Available for curriculum development, tech mentorship, web platforms, and engineering collaborations with forward-thinking schools and edtech platforms.
+            </p>
           </div>
 
-          <div className="flex-1 flex flex-col justify-center items-center py-16 md:py-24 px-6 relative w-full h-full">
-
-        <div className="relative flex flex-col items-center gap-12 w-full max-w-4xl z-10">
-          <div
-            className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-12 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
-            style={{
-              opacity: showSuccess ? 1 : 0,
-              transform: showSuccess ? "translateY(0) scale(1)" : "translateY(20px) scale(0.95)",
-              pointerEvents: showSuccess ? "auto" : "none",
-            }}
-          >
-            {/* Elegant heading */}
-            <div className="flex flex-col items-center gap-4">
-              <span
-                className="text-xs font-mono tracking-[0.3em] uppercase text-cream/50 transition-all duration-500"
-                style={{
-                  transform: showSuccess ? "translateY(0)" : "translateY(10px)",
-                  opacity: showSuccess ? 1 : 0,
-                  transitionDelay: "100ms",
-                }}
-              >
-                Transmission
-              </span>
-              <h3
-                className="font-serif text-5xl md:text-7xl font-black tracking-tighter text-cream transition-all duration-500"
-                style={{
-                  transform: showSuccess ? "translateY(0)" : "translateY(10px)",
-                  opacity: showSuccess ? 1 : 0,
-                  transitionDelay: "200ms",
-                }}
-              >
-                ESTABLISH CONTACT
-              </h3>
-            </div>
-  
+          {/* Directory Ledger Table */}
+          <div className="w-full border-t border-cream/30 pt-6 flex flex-col gap-4 mt-8 lg:mt-0">
             
-            {/* Formspree Form */}
-            <div 
-               className="w-full max-w-2xl mt-4 transition-all duration-500"
-               style={{
-                  transform: showSuccess ? "translateY(0)" : "translateY(15px)",
-                  opacity: showSuccess ? 1 : 0,
-                  transitionDelay: "150ms",
-               }}
-            >
-              {state.succeeded ? (
-                 <div className="text-center bg-cream border-2 border-navy p-12 shadow-[8px_8px_0px_0px_rgba(245,242,235,0.3)]">
-                    <p className="text-navy font-black font-serif text-4xl mb-4">RECEIVED.</p>
-                    <p className="text-navy/80 font-mono text-sm uppercase tracking-widest">I will respond shortly.</p>
-                 </div>
-              ) : (
-                 <form onSubmit={handleFormSubmit} className="flex flex-col gap-8 w-full text-left">
-                   <input type="text" name="_gotcha" style={{ display: 'none' }} />
-                   
-                   <div>
-                     <input 
-                       type="email" 
-                       name="email" 
-                       aria-label="Email address"
-                       placeholder="Enter your email address..."
-                       required 
-                       className="w-full bg-transparent border-b-2 border-cream/30 text-cream font-serif text-2xl md:text-4xl py-4 outline-none focus:border-cream placeholder:text-cream/20 transition-all rounded-none"
-                     />
-                     <ValidationError field="email" prefix="Email" errors={state.errors} className="text-rose-400 font-mono text-xs mt-2" />
-                   </div>
-                   
-                   <div>
-                     <textarea 
-                       name="message" 
-                       aria-label="Message content"
-                       placeholder="How can we collaborate?"
-                       required 
-                       rows="2"
-                       className="w-full bg-transparent border-b-2 border-cream/30 text-cream font-serif text-2xl md:text-4xl py-4 outline-none focus:border-cream placeholder:text-cream/20 transition-all resize-none rounded-none"
-                     />
-                     <ValidationError field="message" prefix="Message" errors={state.errors} className="text-rose-400 font-mono text-xs mt-2" />
-                   </div>
-                   
-                   <button 
-                     type="submit" 
-                     disabled={state.submitting}
-                     className="w-full bg-cream text-navy border-2 border-cream mt-8 py-6 flex items-center justify-center font-mono font-bold tracking-widest uppercase hover:bg-transparent hover:text-cream transition-all disabled:opacity-50 disabled:cursor-not-allowed group"
-                   >
-                     {state.submitting ? "Transmitting..." : "Send Transmission"}
-                   </button>
-                 </form>
-              )}
-            </div>
-          </div>
-  
-          <button
-            type="button"
-            aria-label="Open contact form"
-            aria-expanded={isClicked}
-            className="group relative cursor-pointer appearance-none bg-transparent border-none p-0 outline-none w-full flex justify-center"
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-            onFocus={() => setIsHovered(true)}
-            onBlur={() => setIsHovered(false)}
-            onClick={handleClick}
-            style={{ pointerEvents: isClicked ? "none" : "auto" }}
-          >
-            <div className="flex flex-col items-center gap-0">
-              <h2
-                className="relative text-center text-[12vw] leading-[0.8] font-black tracking-tighter uppercase font-serif text-cream transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
-                style={{
-                  opacity: isClicked ? 0 : 1,
-                  transform: isClicked ? "translateY(-40px) scale(0.95)" : "translateY(0) scale(1)",
-                }}
-              >
-                <span className="block overflow-hidden">
-                  <span
-                    className="block transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:italic"
-                    style={{ transform: isHovered && !isClicked ? "scale(1.05)" : "scale(1)" }}
-                  >
-                    INITIATE
-                  </span>
-                </span>
-                <span className="block overflow-hidden">
-                  <span
-                    className="block transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] delay-75 opacity-70 group-hover:opacity-100"
-                    style={{ transform: isHovered && !isClicked ? "scale(1.05)" : "scale(1)" }}
-                  >
-                    CONTACT
-                  </span>
-                </span>
-              </h2>
-
-              <div className="relative mt-12 flex w-24 h-24 items-center justify-center">
-                <div
-                  className="pointer-events-none absolute inset-0 rounded-full border-2 transition-all ease-out"
-                  style={{
-                    borderColor: isClicked ? "transparent" : isHovered ? "#F5F2EB" : "rgba(245,242,235,0.3)",
-                    backgroundColor: isClicked ? "transparent" : isHovered ? "#F5F2EB" : "transparent",
-                    transform: isClicked ? "scale(3)" : isHovered ? "scale(1.1)" : "scale(1)",
-                    opacity: isClicked ? 0 : 1,
-                    transitionDuration: isClicked ? "700ms" : "500ms",
-                  }}
-                />
-                <ArrowUpRight
-                  className="w-10 h-10 transition-all ease-[cubic-bezier(0.16,1,0.3,1)]"
-                  style={{
-                    transform: isClicked
-                      ? "translate(100px, -100px) scale(0.5)"
-                      : isHovered
-                        ? "translate(4px, -4px)"
-                        : "translate(0, 0)",
-                    opacity: isClicked ? 0 : 1,
-                    color: isHovered && !isClicked ? "#1A365D" : "#F5F2EB",
-                    transitionDuration: isClicked ? "600ms" : "500ms",
-                  }}
-                />
+            {/* Email Row */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-cream/20">
+              <span className="text-xs font-mono tracking-widest uppercase opacity-70">
+                EMAIL //
+              </span>
+              <div className="flex items-center gap-3">
+                <a
+                  href="mailto:gabrielryan1999@gmail.com"
+                  className="font-mono text-sm md:text-base font-bold underline decoration-cream/40 underline-offset-4 hover:decoration-cream text-cream transition-colors"
+                >
+                  gabrielryan1999@gmail.com
+                </a>
+                <button
+                  onClick={copyEmail}
+                  type="button"
+                  aria-label="Copy email address"
+                  className="border border-cream/40 px-2.5 py-1 text-[10px] font-mono tracking-widest uppercase hover:bg-cream hover:text-navy transition-colors flex items-center gap-1.5 cursor-pointer"
+                >
+                  {copied ? (
+                    <>
+                      <Check className="w-3 h-3" />
+                      <span>COPIED</span>
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="w-3 h-3" />
+                      <span>COPY</span>
+                    </>
+                  )}
+                </button>
               </div>
             </div>
-          </button>
-        </div>
-        </div>
-        {/* Footer */}
-        <div className="absolute bottom-0 left-0 w-full flex flex-col md:flex-row items-center justify-between border-t-2 border-cream/30 py-6 px-6 md:px-12 text-cream/70 font-mono text-xs tracking-widest uppercase">
-          <div className="text-center md:text-left mb-4 md:mb-0">
-            &copy; {new Date().getFullYear()} Gabriel Ryan. All rights reserved.
-          </div>
-          <div className="flex flex-row items-center gap-8 my-4 md:my-0">
-            <a href="https://www.linkedin.com/in/gabrielryan1999/" target="_blank" rel="noreferrer" aria-label="LinkedIn" className="hover:text-cream transition-transform hover:scale-110">
-               <Linkedin className="w-5 h-5" />
-            </a>
-            <a href="https://github.com/GabrielRyan1999" target="_blank" rel="noreferrer" aria-label="GitHub" className="hover:text-cream transition-transform hover:scale-110">
-               <Github className="w-5 h-5" />
-            </a>
-            <a href="https://www.instagram.com/heyitsgabrielryan/" target="_blank" rel="noreferrer" aria-label="Instagram" className="hover:text-cream transition-transform hover:scale-110">
-               <Instagram className="w-5 h-5" />
-            </a>
-          </div>
-          <div className="text-center md:text-right hidden md:block">
-            ARCHITECTED BY RYAN
+
+            {/* Location Row */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-cream/20">
+              <span className="text-xs font-mono tracking-widest uppercase opacity-70">
+                LOCATION //
+              </span>
+              <span className="font-mono text-sm font-bold text-cream">
+                Yogyakarta, Indonesia (WIB · UTC+7)
+              </span>
+            </div>
+
+            {/* Availability Row */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-cream/20">
+              <span className="text-xs font-mono tracking-widest uppercase opacity-70">
+                STATUS //
+              </span>
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 bg-emerald-400 rounded-none animate-pulse"></span>
+                <span className="font-mono text-sm font-bold text-cream">
+                  Available for Select Projects
+                </span>
+              </div>
+            </div>
+
+            {/* Social Channels Row */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-1">
+              <span className="text-xs font-mono tracking-widest uppercase opacity-70">
+                PROFILES //
+              </span>
+              <div className="flex items-center gap-6">
+                <a
+                  href="https://www.linkedin.com/in/gabrielryan1999/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center gap-2 text-xs font-mono tracking-widest uppercase hover:opacity-70 transition-opacity"
+                >
+                  <Linkedin className="w-4 h-4" />
+                  <span>LinkedIn</span>
+                </a>
+                <a
+                  href="https://github.com/GabrielRyan1999"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center gap-2 text-xs font-mono tracking-widest uppercase hover:opacity-70 transition-opacity"
+                >
+                  <Github className="w-4 h-4" />
+                  <span>GitHub</span>
+                </a>
+                <a
+                  href="https://www.instagram.com/heyitsgabrielryan/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center gap-2 text-xs font-mono tracking-widest uppercase hover:opacity-70 transition-opacity"
+                >
+                  <Instagram className="w-4 h-4" />
+                  <span>Instagram</span>
+                </a>
+              </div>
+            </div>
+
           </div>
         </div>
 
-      </section>
-    )
+        {/* Right Column: Clean, Perfectly Aligned Brutalist Form */}
+        <div className="w-full lg:w-1/2 p-6 sm:p-10 md:p-12 lg:p-14 flex flex-col justify-between bg-navy/30">
+          
+          <div>
+            {/* Header matches left column baseline */}
+            <span className="text-xs font-mono font-bold tracking-[0.25em] uppercase opacity-70 block mb-3">
+              02 // DIRECT DISPATCH
+            </span>
+            <h3 className="font-serif text-4xl sm:text-5xl md:text-6xl font-black tracking-tighter leading-[0.85] text-cream mb-4">
+              START A<br />CONVERSATION.
+            </h3>
+            <p className="font-serif text-base md:text-lg text-cream/80 mb-8 max-w-lg">
+              Send a note directly. I review inquiries personally and will get back to your email within 24 to 48 hours.
+            </p>
+          </div>
+
+          <div className="w-full my-auto">
+            {state.succeeded ? (
+              <div className="bg-cream text-navy p-8 md:p-10 border-2 border-cream shadow-[8px_8px_0px_0px_rgba(235,229,216,0.3)] text-left">
+                <span className="font-mono text-xs font-bold tracking-widest uppercase opacity-70 block mb-2">
+                  RECORD // TRANSMITTED
+                </span>
+                <h4 className="font-serif text-4xl md:text-5xl font-black tracking-tight mb-3">
+                  MESSAGE RECEIVED.
+                </h4>
+                <p className="font-serif text-base md:text-lg leading-relaxed opacity-90 mb-4">
+                  Thank you for reaching out. Your note has been logged directly to my inbox and I will reply within 24 to 48 hours.
+                </p>
+                <div className="font-mono text-xs font-bold tracking-widest uppercase opacity-60">
+                  DISPATCH CONFIRMATION // GR-{new Date().getFullYear()}
+                </div>
+              </div>
+            ) : (
+              <form onSubmit={handleFormSubmit} className="flex flex-col gap-6">
+                <input type="text" name="_gotcha" style={{ display: "none" }} />
+
+                {/* Field 01: Name */}
+                <div className="flex flex-col border-b-2 border-cream/30 focus-within:border-cream transition-colors pb-2">
+                  <label htmlFor="contact-name" className="text-[11px] font-mono font-bold tracking-widest uppercase opacity-70 mb-1">
+                    01 // YOUR NAME OR ORGANIZATION *
+                  </label>
+                  <input
+                    id="contact-name"
+                    type="text"
+                    name="name"
+                    required
+                    placeholder="e.g. Alex Morgan / Studio Partner"
+                    className="w-full bg-transparent text-cream font-serif text-xl md:text-2xl outline-none placeholder:text-cream/30 py-1"
+                  />
+                </div>
+
+                {/* Field 02: Email */}
+                <div className="flex flex-col border-b-2 border-cream/30 focus-within:border-cream transition-colors pb-2">
+                  <label htmlFor="contact-email" className="text-[11px] font-mono font-bold tracking-widest uppercase opacity-70 mb-1">
+                    02 // EMAIL ADDRESS *
+                  </label>
+                  <input
+                    id="contact-email"
+                    type="email"
+                    name="email"
+                    required
+                    placeholder="name@organization.com"
+                    className="w-full bg-transparent text-cream font-serif text-xl md:text-2xl outline-none placeholder:text-cream/30 py-1"
+                  />
+                  <ValidationError field="email" prefix="Email" errors={state.errors} className="text-rose-400 font-mono text-xs mt-1" />
+                </div>
+
+                {/* Field 03: Message */}
+                <div className="flex flex-col border-b-2 border-cream/30 focus-within:border-cream transition-colors pb-2">
+                  <label htmlFor="contact-message" className="text-[11px] font-mono font-bold tracking-widest uppercase opacity-70 mb-1">
+                    03 // PROJECT SCOPE OR INQUIRY *
+                  </label>
+                  <textarea
+                    id="contact-message"
+                    name="message"
+                    required
+                    rows={3}
+                    placeholder="Briefly describe your goals, timeline, or curriculum requirements..."
+                    className="w-full bg-transparent text-cream font-serif text-lg md:text-xl outline-none placeholder:text-cream/30 py-1 resize-none leading-relaxed"
+                  />
+                  <ValidationError field="message" prefix="Message" errors={state.errors} className="text-rose-400 font-mono text-xs mt-1" />
+                </div>
+
+                {/* Submit Button */}
+                <div className="pt-2">
+                  <button
+                    type="submit"
+                    disabled={state.submitting}
+                    className="w-full bg-cream text-navy border-2 border-cream py-4 md:py-4.5 font-mono text-xs md:text-sm font-black tracking-widest uppercase hover:bg-transparent hover:text-cream transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer shadow-[6px_6px_0px_0px_rgba(235,229,216,0.25)] hover:shadow-none active:translate-x-1 active:translate-y-1 flex items-center justify-center"
+                  >
+                    <span>{state.submitting ? "SENDING DISPATCH..." : "SEND MESSAGE"}</span>
+                  </button>
+                </div>
+              </form>
+            )}
+          </div>
+
+          <div className="hidden lg:block h-6"></div>
+
+        </div>
+
+      </div>
+
+      {/* Editorial Footer */}
+      <footer className="w-full flex flex-col md:flex-row items-center justify-between border-t-2 border-cream/30 py-5 px-6 md:px-12 text-cream/70 font-mono text-xs tracking-widest uppercase shrink-0 bg-navy">
+        <div className="text-center md:text-left mb-2 md:mb-0">
+          &copy; {new Date().getFullYear()} GABRIEL RYAN PRIMA. ALL RIGHTS RESERVED.
+        </div>
+        <div className="text-center md:text-right">
+          YOGYAKARTA, ID // ARCHITECTED WITH CARE
+        </div>
+      </footer>
+
+    </section>
+  );
 }

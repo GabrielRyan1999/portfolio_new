@@ -57,7 +57,7 @@ export const workProjects = [
       tag: "Internal Tool",
       desc: "A comprehensive virtual administration platform to streamline reporting, data management, and parent communication.",
       tech: ["React", "Tailwind", "Node.js", "Firebase"],
-      img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80",
+      img: "/projects/mentor-reporting.svg",
       url: "https://report-tembel.krya.global/"
     },
     { 
@@ -65,7 +65,7 @@ export const workProjects = [
       tag: "Productivity",
       desc: "A sleek, intuitive task manager and reminder app to boost daily productivity.",
       tech: ["Next.js", "TypeScript", "Tailwind", "Prisma", "PostgreSQL"],
-      img: "https://images.unsplash.com/photo-1540350394557-8d14678e7f91?w=600&q=80",
+      img: "/projects/reminder-app.svg",
       url: "https://reminder-app-chromaksa.vercel.app/"
     },
     { 
@@ -73,7 +73,7 @@ export const workProjects = [
       tag: "PWA Utility",
       desc: "A fast, local-first utility for PDF manipulation, AI background removal, and OCR.",
       tech: ["React", "PWA", "WebAssembly", "PDF-Lib", "Tesseract"],
-      img: "https://images.unsplash.com/photo-1618044733300-9472054094ee?w=600&q=80",
+      img: "/projects/ryans-toolkit.svg",
       url: "https://ryan-s-tools.vercel.app/"
     }
   ];
