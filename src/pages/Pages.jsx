@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { Testimonials } from '../components/ui/unique-testimonial';
 import { LetsWorkTogether } from '../components/ui/lets-work-section';
 import { experienceJobs, workProjects } from '../data';
 
 // Animation configs
+const heroEase = [0.16, 1, 0.3, 1];
+
 const fadeUp = {
   hidden: { opacity: 0, y: 40 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
+  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: heroEase } }
 };
 
 const staggerContainer = {
@@ -15,8 +17,77 @@ const staggerContainer = {
   visible: { opacity: 1, transition: { staggerChildren: 0.1, delayChildren: 0.1 } }
 };
 
-export const PageTransition = ({ children }) => (<>{children}</>);
+const createHeroVariants = (shouldReduce) => ({
+  title: {
+    hidden: { opacity: 0, y: shouldReduce ? 0 : 50 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.85, ease: heroEase, delay: 0.1 }
+    }
+  },
+  cursive: {
+    hidden: { opacity: 0, y: shouldReduce ? 0 : 25, scale: shouldReduce ? 1 : 0.95 },
+    visible: {
+      opacity: 0.9,
+      y: 0,
+      scale: 1,
+      transition: { duration: 0.8, ease: heroEase, delay: 0.35 }
+    }
+  },
+  portrait: {
+    hidden: { opacity: 0, y: shouldReduce ? 0 : 55, scale: shouldReduce ? 1 : 0.97 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: { duration: 0.95, ease: heroEase, delay: 0.2 }
+    }
+  },
+  metaTopLeft: {
+    hidden: { opacity: 0, y: shouldReduce ? 0 : -12 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: heroEase, delay: 0.5 }
+    }
+  },
+  metaTopRight: {
+    hidden: { opacity: 0, y: shouldReduce ? 0 : -12 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: heroEase, delay: 0.55 }
+    }
+  },
+  metaBottom: {
+    hidden: { opacity: 0, y: shouldReduce ? 0 : 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.7, ease: heroEase, delay: 0.65 }
+    }
+  },
+  stamp: {
+    hidden: { opacity: 0, scale: shouldReduce ? 1 : 0.88, y: shouldReduce ? 0 : 15 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      y: 0,
+      transition: { duration: 0.65, ease: heroEase, delay: 0.8 }
+    }
+  },
+  scrollHint: {
+    hidden: { opacity: 0, y: shouldReduce ? 0 : 10 },
+    visible: {
+      opacity: 0.9,
+      y: 0,
+      transition: { duration: 0.6, ease: heroEase, delay: 1.0 }
+    }
+  }
+});
 
+export const PageTransition = ({ children }) => (<>{children}</>);
 
 const ROLES = [
   "DEVELOPER.",
@@ -28,6 +99,8 @@ const ROLES = [
 
 export function Home() {
   const [roleIndex, setRoleIndex] = useState(0);
+  const shouldReduceMotion = useReducedMotion();
+  const heroVariants = createHeroVariants(shouldReduceMotion);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -44,7 +117,7 @@ export function Home() {
       */}
       <div className="absolute inset-0 z-0">
         <div className="absolute top-[-25vw] right-[-15vw] w-[55vw] h-[55vw] rounded-full bg-[#D4C5A5]"></div>
-        <HomeBackgroundTypography side="right" />
+        <HomeBackgroundTypography side="right" variants={heroVariants} />
       </div>
 
       {/* 
@@ -53,35 +126,55 @@ export function Home() {
       <div className="absolute inset-0 bg-navy z-10" style={{ clipPath: 'polygon(0 0, 50% 0, 50% 100%, 0 100%)' }}>
         <div className="absolute bottom-[-15vw] left-[-20vw] w-[50vw] h-[50vw] rounded-full border-[0.5px] border-cream/20"></div>
         <div className="absolute bottom-[-25vw] left-[-30vw] w-[70vw] h-[70vw] rounded-full border-[0.5px] border-cream/10"></div>
-        <HomeBackgroundTypography side="left" />
+        <HomeBackgroundTypography side="left" variants={heroVariants} />
       </div>
 
       {/* LAYER 3: PORTRAIT (Center Subject) */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full flex justify-center z-20 pointer-events-none">
+      <motion.div 
+        variants={heroVariants.portrait}
+        initial="hidden"
+        animate="visible"
+        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full flex justify-center z-20 pointer-events-none origin-bottom"
+      >
         <img 
           src="/profile-nobg.png" 
           alt="Gabriel Ryan" 
           className="w-[130%] sm:w-[85%] md:w-auto h-auto max-h-[72vh] xl:max-h-[78vh] max-w-[580px] lg:max-w-none object-contain object-bottom grayscale drop-shadow-2xl brightness-105 contrast-125" 
         />
-      </div>
+      </motion.div>
 
       {/* LAYER 4: FRONT EDITORIAL METADATA & UI (Always elevated in front of portrait) */}
       <div className="absolute inset-0 z-30 pointer-events-none">
         
         {/* Top Left Meta (Left side -> Cream) */}
-        <div className="absolute top-8 left-8 md:top-12 md:left-12 flex flex-col gap-1 text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase text-cream">
+        <motion.div 
+          variants={heroVariants.metaTopLeft}
+          initial="hidden"
+          animate="visible"
+          className="absolute top-8 left-8 md:top-12 md:left-12 flex flex-col gap-1 text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase text-cream"
+        >
           <span>VOL. 01</span>
           <span>OCT / 2026</span>
-        </div>
+        </motion.div>
 
         {/* Top Right Meta (Right side -> Navy) */}
-        <div className="absolute top-8 right-8 md:top-12 md:right-12 flex flex-col gap-1 text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase text-right text-navy">
+        <motion.div 
+          variants={heroVariants.metaTopRight}
+          initial="hidden"
+          animate="visible"
+          className="absolute top-8 right-8 md:top-12 md:right-12 flex flex-col gap-1 text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase text-right text-navy"
+        >
           <span>VISUAL STUDY</span>
           <span>BY GABRIEL RYAN</span>
-        </div>
+        </motion.div>
 
         {/* Bottom Left Meta (Role & Est. - 2-line vertical stack, never occluded by portrait) */}
-        <div className="absolute bottom-10 left-6 sm:left-8 md:bottom-20 md:left-12 flex flex-col gap-3 sm:gap-4 md:gap-5 text-[10px] md:text-xs font-bold tracking-[0.15em] uppercase text-cream max-w-[200px] sm:max-w-[240px] md:max-w-xs">
+        <motion.div 
+          variants={heroVariants.metaBottom}
+          initial="hidden"
+          animate="visible"
+          className="absolute bottom-10 left-6 sm:left-8 md:bottom-20 md:left-12 flex flex-col gap-3 sm:gap-4 md:gap-5 text-[10px] md:text-xs font-bold tracking-[0.15em] uppercase text-cream max-w-[200px] sm:max-w-[240px] md:max-w-xs"
+        >
           <span className="opacity-70 tracking-[0.2em] text-[9px] sm:text-[10px] md:text-xs">ROLE //</span>
           <div className="flex flex-col text-xs sm:text-sm md:text-base font-black tracking-[0.08em] drop-shadow-md leading-tight">
             <span className="whitespace-nowrap">EDUCATOR &amp;</span>
@@ -92,7 +185,7 @@ export function Home() {
                   initial={{ y: "100%", opacity: 0 }}
                   animate={{ y: "0%", opacity: 1 }}
                   exit={{ y: "-100%", opacity: 0 }}
-                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                  transition={{ duration: 0.5, ease: heroEase }}
                   className="[grid-area:stack] inline-block whitespace-nowrap text-cream"
                 >
                   {ROLES[roleIndex]}
@@ -102,10 +195,15 @@ export function Home() {
           </div>
           <div className="w-10 sm:w-12 h-[1px] bg-cream opacity-50"></div>
           <span className="tracking-[0.2em] text-[9px] sm:text-[10px] md:text-xs">EST. 2020</span>
-        </div>
+        </motion.div>
 
         {/* Middle Right Stamp (Right side -> Navy & Cream card) */}
-        <div className="absolute top-[45%] md:top-1/2 -translate-y-1/2 right-6 sm:right-10 md:right-24 flex items-center mt-12 md:mt-24 pointer-events-auto">
+        <motion.div 
+          variants={heroVariants.stamp}
+          initial="hidden"
+          animate="visible"
+          className="absolute top-[45%] md:top-1/2 -translate-y-1/2 right-6 sm:right-10 md:right-24 flex items-center mt-12 md:mt-24 pointer-events-auto"
+        >
           <div className="relative w-16 h-16 sm:w-20 sm:h-20 md:w-28 md:h-28 z-10">
             <div className="absolute inset-0 bg-navy/15 transform translate-x-2 translate-y-2 md:translate-x-3 md:translate-y-3"></div>
             <div className="absolute inset-0 bg-cream p-2 shadow-sm border border-navy/30 flex items-center justify-center">
@@ -115,10 +213,12 @@ export function Home() {
           <div className="absolute right-[-3.8rem] sm:right-[-4.5rem] md:right-[-5.5rem] top-1/2 -translate-y-1/2 origin-center rotate-90 text-[8px] md:text-[9px] font-bold tracking-[0.25em] uppercase text-navy opacity-70 whitespace-nowrap drop-shadow-md">
             FIG. 01 // AUTHOR
           </div>
-        </div>
+        </motion.div>
 
         {/* Scroll Hint */}
-        <ScrollHint />
+        <motion.div variants={heroVariants.scrollHint} initial="hidden" animate="visible">
+          <ScrollHint />
+        </motion.div>
       </div>
     </section>
   );
@@ -141,7 +241,7 @@ function ScrollHint() {
   );
 }
 
-function HomeBackgroundTypography({ side }) {
+function HomeBackgroundTypography({ side, variants }) {
   const isLeft = side === 'left';
   
   const gabrielColor = isLeft ? 'text-cream' : 'text-navy';
@@ -151,15 +251,25 @@ function HomeBackgroundTypography({ side }) {
     <div className="absolute inset-0 flex flex-col pointer-events-none">
       {/* Center Typography */}
       <div className="absolute top-[25%] md:top-[12%] left-0 w-full flex flex-col items-center justify-start">
-        <h1 className={`font-serif text-[26vw] md:text-[17vw] font-black tracking-[-0.04em] leading-[0.8] uppercase z-10 relative ${gabrielColor}`}>
+        <motion.h1 
+          variants={variants?.title}
+          initial="hidden"
+          animate="visible"
+          className={`font-serif text-[26vw] md:text-[17vw] font-black tracking-[-0.04em] leading-[0.8] uppercase z-10 relative ${gabrielColor}`}
+        >
           GABRIEL
-        </h1>
+        </motion.h1>
         {/* Cursive text overlapping */}
-        <div className={`absolute top-[60%] md:top-[40%] left-1/2 -translate-x-1/2 mt-[2vw] ml-[6vw] z-20 opacity-90 ${ryanColor}`}>
+        <motion.div 
+          variants={variants?.cursive}
+          initial="hidden"
+          animate="visible"
+          className={`absolute top-[60%] md:top-[40%] left-1/2 -translate-x-1/2 mt-[2vw] ml-[6vw] z-20 opacity-90 ${ryanColor}`}
+        >
           <span className="font-mayonice text-[35vw] md:text-[17vw] leading-none whitespace-nowrap -rotate-[5deg] inline-block drop-shadow-sm">
             Ryan
           </span>
-        </div>
+        </motion.div>
       </div>
     </div>
   );
