@@ -235,7 +235,7 @@ function HomeContent({ side }) {
     <div className={`absolute inset-0 flex flex-col items-center justify-center pointer-events-none ${metaColor}`}>
       
       {/* Center Typography */}
-      <div className="relative w-full flex flex-col items-center justify-center mt-[-15vh]">
+      <div className="relative w-full flex flex-col items-center justify-center mb-[20vh] md:mb-[25vh]">
         <h1 className={`font-serif text-[22vw] md:text-[19vw] font-black tracking-[-0.03em] leading-none uppercase z-10 relative ${gabrielColor}`}>
           GABRIEL
         </h1>
@@ -689,6 +689,7 @@ export function Contact() {
     </PageTransition>
   );
 }
+
 
 
 
