@@ -189,7 +189,7 @@ export function Home() {
       */}
       <div className="absolute inset-0 z-0">
         {/* Background Shape */}
-        <div className="absolute top-[-25vw] right-[-15vw] w-[55vw] h-[55vw] rounded-full bg-[#D7C4A5]"></div>
+        <div className="absolute top-[-10vw] right-[-5vw] w-[45vw] h-[45vw] rounded-full bg-[#D7C4A5]"></div>
         
         {/* Texts */}
         <HomeContent side="right" />
@@ -200,19 +200,19 @@ export function Home() {
       */}
       <div className="absolute inset-0 bg-[#213555] z-10" style={{ clipPath: 'polygon(0 0, 50% 0, 50% 100%, 0 100%)' }}>
         {/* Background Lines (Concentric Circles) */}
-        <div className="absolute bottom-[-15vw] left-[-20vw] w-[50vw] h-[50vw] rounded-full border-[0.5px] border-cream/20"></div>
-        <div className="absolute bottom-[-25vw] left-[-30vw] w-[70vw] h-[70vw] rounded-full border-[0.5px] border-cream/10"></div>
+        <div className="absolute bottom-[-10vw] left-[-15vw] w-[45vw] h-[45vw] rounded-full border-[0.5px] border-cream/20"></div>
+        <div className="absolute bottom-[-20vw] left-[-25vw] w-[65vw] h-[65vw] rounded-full border-[0.5px] border-cream/10"></div>
         
         {/* Texts */}
         <HomeContent side="left" />
       </div>
 
       {/* LAYER 3: PORTRAIT (Topmost) */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[85%] md:w-[500px] max-w-2xl flex justify-center z-20 pointer-events-none">
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[95%] md:w-[750px] max-w-4xl flex justify-center z-20 pointer-events-none">
         <img 
           src="/profile-nobg.png" 
           alt="Gabriel Ryan" 
-          className="w-full h-auto max-h-[75vh] md:max-h-[80vh] object-contain object-bottom grayscale drop-shadow-2xl brightness-105 contrast-125" 
+          className="w-full h-auto object-contain object-bottom grayscale drop-shadow-2xl brightness-105 contrast-125" 
         />
       </div>
 
@@ -232,13 +232,13 @@ function HomeContent({ side }) {
     <div className={`absolute inset-0 flex flex-col pointer-events-none ${metaColor}`}>
       
       {/* Center Typography (Absolutely positioned to top) */}
-      <div className="absolute top-[8%] md:top-[12%] left-0 w-full flex flex-col items-center justify-start">
-        <h1 className={`font-serif text-[26vw] md:text-[23.5vw] font-black tracking-[-0.04em] leading-[0.8] uppercase z-10 relative ${gabrielColor}`}>
+      <div className="absolute top-[12%] md:top-[15%] left-0 w-full flex flex-col items-center justify-start">
+        <h1 className={`font-serif text-[20vw] md:text-[17vw] font-black tracking-[-0.03em] leading-[0.8] uppercase z-10 relative ${gabrielColor}`}>
           GABRIEL
         </h1>
         {/* Cursive text overlapping */}
-        <div className={`absolute top-[60%] md:top-[65%] left-1/2 -translate-x-1/2 mt-[2vw] ml-[6vw] z-20 opacity-90 ${ryanColor}`}>
-          <span className="font-mayonice text-[26vw] md:text-[22vw] leading-none whitespace-nowrap -rotate-[5deg] inline-block drop-shadow-sm">
+        <div className={`absolute top-[50%] md:top-[60%] left-1/2 -translate-x-1/2 mt-[2vw] ml-[4vw] z-20 opacity-90 ${ryanColor}`}>
+          <span className="font-mayonice text-[18vw] md:text-[14vw] leading-none whitespace-nowrap -rotate-[5deg] inline-block drop-shadow-sm">
             Ryan
           </span>
         </div>
