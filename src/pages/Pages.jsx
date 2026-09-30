@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
+import { motion, AnimatePresence, useReducedMotion, MotionConfig } from 'framer-motion';
 import { Testimonials } from '../components/ui/unique-testimonial';
 import { LetsWorkTogether } from '../components/ui/lets-work-section';
 import { experienceJobs, workProjects } from '../data';
@@ -98,6 +98,565 @@ const ROLES = [
 ];
 
 export function Home() {
+  // Toggle between HomeOptionA, HomeOptionB, or HomeOriginal
+  return <HomeOptionB />;
+}
+
+export function HomeOptionB() {
+  const [roleIndex, setRoleIndex] = useState(0);
+  const [stage, setStage] = useState('center');
+  const h1Ref = useRef(null);
+  const [offsetY, setOffsetY] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return Math.round(window.innerHeight / 2 - 80);
+    }
+    return 320;
+  });
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setRoleIndex((prev) => (prev + 1) % ROLES.length);
+    }, 3200);
+    return () => clearInterval(timer);
+  }, []);
+
+  useLayoutEffect(() => {
+    const measureOffset = () => {
+      if (h1Ref.current) {
+        const header = h1Ref.current.closest('header');
+        if (header) {
+          const headerRect = header.getBoundingClientRect();
+          const naturalCenter = headerRect.top + (h1Ref.current.offsetTop || 35) + (h1Ref.current.offsetHeight / 2);
+          const screenCenter = window.innerHeight / 2;
+          const delta = screenCenter - naturalCenter;
+          if (delta > 0) {
+            setOffsetY(Math.round(delta));
+          }
+        }
+      }
+    };
+
+    measureOffset();
+    window.addEventListener('resize', measureOffset);
+    return () => window.removeEventListener('resize', measureOffset);
+  }, []);
+
+  useEffect(() => {
+    // Stage 1: GABRIEL RYAN appears at screen center for 900ms
+    const moveTimer = setTimeout(() => {
+      setStage('moving');
+    }, 900);
+
+    // Stage 2: Once docked at top, reveal all remaining broadsheet content
+    const readyTimer = setTimeout(() => {
+      setStage('ready');
+    }, 1850);
+
+    return () => {
+      clearTimeout(moveTimer);
+      clearTimeout(readyTimer);
+    };
+  }, []);
+
+  const handleScrollClick = (id = 'about-me') => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const isReady = stage === 'ready';
+
+  return (
+    <MotionConfig reducedMotion="never">
+    <section id="home" className="relative w-full h-[100svh] min-h-[600px] max-h-[100svh] bg-cream text-navy font-sans select-none flex flex-col justify-between p-3 sm:p-4 md:p-5 lg:p-6 border-b-2 border-navy overflow-hidden">
+      
+      {/* Editorial Canvas Outer Inset Frame & Corner Crosshairs */}
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: isReady ? 1 : 0.3 }}
+        transition={{ duration: 1.2, ease: "easeOut" }}
+        className="absolute inset-2 sm:inset-3 md:inset-4 border border-navy/15 pointer-events-none z-0"
+      >
+        <motion.div initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: isReady ? 1 : 0.4, scale: isReady ? 1 : 0.7 }} transition={{ delay: 0.1, duration: 0.4 }} className="absolute -top-1 -left-1 font-mono text-[8px] text-navy/40 leading-none select-none">+</motion.div>
+        <motion.div initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: isReady ? 1 : 0.4, scale: isReady ? 1 : 0.7 }} transition={{ delay: 0.15, duration: 0.4 }} className="absolute -top-1 -right-1 font-mono text-[8px] text-navy/40 leading-none select-none">+</motion.div>
+        <motion.div initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: isReady ? 1 : 0.4, scale: isReady ? 1 : 0.7 }} transition={{ delay: 0.2, duration: 0.4 }} className="absolute -bottom-1 -left-1 font-mono text-[8px] text-navy/40 leading-none select-none">+</motion.div>
+        <motion.div initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: isReady ? 1 : 0.4, scale: isReady ? 1 : 0.7 }} transition={{ delay: 0.25, duration: 0.4 }} className="absolute -bottom-1 -right-1 font-mono text-[8px] text-navy/40 leading-none select-none">+</motion.div>
+      </motion.div>
+
+      {/* TOP: Broadsheet Masthead with Center-to-Dock Animation */}
+      <header className="relative z-20 w-full pt-1 shrink-0">
+        {/* Top Dateline */}
+        <motion.div 
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: isReady ? 1 : 0, y: isReady ? 0 : -8 }}
+          transition={{ duration: 0.6, ease: heroEase }}
+          className="flex items-center justify-between text-[8px] sm:text-[9px] md:text-[10px] font-mono tracking-[0.25em] uppercase text-navy/70 pb-1.5"
+        >
+          <span>THE RYAN CHRONICLE // VOL. 01</span>
+          <span className="hidden sm:inline">INDEPENDENT FOLIO OF SOFTWARE &amp; PEDAGOGY</span>
+          <span>YOGYAKARTA, OCT 2026</span>
+        </motion.div>
+
+        {/* Dateline Separator Line Draw */}
+        <motion.div 
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: isReady ? 1 : 0 }}
+          transition={{ duration: 0.8, ease: heroEase }}
+          className="w-full h-[1px] bg-navy/30 origin-left"
+        />
+
+        {/* Giant Newspaper Masthead with Centered Welcome to Dock Animation */}
+        <div className="py-1 sm:py-2 md:py-2.5 text-center relative z-20">
+          <motion.h1 
+            ref={h1Ref}
+            initial={{ opacity: 0, scale: 0.98, y: offsetY }}
+            animate={{ 
+              opacity: 1, 
+              scale: stage === 'center' ? 1.04 : 1,
+              y: stage === 'center' ? offsetY : 0
+            }}
+            transition={{ 
+              y: { duration: 0.95, ease: heroEase },
+              scale: { duration: 0.95, ease: heroEase },
+              opacity: { duration: 0.6, ease: "easeOut" }
+            }}
+            className="font-serif text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black tracking-[-0.04em] uppercase text-navy leading-none selection:bg-navy selection:text-cream pointer-events-auto"
+          >
+            GABRIEL RYAN
+          </motion.h1>
+        </div>
+
+        {/* Sub-Masthead Hairline Draw */}
+        <motion.div 
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: isReady ? 1 : 0 }}
+          transition={{ duration: 0.85, ease: heroEase }}
+          className="w-full h-[1px] bg-navy/30 origin-center"
+        />
+
+        {/* Sub-Masthead Ticker Bar with Live Pulse Beacon */}
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: isReady ? 1 : 0 }}
+          transition={{ duration: 0.6, ease: heroEase }}
+          className="flex items-center justify-between text-[8px] sm:text-[9px] md:text-[10px] font-mono tracking-[0.2em] uppercase text-navy/80 py-1.5"
+        >
+          <div className="flex items-center gap-2">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-navy/50 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-navy"></span>
+            </span>
+            <span>DISPATCH NO. 01</span>
+          </div>
+          <span className="hidden md:inline font-serif italic text-xs tracking-normal font-normal">
+            &ldquo;Bridging rigorous pedagogical discipline and software craftsmanship.&rdquo;
+          </span>
+          <span>CIRCULATION: GLOBAL</span>
+        </motion.div>
+
+        {/* Sub-Masthead Bottom Hairline Rule */}
+        <motion.div 
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: isReady ? 1 : 0 }}
+          transition={{ duration: 0.9, ease: heroEase }}
+          className="w-full h-[2px] bg-navy origin-center"
+        />
+      </header>
+
+      {/* CENTER: 3-Column Broadsheet Grid with Vertical Hairline Draws */}
+      <div className="relative z-10 w-full flex-1 min-h-0 py-2 md:py-3.5 grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-0 items-stretch overflow-hidden">
+        
+        {/* Col 1 (Left): Lead Editorial Dispatch & Philosophy (Cols 1-3) */}
+        <div className="md:col-span-3 relative flex flex-col justify-between md:pr-4 lg:pr-6 gap-3 min-h-0 overflow-hidden">
+          {/* Vertical Separator Line Draw */}
+          <motion.div 
+            initial={{ scaleY: 0 }}
+            animate={{ scaleY: isReady ? 1 : 0 }}
+            transition={{ duration: 0.95, delay: 0.1, ease: heroEase }}
+            className="hidden md:block absolute right-0 top-0 bottom-0 w-[1px] bg-navy/20 origin-top pointer-events-none"
+          />
+
+          <div className="flex flex-col gap-2.5">
+            <motion.h2 
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: isReady ? 1 : 0, y: isReady ? 0 : 16 }}
+              transition={{ duration: 0.7, delay: 0.1, ease: heroEase }}
+              className="font-serif text-base sm:text-lg md:text-xl font-bold leading-[1.15] text-navy tracking-tight"
+            >
+              Cultivating Systems Builders &amp; Software Craftsmen.
+            </motion.h2>
+            <motion.p 
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: isReady ? 1 : 0, y: isReady ? 0 : 12 }}
+              transition={{ duration: 0.7, delay: 0.2, ease: heroEase }}
+              className="text-xs sm:text-[13px] font-sans text-navy/80 leading-relaxed"
+            >
+              Based in Yogyakarta. Structuring foundational computer science, architectural discipline, and human-centered engineering to bridge theory with production craftsmanship.
+            </motion.p>
+          </div>
+
+          {/* Authentic Editorial Philosophy Quote */}
+          <motion.div 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: isReady ? 1 : 0, y: isReady ? 0 : 10 }}
+            transition={{ duration: 0.7, delay: 0.3, ease: heroEase }}
+            className="pt-3 border-t border-navy/15 flex flex-col gap-2 font-mono text-[9px] sm:text-[10px] text-navy/70"
+          >
+            <div className="flex items-center gap-2 text-navy/50 text-[8px] uppercase tracking-widest">
+              <span>PHILOSOPHY //</span>
+              <div className="flex-1 h-[1px] bg-navy/20"></div>
+            </div>
+            <blockquote className="font-serif italic text-xs sm:text-[13px] text-navy/85 leading-snug">
+              &ldquo;Software architecture is the deliberate design of clarity, resilience, and human understanding.&rdquo;
+            </blockquote>
+            <span className="text-[8px] font-mono tracking-widest uppercase opacity-50 pt-0.5">
+              EST. 2020 // YOGYAKARTA ARCHIVE
+            </span>
+          </motion.div>
+        </div>
+
+        {/* Col 2 (Center): The Studio Portrait - Exact Viewport Fit with Grand Reveal */}
+        <div className="md:col-span-6 flex flex-col items-center justify-end px-2 md:px-4 relative h-full min-h-0 overflow-hidden">
+          <div className="relative w-full h-full flex items-end justify-center overflow-hidden">
+            <motion.img 
+              initial={{ opacity: 0, y: 45, scale: 0.96 }}
+              animate={{ 
+                opacity: isReady ? 1 : 0, 
+                y: isReady ? 0 : 45, 
+                scale: isReady ? 1 : 0.96 
+              }}
+              transition={{ duration: 1.05, delay: 0.1, ease: heroEase }}
+              src="/profile-nobg.png" 
+              alt="Gabriel Ryan - Broadsheet Portrait" 
+              className="w-auto h-full max-h-full object-contain object-bottom grayscale contrast-[1.18] brightness-[1.03] drop-shadow-[0_16px_32px_rgba(21,57,102,0.18)]"
+            />
+            {/* Dateline Overlay Tag with Stamp Reveal */}
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9, y: 8 }}
+              animate={{ 
+                opacity: isReady ? 1 : 0, 
+                scale: isReady ? 1 : 0.9, 
+                y: isReady ? 0 : 8 
+              }}
+              transition={{ duration: 0.55, delay: 0.45, ease: heroEase }}
+              className="absolute bottom-2 left-2 px-2 py-0.5 bg-cream/95 backdrop-blur-sm border border-navy/30 font-mono text-[8px] uppercase tracking-widest text-navy shadow-sm z-10"
+            >
+              FIG. 01 // STUDIO PORTRAIT — YOGYAKARTA
+            </motion.div>
+          </div>
+        </div>
+
+        {/* Col 3 (Right): Active Practice, Rotating Role & Dispatch Index (Cols 9-12) */}
+        <div className="md:col-span-3 relative flex flex-col justify-between md:pl-4 lg:pl-6 gap-3 min-h-0 overflow-hidden">
+          {/* Vertical Separator Line Draw */}
+          <motion.div 
+            initial={{ scaleY: 0 }}
+            animate={{ scaleY: isReady ? 1 : 0 }}
+            transition={{ duration: 0.95, delay: 0.15, ease: heroEase }}
+            className="hidden md:block absolute left-0 top-0 bottom-0 w-[1px] bg-navy/20 origin-top pointer-events-none"
+          />
+
+          <div className="flex flex-col gap-2.5">
+            <motion.div 
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: isReady ? 1 : 0, y: isReady ? 0 : 16 }}
+              transition={{ duration: 0.7, delay: 0.15, ease: heroEase }}
+              className="flex flex-col gap-1"
+            >
+              <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-navy/60">ACTIVE PRACTICE</span>
+              <div className="flex flex-col text-sm sm:text-base lg:text-lg font-black tracking-wide text-navy">
+                <span>EDUCATOR &amp;</span>
+                <span className="relative inline-grid [grid-template-areas:'stack'] overflow-hidden h-[1.3em]">
+                  <AnimatePresence mode="popLayout" initial={false}>
+                    <motion.span
+                      key={roleIndex}
+                      initial={{ y: "100%", opacity: 0 }}
+                      animate={{ y: "0%", opacity: 1 }}
+                      exit={{ y: "-100%", opacity: 0 }}
+                      transition={{ duration: 0.55, ease: heroEase }}
+                      className="[grid-area:stack] inline-block whitespace-nowrap text-navy underline decoration-navy/40 underline-offset-4"
+                    >
+                      {ROLES[roleIndex]}
+                    </motion.span>
+                  </AnimatePresence>
+                </span>
+              </div>
+            </motion.div>
+
+            <motion.p 
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: isReady ? 1 : 0, y: isReady ? 0 : 12 }}
+              transition={{ duration: 0.7, delay: 0.25, ease: heroEase }}
+              className="text-xs sm:text-[13px] font-sans text-navy/80 leading-relaxed pt-0.5"
+            >
+              Structuring technical learning paths while engineering responsive distributed web platforms.
+            </motion.p>
+          </div>
+
+          {/* Broadsheet Index Table with Interactive Motion */}
+          <motion.div 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: isReady ? 1 : 0, y: isReady ? 0 : 10 }}
+            transition={{ duration: 0.7, delay: 0.35, ease: heroEase }}
+            className="pt-3 border-t border-navy/15 flex flex-col gap-1 font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.15em] text-navy/70"
+          >
+            <div className="flex items-center justify-between text-[8px] text-navy/40 pb-0.5">
+              <span>DISPATCH INDEX //</span>
+              <span>FOLIO VOL. 01</span>
+            </div>
+            
+            <button 
+              onClick={() => handleScrollClick('about-me')} 
+              className="text-left hover:text-navy cursor-pointer flex justify-between items-center group py-0.5 transition-colors"
+            >
+              <span className="group-hover:translate-x-1.5 transition-transform duration-200">01. CHRONICLE (ABOUT)</span>
+              <span className="text-[9px] opacity-50 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-200">P. 01 →</span>
+            </button>
+            <button 
+              onClick={() => handleScrollClick('work')} 
+              className="text-left hover:text-navy cursor-pointer flex justify-between items-center group py-0.5 transition-colors"
+            >
+              <span className="group-hover:translate-x-1.5 transition-transform duration-200">02. CASE STUDIES (WORK)</span>
+              <span className="text-[9px] opacity-50 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-200">P. 02 →</span>
+            </button>
+            <button 
+              onClick={() => handleScrollClick('service')} 
+              className="text-left hover:text-navy cursor-pointer flex justify-between items-center group py-0.5 transition-colors"
+            >
+              <span className="group-hover:translate-x-1.5 transition-transform duration-200">03. SERVICES OFFERED</span>
+              <span className="text-[9px] opacity-50 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-200">P. 03 →</span>
+            </button>
+            <button 
+              onClick={() => handleScrollClick('experience')} 
+              className="text-left hover:text-navy cursor-pointer flex justify-between items-center group py-0.5 transition-colors"
+            >
+              <span className="group-hover:translate-x-1.5 transition-transform duration-200">04. PEDAGOGIC RECORD</span>
+              <span className="text-[9px] opacity-50 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-200">P. 04 →</span>
+            </button>
+          </motion.div>
+        </div>
+
+      </div>
+
+      {/* BOTTOM: Newspaper Running Footer with Line Draw & Animated Scroll Prompt */}
+      <footer className="relative z-10 w-full pt-2 shrink-0 flex flex-col gap-1.5">
+        <motion.div 
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: isReady ? 1 : 0 }}
+          transition={{ duration: 0.9, delay: 0.2, ease: heroEase }}
+          className="w-full h-[2px] bg-navy origin-left"
+        />
+
+        <div className="flex items-center justify-between text-[8px] sm:text-[9px] md:text-[10px] font-mono tracking-[0.2em] uppercase text-navy/70 pt-0.5">
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: isReady ? 1 : 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="flex items-center gap-3"
+          >
+            <span>FIRST EDITION // 2026</span>
+            <span className="opacity-40 hidden sm:inline">|</span>
+            <span className="hidden sm:inline">TYPESET IN EDITORIAL SERIF</span>
+          </motion.div>
+          <motion.button 
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: isReady ? 1 : 0, y: isReady ? 0 : 8 }}
+            transition={{ duration: 0.6, delay: 0.35, ease: heroEase }}
+            onClick={() => handleScrollClick('about-me')}
+            className="flex items-center gap-2 hover:text-navy cursor-pointer group"
+            aria-label="Scroll to read issue"
+          >
+            <span className="group-hover:underline">PROCEED TO CHRONICLE</span>
+            <motion.span 
+              animate={{ y: [0, 3, 0] }}
+              transition={{ repeat: Infinity, duration: 1.6, ease: "easeInOut" }}
+              className="inline-block"
+            >
+              ↓
+            </motion.span>
+          </motion.button>
+        </div>
+      </footer>
+
+    </section>
+    </MotionConfig>
+  );
+}
+
+export function HomeOptionA() {
+  const [roleIndex, setRoleIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setRoleIndex((prev) => (prev + 1) % ROLES.length);
+    }, 3200);
+    return () => clearInterval(timer);
+  }, []);
+
+  const handleScrollClick = (id = 'about-me') => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  return (
+    <section id="home" className="relative w-full min-h-[100svh] bg-cream text-navy font-sans select-none flex flex-col justify-between p-4 sm:p-6 md:p-10 lg:p-12 border-b-2 border-navy overflow-hidden">
+      
+      {/* Editorial Canvas Outer Inset Frame */}
+      <div className="absolute inset-2 sm:inset-3 md:inset-5 border border-navy/15 pointer-events-none z-0">
+        <div className="absolute -top-1 -left-1 font-mono text-[8px] text-navy/40 leading-none select-none">+</div>
+        <div className="absolute -top-1 -right-1 font-mono text-[8px] text-navy/40 leading-none select-none">+</div>
+        <div className="absolute -bottom-1 -left-1 font-mono text-[8px] text-navy/40 leading-none select-none">+</div>
+        <div className="absolute -bottom-1 -right-1 font-mono text-[8px] text-navy/40 leading-none select-none">+</div>
+      </div>
+
+      {/* TOP: Disciplined Publication Masthead */}
+      <header className="relative z-10 w-full pt-1 pb-4 md:pb-6 border-b border-navy/20 flex flex-col gap-2">
+        <div className="flex items-center justify-between text-[9px] sm:text-[10px] md:text-xs font-mono tracking-[0.2em] uppercase text-navy/70">
+          <div className="flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-navy"></span>
+            <span>MONOGRAPH NO. 01</span>
+            <span className="hidden sm:inline opacity-40">// 2026 EDITION</span>
+          </div>
+          <div className="hidden md:flex items-center gap-3">
+            <span>YOGYAKARTA, ID</span>
+            <span className="opacity-40">/</span>
+            <span>GLOBAL ENGINEERING PRACTICE</span>
+          </div>
+          <div>
+            <span>VOL. 01 — ARCHIVE</span>
+          </div>
+        </div>
+
+        {/* Big Publication Masthead */}
+        <div className="flex flex-col sm:flex-row sm:items-baseline justify-between pt-1 gap-1">
+          <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black tracking-[-0.03em] uppercase text-navy leading-none">
+            GABRIEL RYAN
+          </h1>
+          <span className="font-mono text-[9px] sm:text-[10px] md:text-xs uppercase tracking-[0.25em] text-navy/60 font-semibold">
+            FOLIO &amp; CURATED INDEX
+          </span>
+        </div>
+      </header>
+
+      {/* CENTER: Exhibition Spread (Editorial Column + Framed Portrait Plate) */}
+      <div className="relative z-10 w-full flex-1 py-6 md:py-8 lg:py-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+        
+        {/* Left Column: Lead Cover Essay & Active Practice (Cols 1-7) */}
+        <div className="lg:col-span-7 flex flex-col justify-center gap-4 sm:gap-6 max-w-2xl">
+          <div className="flex items-center gap-2 text-[10px] sm:text-xs font-mono tracking-[0.2em] uppercase text-navy/60">
+            <span>COVER STORY</span>
+            <span>//</span>
+            <span>DISCIPLINE STUDY</span>
+          </div>
+
+          <h2 className="font-serif text-2xl sm:text-4xl md:text-5xl lg:text-5xl font-black leading-[1.05] tracking-[-0.02em] text-navy">
+            THE ARCHITECTURE OF SYSTEMS, CODE &amp; PEDAGOGY.
+          </h2>
+
+          <p className="text-xs sm:text-sm md:text-base font-sans text-navy/80 leading-relaxed max-w-xl">
+            A comprehensive visual index exploring software architecture, digital craftsmanship, and the curriculum frameworks designed to cultivate the next cohort of engineers.
+          </p>
+
+          {/* Active Discipline / Rotating Role */}
+          <div className="pt-2 flex flex-col gap-2">
+            <span className="text-[9px] sm:text-[10px] font-mono tracking-[0.25em] uppercase text-navy/60">
+              CURRENT PRACTICE //
+            </span>
+            <div className="flex items-baseline gap-2 text-sm sm:text-base md:text-lg font-black tracking-wide text-navy">
+              <span>EDUCATOR &amp;</span>
+              <span className="relative inline-grid [grid-template-areas:'stack'] overflow-hidden h-[1.3em]">
+                <AnimatePresence mode="popLayout" initial={false}>
+                  <motion.span
+                    key={roleIndex}
+                    initial={{ y: "100%", opacity: 0 }}
+                    animate={{ y: "0%", opacity: 1 }}
+                    exit={{ y: "-100%", opacity: 0 }}
+                    transition={{ duration: 0.5, ease: heroEase }}
+                    className="[grid-area:stack] inline-block whitespace-nowrap text-navy underline decoration-navy/30 underline-offset-4"
+                  >
+                    {ROLES[roleIndex]}
+                  </motion.span>
+                </AnimatePresence>
+              </span>
+            </div>
+          </div>
+
+          {/* Quick Chapter Navigation Index */}
+          <div className="pt-3 border-t border-navy/15 flex flex-wrap gap-4 sm:gap-6 text-[9px] sm:text-[10px] md:text-xs font-mono uppercase tracking-[0.15em] text-navy/70">
+            <button onClick={() => handleScrollClick('about-me')} className="hover:text-navy hover:underline cursor-pointer">
+              01. ABOUT →
+            </button>
+            <button onClick={() => handleScrollClick('work')} className="hover:text-navy hover:underline cursor-pointer">
+              02. WORK →
+            </button>
+            <button onClick={() => handleScrollClick('service')} className="hover:text-navy hover:underline cursor-pointer">
+              03. SERVICES →
+            </button>
+            <button onClick={() => handleScrollClick('experience')} className="hover:text-navy hover:underline cursor-pointer">
+              04. RECORD →
+            </button>
+          </div>
+        </div>
+
+        {/* Right Column: The Framed Exhibition Plate (Cols 8-12) */}
+        <div className="lg:col-span-5 flex flex-col items-center justify-center">
+          <div className="relative w-full max-w-[280px] sm:max-w-[320px] md:max-w-[350px] bg-[#F4EFE6] border border-navy/30 p-3 sm:p-4 shadow-xl">
+            {/* Fine Corner Accents */}
+            <div className="absolute top-1 left-1 text-[8px] font-mono text-navy/30 leading-none select-none">┌</div>
+            <div className="absolute top-1 right-1 text-[8px] font-mono text-navy/30 leading-none select-none">┐</div>
+            <div className="absolute bottom-1 left-1 text-[8px] font-mono text-navy/30 leading-none select-none">└</div>
+            <div className="absolute bottom-1 right-1 text-[8px] font-mono text-navy/30 leading-none select-none">┘</div>
+
+            {/* Inner Plate Matting */}
+            <div className="relative aspect-[3/4] w-full overflow-hidden bg-[#DFD7C5] border border-navy/20 flex items-end justify-center">
+              <img 
+                src="/profile-nobg.png" 
+                alt="Gabriel Ryan - Studio Portrait" 
+                className="w-full h-auto max-h-[96%] object-contain object-bottom grayscale contrast-125 brightness-105"
+              />
+              <div className="absolute top-2 right-2 px-1.5 py-0.5 bg-cream/90 border border-navy/20 font-mono text-[8px] uppercase tracking-widest text-navy/80">
+                FIG. 01
+              </div>
+            </div>
+
+            {/* Curatorial Plate Caption */}
+            <div className="pt-2.5 flex flex-col gap-0.5 text-navy">
+              <div className="flex items-center justify-between font-mono text-[8px] sm:text-[9px] tracking-[0.2em] uppercase font-bold">
+                <span>PLATE NO. 01</span>
+                <span>OCT / 2026</span>
+              </div>
+              <p className="text-[9px] sm:text-[10px] font-serif italic text-navy/70 leading-snug">
+                Studio portrait of Gabriel Ryan. Educator, software engineer, and curriculum architect.
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      {/* BOTTOM: Editorial Colophon & Entry Point */}
+      <footer className="relative z-10 w-full pt-3 border-t border-navy/20 flex items-center justify-between text-[9px] sm:text-[10px] md:text-xs font-mono tracking-[0.2em] uppercase text-navy/70">
+        <div>
+          <span>EST. 2020 // FIRST EDITION</span>
+        </div>
+        <button 
+          onClick={() => handleScrollClick('about-me')}
+          className="flex items-center gap-2 hover:text-navy cursor-pointer group"
+          aria-label="Scroll to enter Chapter 01"
+        >
+          <span className="group-hover:underline">OPEN MONOGRAPH</span>
+          <span className="group-hover:translate-y-0.5 transition-transform">↓</span>
+        </button>
+      </footer>
+
+    </section>
+  );
+}
+
+export function HomeOriginal() {
   const [roleIndex, setRoleIndex] = useState(0);
   const shouldReduceMotion = useReducedMotion();
   const heroVariants = createHeroVariants(shouldReduceMotion);
