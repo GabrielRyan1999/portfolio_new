@@ -110,26 +110,28 @@ export function Home() {
   }, []);
 
   return (
-    <section id="home" className="relative w-full h-[100svh] min-h-[600px] overflow-hidden bg-cream font-sans">
+    <section id="home" className="relative w-full h-[100svh] min-h-[600px] overflow-hidden bg-cream text-navy font-sans select-none">
       
       {/* 
-        LAYER 1: BASE (Right Side)
+        CANVAS LINING: Fine archival border & corner registration marks
       */}
-      <div className="absolute inset-0 z-0">
-        <div className="absolute top-[-25vw] right-[-15vw] w-[55vw] h-[55vw] rounded-full bg-[#D4C5A5]"></div>
-        <HomeBackgroundTypography side="right" variants={heroVariants} />
+      <div className="absolute inset-3 sm:inset-5 md:inset-8 border border-navy/15 pointer-events-none z-0">
+        <div className="absolute -top-1.5 -left-1.5 font-mono text-[9px] text-navy/40 leading-none select-none">+</div>
+        <div className="absolute -top-1.5 -right-1.5 font-mono text-[9px] text-navy/40 leading-none select-none">+</div>
+        <div className="absolute -bottom-1.5 -left-1.5 font-mono text-[9px] text-navy/40 leading-none select-none">+</div>
+        <div className="absolute -bottom-1.5 -right-1.5 font-mono text-[9px] text-navy/40 leading-none select-none">+</div>
       </div>
 
-      {/* 
-        LAYER 2: OVERLAY (Left Side)
-      */}
-      <div className="absolute inset-0 bg-navy z-10" style={{ clipPath: 'polygon(0 0, 50% 0, 50% 100%, 0 100%)' }}>
-        <div className="absolute bottom-[-15vw] left-[-20vw] w-[50vw] h-[50vw] rounded-full border-[0.5px] border-cream/20"></div>
-        <div className="absolute bottom-[-25vw] left-[-30vw] w-[70vw] h-[70vw] rounded-full border-[0.5px] border-cream/10"></div>
-        <HomeBackgroundTypography side="left" variants={heroVariants} />
+      {/* Subtle archival watermark rings */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[75vw] h-[75vw] max-w-[850px] max-h-[850px] rounded-full border border-navy/[0.04] pointer-events-none z-0"></div>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[50vw] h-[50vw] max-w-[550px] max-h-[550px] rounded-full border border-navy/[0.03] pointer-events-none z-0"></div>
+
+      {/* LAYER 1: MASTHEAD BACKGROUND TYPOGRAPHY */}
+      <div className="absolute inset-0 z-10">
+        <HomeBackgroundTypography variants={heroVariants} />
       </div>
 
-      {/* LAYER 3: PORTRAIT (Center Subject) */}
+      {/* LAYER 2: PORTRAIT (Center Subject - completely unsevered by vertical seam) */}
       <motion.div 
         variants={heroVariants.portrait}
         initial="hidden"
@@ -143,29 +145,32 @@ export function Home() {
         />
       </motion.div>
 
-      {/* LAYER 4: FRONT EDITORIAL METADATA & UI (Always elevated in front of portrait) */}
+      {/* LAYER 3: FRONT EDITORIAL METADATA & UI (Elevated in front of portrait) */}
       <div className="absolute inset-0 z-30 pointer-events-none">
         
-        {/* Top Left Meta (Left side -> Cream) */}
+        {/* Top Left Meta */}
         <motion.div 
           variants={heroVariants.metaTopLeft}
           initial="hidden"
           animate="visible"
-          className="absolute top-8 left-8 md:top-12 md:left-12 flex flex-col gap-1 text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase text-cream"
+          className="absolute top-6 left-6 sm:top-8 sm:left-8 md:top-12 md:left-12 flex flex-col gap-1 text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase text-navy"
         >
-          <span>VOL. 01</span>
-          <span>OCT / 2026</span>
+          <div className="flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-navy/60 inline-block"></span>
+            <span>VOL. 01</span>
+          </div>
+          <span className="opacity-60 pl-3.5">OCT / 2026</span>
         </motion.div>
 
-        {/* Top Right Meta (Right side -> Navy) */}
+        {/* Top Right Meta */}
         <motion.div 
           variants={heroVariants.metaTopRight}
           initial="hidden"
           animate="visible"
-          className="absolute top-8 right-8 md:top-12 md:right-12 flex flex-col gap-1 text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase text-right text-navy"
+          className="absolute top-6 right-6 sm:top-8 sm:right-8 md:top-12 md:right-12 flex flex-col gap-1 text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase text-right text-navy"
         >
           <span>VISUAL STUDY</span>
-          <span>BY GABRIEL RYAN</span>
+          <span className="opacity-60">BY GABRIEL RYAN</span>
         </motion.div>
 
         {/* Bottom Left Meta (Role & Est. - 2-line vertical stack, never occluded by portrait) */}
@@ -173,11 +178,11 @@ export function Home() {
           variants={heroVariants.metaBottom}
           initial="hidden"
           animate="visible"
-          className="absolute bottom-10 left-6 sm:left-8 md:bottom-20 md:left-12 flex flex-col gap-3 sm:gap-4 md:gap-5 text-[10px] md:text-xs font-bold tracking-[0.15em] uppercase text-cream max-w-[200px] sm:max-w-[240px] md:max-w-xs"
+          className="absolute bottom-8 left-6 sm:bottom-10 sm:left-8 md:bottom-16 md:left-12 flex flex-col gap-2.5 sm:gap-3 md:gap-4 text-[10px] md:text-xs font-bold tracking-[0.15em] uppercase text-navy max-w-[200px] sm:max-w-[240px] md:max-w-xs"
         >
-          <span className="opacity-70 tracking-[0.2em] text-[9px] sm:text-[10px] md:text-xs">ROLE //</span>
-          <div className="flex flex-col text-xs sm:text-sm md:text-base font-black tracking-[0.08em] drop-shadow-md leading-tight">
-            <span className="whitespace-nowrap">EDUCATOR &amp;</span>
+          <span className="opacity-60 tracking-[0.2em] text-[9px] sm:text-[10px] md:text-xs font-mono">ROLE //</span>
+          <div className="flex flex-col text-xs sm:text-sm md:text-base font-black tracking-[0.08em] leading-tight">
+            <span className="whitespace-nowrap text-navy">EDUCATOR &amp;</span>
             <span className="relative inline-grid [grid-template-areas:'stack'] overflow-hidden h-[1.3em]">
               <AnimatePresence mode="popLayout" initial={false}>
                 <motion.span
@@ -186,31 +191,36 @@ export function Home() {
                   animate={{ y: "0%", opacity: 1 }}
                   exit={{ y: "-100%", opacity: 0 }}
                   transition={{ duration: 0.5, ease: heroEase }}
-                  className="[grid-area:stack] inline-block whitespace-nowrap text-cream"
+                  className="[grid-area:stack] inline-block whitespace-nowrap text-navy"
                 >
                   {ROLES[roleIndex]}
                 </motion.span>
               </AnimatePresence>
             </span>
           </div>
-          <div className="w-10 sm:w-12 h-[1px] bg-cream opacity-50"></div>
-          <span className="tracking-[0.2em] text-[9px] sm:text-[10px] md:text-xs">EST. 2020</span>
+          <div className="w-10 sm:w-12 h-[1px] bg-navy/30"></div>
+          <span className="tracking-[0.2em] text-[9px] sm:text-[10px] md:text-xs opacity-60 font-mono">EST. 2020</span>
         </motion.div>
 
-        {/* Middle Right Stamp (Right side -> Navy & Cream card) */}
+        {/* Middle Right Stamp (Aged paper card with navy framing) */}
         <motion.div 
           variants={heroVariants.stamp}
           initial="hidden"
           animate="visible"
-          className="absolute top-[45%] md:top-1/2 -translate-y-1/2 right-6 sm:right-10 md:right-24 flex items-center mt-12 md:mt-24 pointer-events-auto"
+          className="absolute top-[48%] md:top-1/2 -translate-y-1/2 right-6 sm:right-10 md:right-20 flex items-center pointer-events-auto"
         >
           <div className="relative w-16 h-16 sm:w-20 sm:h-20 md:w-28 md:h-28 z-10">
-            <div className="absolute inset-0 bg-navy/15 transform translate-x-2 translate-y-2 md:translate-x-3 md:translate-y-3"></div>
-            <div className="absolute inset-0 bg-cream p-2 shadow-sm border border-navy/30 flex items-center justify-center">
-              <img src="/favicon.jpg" alt="Author" className="w-full h-full object-cover grayscale contrast-125 bg-gray-200" onError={(e) => { e.target.src = 'https://api.dicebear.com/7.x/notionists/svg?seed=Gabriel&backgroundColor=e5e5e5'; }} />
+            <div className="absolute inset-0 bg-navy/10 transform translate-x-2 translate-y-2 md:translate-x-2.5 md:translate-y-2.5"></div>
+            <div className="absolute inset-0 bg-[#F5F0E6] p-2 shadow-sm border border-navy/30 flex items-center justify-center">
+              <img 
+                src="/favicon.jpg" 
+                alt="Author" 
+                className="w-full h-full object-cover grayscale contrast-125 bg-gray-200" 
+                onError={(e) => { e.target.src = 'https://api.dicebear.com/7.x/notionists/svg?seed=Gabriel&backgroundColor=e5e5e5'; }} 
+              />
             </div>
           </div>
-          <div className="absolute right-[-3.8rem] sm:right-[-4.5rem] md:right-[-5.5rem] top-1/2 -translate-y-1/2 origin-center rotate-90 text-[8px] md:text-[9px] font-bold tracking-[0.25em] uppercase text-navy opacity-70 whitespace-nowrap drop-shadow-md">
+          <div className="absolute right-[-3.8rem] sm:right-[-4.5rem] md:right-[-5.5rem] top-1/2 -translate-y-1/2 origin-center rotate-90 text-[8px] md:text-[9px] font-bold tracking-[0.25em] uppercase text-navy/70 whitespace-nowrap font-mono">
             FIG. 01 // AUTHOR
           </div>
         </motion.div>
@@ -225,37 +235,49 @@ export function Home() {
 }
 
 function ScrollHint() {
+  const handleScrollClick = () => {
+    const el = document.getElementById('about-me');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
-    <div className="absolute bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 opacity-90 drop-shadow-md">
-      <span className="text-[7px] md:text-[9px] font-bold tracking-[0.4em] uppercase whitespace-nowrap text-cream">
-        Scroll to explore
-      </span>
-      <div className="w-[1px] h-8 md:h-12 bg-cream/60 overflow-hidden relative">
-        <motion.div 
-          className="absolute top-0 left-0 w-full h-[50%] bg-cream"
-          animate={{ y: ["-100%", "200%"] }}
-          transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-        />
-      </div>
+    <div className="absolute bottom-8 right-6 sm:bottom-10 sm:right-8 md:bottom-16 md:right-12 flex flex-col items-end pointer-events-auto select-none z-30">
+      <button 
+        onClick={handleScrollClick}
+        className="flex flex-col items-end gap-2 text-navy group cursor-pointer"
+        aria-label="Scroll to explore"
+      >
+        <span className="text-[9px] sm:text-[10px] md:text-xs font-bold tracking-[0.25em] uppercase whitespace-nowrap opacity-70 group-hover:opacity-100 transition-opacity font-mono">
+          Scroll to explore
+        </span>
+        <div className="flex items-center gap-2.5">
+          <span className="text-[9px] font-mono opacity-40 group-hover:opacity-80 transition-opacity">CHAPTER 01</span>
+          <div className="w-10 sm:w-14 h-[1px] bg-navy/30 group-hover:bg-navy/70 transition-colors"></div>
+          <div className="w-[1px] h-5 sm:h-6 bg-navy/30 overflow-hidden relative">
+            <motion.div 
+              className="absolute top-0 left-0 w-full h-[60%] bg-navy"
+              animate={{ y: ["-100%", "200%"] }}
+              transition={{ duration: 1.4, repeat: Infinity, ease: "easeInOut" }}
+            />
+          </div>
+        </div>
+      </button>
     </div>
   );
 }
 
-function HomeBackgroundTypography({ side, variants }) {
-  const isLeft = side === 'left';
-  
-  const gabrielColor = isLeft ? 'text-cream' : 'text-navy';
-  const ryanColor = isLeft ? 'text-cream' : 'text-[#C9B996]';
-  
+function HomeBackgroundTypography({ variants }) {
   return (
     <div className="absolute inset-0 flex flex-col pointer-events-none">
-      {/* Center Typography */}
+      {/* Center Masthead Typography */}
       <div className="absolute top-[25%] md:top-[12%] left-0 w-full flex flex-col items-center justify-start">
         <motion.h1 
           variants={variants?.title}
           initial="hidden"
           animate="visible"
-          className={`font-serif text-[26vw] md:text-[17vw] font-black tracking-[-0.04em] leading-[0.8] uppercase z-10 relative ${gabrielColor}`}
+          className="font-serif text-[26vw] md:text-[17vw] font-black tracking-[-0.04em] leading-[0.8] uppercase z-10 relative text-navy selection:bg-navy selection:text-cream drop-shadow-sm"
         >
           GABRIEL
         </motion.h1>
@@ -264,7 +286,7 @@ function HomeBackgroundTypography({ side, variants }) {
           variants={variants?.cursive}
           initial="hidden"
           animate="visible"
-          className={`absolute top-[60%] md:top-[40%] left-1/2 -translate-x-1/2 mt-[2vw] ml-[6vw] z-20 opacity-90 ${ryanColor}`}
+          className="absolute top-[60%] md:top-[40%] left-1/2 -translate-x-1/2 mt-[2vw] ml-[6vw] z-20 opacity-90 text-[#8C6D46]"
         >
           <span className="font-mayonice text-[35vw] md:text-[17vw] leading-none whitespace-nowrap -rotate-[5deg] inline-block drop-shadow-sm">
             Ryan
