@@ -439,7 +439,7 @@ export function HomeOptionB() {
               transition={{ duration: 1.0, delay: 0.1, ease: heroEase }}
               src="/profile-nobg.png" 
               alt="Gabriel Ryan - Studio Portrait" 
-              className="h-[120%] sm:h-[122%] md:h-[123%] lg:h-[125%] w-auto max-w-none object-contain object-bottom grayscale contrast-[1.18] brightness-[1.03] drop-shadow-[0_24px_48px_rgba(21,57,102,0.25)] origin-bottom pointer-events-none"
+              className="h-[90%] sm:h-[91%] md:h-[92%] lg:h-[94%] w-auto max-w-none object-contain object-bottom grayscale contrast-[1.18] brightness-[1.03] drop-shadow-[0_24px_48px_rgba(21,57,102,0.25)] origin-bottom pointer-events-none"
             />
             {/* Studio Plate Caption Tag */}
             <motion.div 
@@ -636,7 +636,7 @@ export function HomeOptionA() {
               <img 
                 src="/profile-nobg.png" 
                 alt="Gabriel Ryan - Studio Portrait" 
-                className="w-full h-auto max-h-[96%] object-contain object-bottom grayscale contrast-125 brightness-105"
+                className="w-full h-auto max-h-[72%] object-contain object-bottom grayscale contrast-125 brightness-105"
               />
               <div className="absolute top-2 right-2 px-1.5 py-0.5 bg-cream/90 border border-navy/20 font-mono text-[8px] uppercase tracking-widest text-navy/80">
                 FIG. 01
