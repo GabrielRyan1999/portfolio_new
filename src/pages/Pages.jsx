@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
-import { motion, AnimatePresence, useReducedMotion, MotionConfig } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence, LayoutGroup, MotionConfig } from 'framer-motion';
 import { Testimonials } from '../components/ui/unique-testimonial';
 import { LetsWorkTogether } from '../components/ui/lets-work-section';
 import { experienceJobs, workProjects } from '../data';
+import RetroComputer3D from '../components/RetroComputer3D';
 
 // Animation configs
 const heroEase = [0.16, 1, 0.3, 1];
@@ -105,13 +106,6 @@ export function Home() {
 export function HomeOptionB() {
   const [roleIndex, setRoleIndex] = useState(0);
   const [stage, setStage] = useState('center');
-  const h1Ref = useRef(null);
-  const [offsetY, setOffsetY] = useState(() => {
-    if (typeof window !== 'undefined') {
-      return Math.round(window.innerHeight / 2 - 80);
-    }
-    return 320;
-  });
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -120,34 +114,13 @@ export function HomeOptionB() {
     return () => clearInterval(timer);
   }, []);
 
-  useLayoutEffect(() => {
-    const measureOffset = () => {
-      if (h1Ref.current) {
-        const header = h1Ref.current.closest('header');
-        if (header) {
-          const headerRect = header.getBoundingClientRect();
-          const naturalCenter = headerRect.top + (h1Ref.current.offsetTop || 35) + (h1Ref.current.offsetHeight / 2);
-          const screenCenter = window.innerHeight / 2;
-          const delta = screenCenter - naturalCenter;
-          if (delta > 0) {
-            setOffsetY(Math.round(delta));
-          }
-        }
-      }
-    };
-
-    measureOffset();
-    window.addEventListener('resize', measureOffset);
-    return () => window.removeEventListener('resize', measureOffset);
-  }, []);
-
   useEffect(() => {
-    // Stage 1: GABRIEL RYAN appears at screen center for 900ms
+    // Stage 1: GABRIEL RYAN appears as 1 line at screen center for 900ms
     const moveTimer = setTimeout(() => {
       setStage('moving');
     }, 900);
 
-    // Stage 2: Once docked at top, reveal all remaining broadsheet content
+    // Stage 2: Once docked into 2 lines on the left, reveal remaining broadsheet layout
     const readyTimer = setTimeout(() => {
       setStage('ready');
     }, 1850);
@@ -169,8 +142,39 @@ export function HomeOptionB() {
 
   return (
     <MotionConfig reducedMotion="never">
+    <LayoutGroup id="hero-name-sync">
     <section id="home" className="relative w-full h-[100svh] min-h-[600px] max-h-[100svh] bg-cream text-navy font-sans select-none flex flex-col justify-between p-3 sm:p-4 md:p-5 lg:p-6 border-b-2 border-navy overflow-hidden">
       
+      {/* Centered 1-Line Display Name (Load Stage: 1 Line Across Screen) */}
+      <AnimatePresence>
+        {stage === 'center' && (
+          <motion.div 
+            key="center-overlay"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, transition: { duration: 0.2 } }}
+            className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none px-4"
+          >
+            <h1 className="font-serif font-black uppercase text-navy text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl tracking-[-0.03em] flex flex-row items-center justify-center gap-3 sm:gap-5 md:gap-6 select-none">
+              <motion.span 
+                layoutId="hero-word-gabriel" 
+                transition={{ duration: 0.95, ease: heroEase }}
+                className="inline-block"
+              >
+                GABRIEL
+              </motion.span>
+              <motion.span 
+                layoutId="hero-word-ryan" 
+                transition={{ duration: 0.95, ease: heroEase }}
+                className="inline-block"
+              >
+                RYAN
+              </motion.span>
+            </h1>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Editorial Canvas Outer Inset Frame & Corner Crosshairs */}
       <motion.div 
         initial={{ opacity: 0 }}
@@ -184,8 +188,8 @@ export function HomeOptionB() {
         <motion.div initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: isReady ? 1 : 0.4, scale: isReady ? 1 : 0.7 }} transition={{ delay: 0.25, duration: 0.4 }} className="absolute -bottom-1 -right-1 font-mono text-[8px] text-navy/40 leading-none select-none">+</motion.div>
       </motion.div>
 
-      {/* TOP: Broadsheet Masthead with Center-to-Dock Animation */}
-      <header className="relative z-20 w-full pt-1 shrink-0">
+      {/* TOP: Broadsheet Masthead Banner */}
+      <header className="relative z-20 w-full pt-1 pb-1 shrink-0">
         {/* Top Dateline */}
         <motion.div 
           initial={{ opacity: 0, y: -8 }}
@@ -193,7 +197,13 @@ export function HomeOptionB() {
           transition={{ duration: 0.6, ease: heroEase }}
           className="flex items-center justify-between text-[8px] sm:text-[9px] md:text-[10px] font-mono tracking-[0.25em] uppercase text-navy/70 pb-1.5"
         >
-          <span>THE RYAN CHRONICLE // VOL. 01</span>
+          <div className="flex items-center gap-2">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-navy/50 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-navy"></span>
+            </span>
+            <span>THE RYAN CHRONICLE // VOL. 01</span>
+          </div>
           <span className="hidden sm:inline">INDEPENDENT FOLIO OF SOFTWARE &amp; PEDAGOGY</span>
           <span>YOGYAKARTA, OCT 2026</span>
         </motion.div>
@@ -206,49 +216,14 @@ export function HomeOptionB() {
           className="w-full h-[1px] bg-navy/30 origin-left"
         />
 
-        {/* Giant Newspaper Masthead with Centered Welcome to Dock Animation */}
-        <div className="py-1 sm:py-2 md:py-2.5 text-center relative z-20">
-          <motion.h1 
-            ref={h1Ref}
-            initial={{ opacity: 0, scale: 0.98, y: offsetY }}
-            animate={{ 
-              opacity: 1, 
-              scale: stage === 'center' ? 1.04 : 1,
-              y: stage === 'center' ? offsetY : 0
-            }}
-            transition={{ 
-              y: { duration: 0.95, ease: heroEase },
-              scale: { duration: 0.95, ease: heroEase },
-              opacity: { duration: 0.6, ease: "easeOut" }
-            }}
-            className="font-serif text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black tracking-[-0.04em] uppercase text-navy leading-none selection:bg-navy selection:text-cream pointer-events-auto"
-          >
-            GABRIEL RYAN
-          </motion.h1>
-        </div>
-
-        {/* Sub-Masthead Hairline Draw */}
-        <motion.div 
-          initial={{ scaleX: 0 }}
-          animate={{ scaleX: isReady ? 1 : 0 }}
-          transition={{ duration: 0.85, ease: heroEase }}
-          className="w-full h-[1px] bg-navy/30 origin-center"
-        />
-
-        {/* Sub-Masthead Ticker Bar with Live Pulse Beacon */}
+        {/* Sub-Masthead Ticker Bar */}
         <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: isReady ? 1 : 0 }}
           transition={{ duration: 0.6, ease: heroEase }}
           className="flex items-center justify-between text-[8px] sm:text-[9px] md:text-[10px] font-mono tracking-[0.2em] uppercase text-navy/80 py-1.5"
         >
-          <div className="flex items-center gap-2">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-navy/50 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-navy"></span>
-            </span>
-            <span>DISPATCH NO. 01</span>
-          </div>
+          <span>DISPATCH NO. 01 // FRONT PAGE</span>
           <span className="hidden md:inline font-serif italic text-xs tracking-normal font-normal">
             &ldquo;Bridging rigorous pedagogical discipline and software craftsmanship.&rdquo;
           </span>
@@ -264,108 +239,94 @@ export function HomeOptionB() {
         />
       </header>
 
-      {/* CENTER: 3-Column Broadsheet Grid with Vertical Hairline Draws */}
-      <div className="relative z-10 w-full flex-1 min-h-0 py-2 md:py-3.5 grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-0 items-stretch overflow-hidden">
+      {/* CENTER: 2-Column Editorial Spread (Aline Layout: Left Name+Roles+Index, Right Big Portrait) */}
+      <div className="relative z-10 w-full flex-1 min-h-0 py-2 sm:py-3 md:py-4 grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-6 items-stretch overflow-visible">
         
-        {/* Col 1 (Left): Lead Editorial Dispatch & Philosophy (Cols 1-3) */}
-        <div className="md:col-span-3 relative flex flex-col justify-between md:pr-4 lg:pr-6 gap-3 min-h-0 overflow-hidden">
-          {/* Vertical Separator Line Draw */}
-          <motion.div 
-            initial={{ scaleY: 0 }}
-            animate={{ scaleY: isReady ? 1 : 0 }}
-            transition={{ duration: 0.95, delay: 0.1, ease: heroEase }}
-            className="hidden md:block absolute right-0 top-0 bottom-0 w-[1px] bg-navy/20 origin-top pointer-events-none"
-          />
+        {/* Left Column (Cols 1-7): Titanic Name, Active Practice, Manifesto & Broadsheet Index */}
+        <div className="md:col-span-7 flex flex-col justify-between h-full min-h-0 overflow-visible pr-0 md:pr-4">
+          
+          <div className="flex-1 flex flex-col justify-center gap-3 sm:gap-4 md:gap-5 overflow-visible my-auto">
+            {/* Titanic Stacked Display Name (Stage 2: Docked as 2 Stacked Lines) */}
+            <div className="overflow-visible pt-0.5">
+              <h1 className={`font-serif text-6xl sm:text-7xl md:text-8xl lg:text-[8.5rem] xl:text-[10rem] 2xl:text-[11.5rem] font-black tracking-[-0.045em] uppercase text-navy leading-[0.80] sm:leading-[0.80] selection:bg-navy selection:text-cream flex flex-col pointer-events-auto ${stage === 'center' ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+                {stage !== 'center' ? (
+                  <>
+                    <motion.span 
+                      layoutId="hero-word-gabriel" 
+                      transition={{ duration: 0.95, ease: heroEase }}
+                      className="block"
+                    >
+                      GABRIEL
+                    </motion.span>
+                    <motion.span 
+                      layoutId="hero-word-ryan" 
+                      transition={{ duration: 0.95, ease: heroEase }}
+                      className="block"
+                    >
+                      RYAN
+                    </motion.span>
+                  </>
+                ) : (
+                  <>
+                    <span className="block">GABRIEL</span>
+                    <span className="block">RYAN</span>
+                  </>
+                )}
+              </h1>
+            </div>
 
-          <div className="flex flex-col gap-2.5">
-            <motion.h2 
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: isReady ? 1 : 0, y: isReady ? 0 : 16 }}
-              transition={{ duration: 0.7, delay: 0.1, ease: heroEase }}
-              className="font-serif text-base sm:text-lg md:text-xl font-bold leading-[1.15] text-navy tracking-tight"
-            >
-              Cultivating Systems Builders &amp; Software Craftsmen.
-            </motion.h2>
-            <motion.p 
+            {/* Framed Favicon Archival Plate (Themed Left Side Project) */}
+            <motion.div 
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: isReady ? 1 : 0, y: isReady ? 0 : 12 }}
               transition={{ duration: 0.7, delay: 0.2, ease: heroEase }}
-              className="text-xs sm:text-[13px] font-sans text-navy/80 leading-relaxed"
+              className="flex items-center gap-3 sm:gap-4 pt-1"
             >
-              Based in Yogyakarta. Structuring foundational computer science, architectural discipline, and human-centered engineering to bridge theory with production craftsmanship.
-            </motion.p>
-          </div>
+              {/* The Framed Archival Photo */}
+              <div className="relative p-1 sm:p-1.5 bg-cream/95 border-2 border-navy shadow-[3px_3px_0px_#153966] shrink-0">
+                {/* Vintage Corner Crosshairs */}
+                <span className="absolute -top-1 -left-1 font-mono text-[8px] text-navy font-bold leading-none select-none">+</span>
+                <span className="absolute -top-1 -right-1 font-mono text-[8px] text-navy font-bold leading-none select-none">+</span>
+                <span className="absolute -bottom-1 -left-1 font-mono text-[8px] text-navy font-bold leading-none select-none">+</span>
+                <span className="absolute -bottom-1 -right-1 font-mono text-[8px] text-navy font-bold leading-none select-none">+</span>
+                
+                <img 
+                  src="/favicon.jpg" 
+                  alt="Gabriel Ryan - Favicon Avatar" 
+                  className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 object-cover border border-navy/30"
+                />
+                
+                <div className="mt-1 pt-0.5 border-t border-navy/25 text-center font-mono text-[7px] sm:text-[8px] uppercase tracking-wider text-navy font-bold">
+                  FIG. 02 // AVATAR
+                </div>
+              </div>
 
-          {/* Authentic Editorial Philosophy Quote */}
-          <motion.div 
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: isReady ? 1 : 0, y: isReady ? 0 : 10 }}
-            transition={{ duration: 0.7, delay: 0.3, ease: heroEase }}
-            className="pt-3 border-t border-navy/15 flex flex-col gap-2 font-mono text-[9px] sm:text-[10px] text-navy/70"
-          >
-            <div className="flex items-center gap-2 text-navy/50 text-[8px] uppercase tracking-widest">
-              <span>PHILOSOPHY //</span>
-              <div className="flex-1 h-[1px] bg-navy/20"></div>
-            </div>
-            <blockquote className="font-serif italic text-xs sm:text-[13px] text-navy/85 leading-snug">
-              &ldquo;Software architecture is the deliberate design of clarity, resilience, and human understanding.&rdquo;
-            </blockquote>
-            <span className="text-[8px] font-mono tracking-widest uppercase opacity-50 pt-0.5">
-              EST. 2020 // YOGYAKARTA ARCHIVE
-            </span>
-          </motion.div>
-        </div>
-
-        {/* Col 2 (Center): The Studio Portrait - Exact Viewport Fit with Grand Reveal */}
-        <div className="md:col-span-6 flex flex-col items-center justify-end px-2 md:px-4 relative h-full min-h-0 overflow-hidden">
-          <div className="relative w-full h-full flex items-end justify-center overflow-hidden">
-            <motion.img 
-              initial={{ opacity: 0, y: 45, scale: 0.96 }}
-              animate={{ 
-                opacity: isReady ? 1 : 0, 
-                y: isReady ? 0 : 45, 
-                scale: isReady ? 1 : 0.96 
-              }}
-              transition={{ duration: 1.05, delay: 0.1, ease: heroEase }}
-              src="/profile-nobg.png" 
-              alt="Gabriel Ryan - Broadsheet Portrait" 
-              className="w-auto h-full max-h-full object-contain object-bottom grayscale contrast-[1.18] brightness-[1.03] drop-shadow-[0_16px_32px_rgba(21,57,102,0.18)]"
-            />
-            {/* Dateline Overlay Tag with Stamp Reveal */}
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.9, y: 8 }}
-              animate={{ 
-                opacity: isReady ? 1 : 0, 
-                scale: isReady ? 1 : 0.9, 
-                y: isReady ? 0 : 8 
-              }}
-              transition={{ duration: 0.55, delay: 0.45, ease: heroEase }}
-              className="absolute bottom-2 left-2 px-2 py-0.5 bg-cream/95 backdrop-blur-sm border border-navy/30 font-mono text-[8px] uppercase tracking-widest text-navy shadow-sm z-10"
-            >
-              FIG. 01 // STUDIO PORTRAIT — YOGYAKARTA
+              {/* Archival Vignette Plate Description */}
+              <div className="flex flex-col justify-center gap-0.5 font-mono text-navy border-l border-navy/20 pl-2.5 sm:pl-3">
+                <span className="text-[7px] sm:text-[8px] tracking-[0.25em] uppercase text-navy/50 font-bold">
+                  PLATE NO. 02 // ARCHIVE
+                </span>
+                <span className="font-bold text-navy text-xs sm:text-sm tracking-wider uppercase">
+                  ILLUSTRATED BY L&apos;HOODINI
+                </span>
+              </div>
             </motion.div>
           </div>
-        </div>
 
-        {/* Col 3 (Right): Active Practice, Rotating Role & Dispatch Index (Cols 9-12) */}
-        <div className="md:col-span-3 relative flex flex-col justify-between md:pl-4 lg:pl-6 gap-3 min-h-0 overflow-hidden">
-          {/* Vertical Separator Line Draw */}
-          <motion.div 
-            initial={{ scaleY: 0 }}
-            animate={{ scaleY: isReady ? 1 : 0 }}
-            transition={{ duration: 0.95, delay: 0.15, ease: heroEase }}
-            className="hidden md:block absolute left-0 top-0 bottom-0 w-[1px] bg-navy/20 origin-top pointer-events-none"
-          />
-
-          <div className="flex flex-col gap-2.5">
+          {/* Bottom Group: Roles, Statement/Coordinates, Directly Above Daftar Isi */}
+          <div className="flex flex-col gap-2 sm:gap-2.5 pt-1">
+            {/* Roles Section */}
             <motion.div 
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: isReady ? 1 : 0, y: isReady ? 0 : 16 }}
-              transition={{ duration: 0.7, delay: 0.15, ease: heroEase }}
+              transition={{ duration: 0.7, delay: 0.25, ease: heroEase }}
               className="flex flex-col gap-1"
             >
-              <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-navy/60">ACTIVE PRACTICE</span>
-              <div className="flex flex-col text-sm sm:text-base lg:text-lg font-black tracking-wide text-navy">
+              <div className="flex items-center justify-between text-[9px] sm:text-[10px] md:text-xs font-mono uppercase tracking-[0.2em] text-navy/60 font-semibold">
+                <span>ACTIVE PRACTICE //</span>
+                <span>CURATED DISCIPLINE</span>
+              </div>
+              <div className="flex items-baseline gap-2 text-lg sm:text-xl md:text-2xl lg:text-3xl font-black tracking-tight text-navy">
                 <span>EDUCATOR &amp;</span>
                 <span className="relative inline-grid [grid-template-areas:'stack'] overflow-hidden h-[1.3em]">
                   <AnimatePresence mode="popLayout" initial={false}>
@@ -384,62 +345,121 @@ export function HomeOptionB() {
               </div>
             </motion.div>
 
-            <motion.p 
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: isReady ? 1 : 0, y: isReady ? 0 : 12 }}
-              transition={{ duration: 0.7, delay: 0.25, ease: heroEase }}
-              className="text-xs sm:text-[13px] font-sans text-navy/80 leading-relaxed pt-0.5"
+            {/* Editorial Statement & Location Meta Grid (Moved Under Roles) */}
+            <motion.div 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: isReady ? 1 : 0, y: isReady ? 0 : 10 }}
+              transition={{ duration: 0.7, delay: 0.3, ease: heroEase }}
+              className="grid grid-cols-1 sm:grid-cols-12 gap-3 pt-2 pb-1 border-t border-navy/20"
             >
-              Structuring technical learning paths while engineering responsive distributed web platforms.
-            </motion.p>
-          </div>
+              <p className="sm:col-span-8 text-[11px] sm:text-xs md:text-[13px] font-sans text-navy/85 leading-relaxed">
+                Based in Yogyakarta. Structuring foundational computer science, architectural discipline, and human-centered engineering to bridge theory with production craftsmanship.
+              </p>
+              <div className="sm:col-span-4 border-l border-navy/20 pl-3 hidden sm:flex flex-col justify-center gap-0.5 font-mono text-[9px] text-navy/70">
+                <span className="uppercase tracking-widest text-navy/40 text-[8px]">BASE //</span>
+                <span className="font-bold text-navy">YOGYAKARTA, ID</span>
+                <span className="text-[8px] opacity-60">7.7956° S, 110.3695° E</span>
+              </div>
+            </motion.div>
 
-          {/* Broadsheet Index Table with Interactive Motion */}
+            {/* Broadsheet Chapter Index / Daftar Isi */}
+            <motion.div 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: isReady ? 1 : 0, y: isReady ? 0 : 10 }}
+              transition={{ duration: 0.7, delay: 0.35, ease: heroEase }}
+              className="pt-2 sm:pt-2.5 border-t-2 border-navy flex flex-col gap-1.5 font-mono text-[9px] sm:text-[10px] md:text-xs uppercase tracking-[0.15em] text-navy/80"
+            >
+              <div className="flex items-center justify-between text-[8px] sm:text-[9px] text-navy/50 pb-0.5 font-bold">
+                <span>DAFTAR ISI // DISPATCH INDEX</span>
+                <span>FOLIO VOL. 01 — 2026 EDITION</span>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 sm:gap-2">
+                <button 
+                  onClick={() => handleScrollClick('about-me')} 
+                  className="flex items-center justify-between p-2 bg-navy/[0.03] hover:bg-navy/[0.08] border border-navy/20 transition-all group cursor-pointer text-left"
+                >
+                  <span className="group-hover:translate-x-1 transition-transform font-bold text-navy">01. CHRONICLE (ABOUT)</span>
+                  <span className="text-[9px] font-mono opacity-50 group-hover:opacity-100">P. 01</span>
+                </button>
+                <button 
+                  onClick={() => handleScrollClick('work')} 
+                  className="flex items-center justify-between p-2 bg-navy/[0.03] hover:bg-navy/[0.08] border border-navy/20 transition-all group cursor-pointer text-left"
+                >
+                  <span className="group-hover:translate-x-1 transition-transform font-bold text-navy">02. CASE STUDIES (WORK)</span>
+                  <span className="text-[9px] font-mono opacity-50 group-hover:opacity-100">P. 02</span>
+                </button>
+                <button 
+                  onClick={() => handleScrollClick('service')} 
+                  className="flex items-center justify-between p-2 bg-navy/[0.03] hover:bg-navy/[0.08] border border-navy/20 transition-all group cursor-pointer text-left"
+                >
+                  <span className="group-hover:translate-x-1 transition-transform font-bold text-navy">03. SERVICES OFFERED</span>
+                  <span className="text-[9px] font-mono opacity-50 group-hover:opacity-100">P. 03</span>
+                </button>
+                <button 
+                  onClick={() => handleScrollClick('experience')} 
+                  className="flex items-center justify-between p-2 bg-navy/[0.03] hover:bg-navy/[0.08] border border-navy/20 transition-all group cursor-pointer text-left"
+                >
+                  <span className="group-hover:translate-x-1 transition-transform font-bold text-navy">04. PEDAGOGIC RECORD</span>
+                  <span className="text-[9px] font-mono opacity-50 group-hover:opacity-100">P. 04</span>
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+
+        {/* Right Column (Cols 8-12): Grounded Full Height Studio Portrait */}
+        <div className="md:col-span-5 relative h-full min-h-0 flex flex-col justify-end items-center overflow-hidden">
+          {/* Vertical Separator Line Draw */}
           <motion.div 
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: isReady ? 1 : 0, y: isReady ? 0 : 10 }}
-            transition={{ duration: 0.7, delay: 0.35, ease: heroEase }}
-            className="pt-3 border-t border-navy/15 flex flex-col gap-1 font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.15em] text-navy/70"
+            initial={{ scaleY: 0 }}
+            animate={{ scaleY: isReady ? 1 : 0 }}
+            transition={{ duration: 0.95, delay: 0.15, ease: heroEase }}
+            className="hidden md:block absolute left-0 top-0 bottom-0 w-[1px] bg-navy/20 origin-top pointer-events-none"
+          />
+
+          {/* Top Right Monograph Metadata Plate */}
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: isReady ? 1 : 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="hidden md:flex absolute top-1 right-2 items-center gap-2 font-mono text-[8px] uppercase tracking-widest text-navy/50 pointer-events-none select-none z-20"
           >
-            <div className="flex items-center justify-between text-[8px] text-navy/40 pb-0.5">
-              <span>DISPATCH INDEX //</span>
-              <span>FOLIO VOL. 01</span>
-            </div>
-            
-            <button 
-              onClick={() => handleScrollClick('about-me')} 
-              className="text-left hover:text-navy cursor-pointer flex justify-between items-center group py-0.5 transition-colors"
-            >
-              <span className="group-hover:translate-x-1.5 transition-transform duration-200">01. CHRONICLE (ABOUT)</span>
-              <span className="text-[9px] opacity-50 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-200">P. 01 →</span>
-            </button>
-            <button 
-              onClick={() => handleScrollClick('work')} 
-              className="text-left hover:text-navy cursor-pointer flex justify-between items-center group py-0.5 transition-colors"
-            >
-              <span className="group-hover:translate-x-1.5 transition-transform duration-200">02. CASE STUDIES (WORK)</span>
-              <span className="text-[9px] opacity-50 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-200">P. 02 →</span>
-            </button>
-            <button 
-              onClick={() => handleScrollClick('service')} 
-              className="text-left hover:text-navy cursor-pointer flex justify-between items-center group py-0.5 transition-colors"
-            >
-              <span className="group-hover:translate-x-1.5 transition-transform duration-200">03. SERVICES OFFERED</span>
-              <span className="text-[9px] opacity-50 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-200">P. 03 →</span>
-            </button>
-            <button 
-              onClick={() => handleScrollClick('experience')} 
-              className="text-left hover:text-navy cursor-pointer flex justify-between items-center group py-0.5 transition-colors"
-            >
-              <span className="group-hover:translate-x-1.5 transition-transform duration-200">04. PEDAGOGIC RECORD</span>
-              <span className="text-[9px] opacity-50 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-200">P. 04 →</span>
-            </button>
+            <span>PLATE NO. 01</span>
+            <span>//</span>
+            <span>STUDIO ARCHIVE</span>
           </motion.div>
+
+          <div className="relative w-full h-full flex items-end justify-center overflow-hidden">
+            <motion.img 
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ 
+                opacity: isReady ? 1 : 0, 
+                y: isReady ? 0 : 30
+              }}
+              transition={{ duration: 1.0, delay: 0.1, ease: heroEase }}
+              src="/profile-nobg.png" 
+              alt="Gabriel Ryan - Studio Portrait" 
+              className="h-[120%] sm:h-[122%] md:h-[123%] lg:h-[125%] w-auto max-w-none object-contain object-bottom grayscale contrast-[1.18] brightness-[1.03] drop-shadow-[0_24px_48px_rgba(21,57,102,0.25)] origin-bottom pointer-events-none"
+            />
+            {/* Studio Plate Caption Tag */}
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9, y: 8 }}
+              animate={{ 
+                opacity: isReady ? 1 : 0, 
+                scale: isReady ? 1 : 0.9, 
+                y: isReady ? 0 : 8 
+              }}
+              transition={{ duration: 0.55, delay: 0.45, ease: heroEase }}
+              className="absolute bottom-2 right-2 sm:right-4 px-2.5 py-1 bg-cream/95 backdrop-blur-sm border border-navy/30 font-mono text-[8px] sm:text-[9px] uppercase tracking-widest text-navy shadow-sm z-10"
+            >
+              FIG. 01 // STUDIO PORTRAIT — YOGYAKARTA
+            </motion.div>
+          </div>
         </div>
 
       </div>
 
-      {/* BOTTOM: Newspaper Running Footer with Line Draw & Animated Scroll Prompt */}
+      {/* BOTTOM: Broadsheet Running Footer with Line Draw & Animated Scroll Prompt */}
       <footer className="relative z-10 w-full pt-2 shrink-0 flex flex-col gap-1.5">
         <motion.div 
           initial={{ scaleX: 0 }}
@@ -480,6 +500,7 @@ export function HomeOptionB() {
       </footer>
 
     </section>
+    </LayoutGroup>
     </MotionConfig>
   );
 }
@@ -587,16 +608,16 @@ export function HomeOptionA() {
           {/* Quick Chapter Navigation Index */}
           <div className="pt-3 border-t border-navy/15 flex flex-wrap gap-4 sm:gap-6 text-[9px] sm:text-[10px] md:text-xs font-mono uppercase tracking-[0.15em] text-navy/70">
             <button onClick={() => handleScrollClick('about-me')} className="hover:text-navy hover:underline cursor-pointer">
-              01. ABOUT →
+              01. ABOUT
             </button>
             <button onClick={() => handleScrollClick('work')} className="hover:text-navy hover:underline cursor-pointer">
-              02. WORK →
+              02. WORK
             </button>
             <button onClick={() => handleScrollClick('service')} className="hover:text-navy hover:underline cursor-pointer">
-              03. SERVICES →
+              03. SERVICES
             </button>
             <button onClick={() => handleScrollClick('experience')} className="hover:text-navy hover:underline cursor-pointer">
-              04. RECORD →
+              04. RECORD
             </button>
           </div>
         </div>
@@ -968,145 +989,55 @@ export function Work() {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
-  
+
+  const currentProject = workProjects[workIndex];
+
   return (
     <PageTransition>
-      <section id="work" className="relative w-full min-h-[100svh] bg-navy flex flex-col border-t-2 border-cream overflow-hidden text-cream">
+      <section 
+        id="work" 
+        className="relative w-full min-h-[100svh] bg-[#0E1E34] text-cream flex flex-col justify-between p-2 sm:p-3 md:p-4 lg:p-5 border-t-2 border-cream overflow-hidden"
+      >
         
-        {/* Header Row */}
-        <div className="w-full flex items-center justify-between px-6 md:px-12 py-4 border-b border-cream/30 shrink-0">
-           <span className="text-xs font-bold tracking-widest uppercase">Chapter 02 // Selected Work</span>
-           <span className="text-xs font-bold tracking-widest uppercase font-mono">
-              0{workIndex + 1} / 0{workProjects.length}
-           </span>
+        {/* Broadsheet Chapter Header Masthead */}
+        <div className="w-full flex items-center justify-between pb-2 sm:pb-2.5 border-b border-cream/25 shrink-0 gap-2 font-mono text-[9px] sm:text-[10px] md:text-xs uppercase tracking-[0.2em] text-cream/70">
+          <div className="flex items-center gap-2">
+            <span className="h-2 w-2 rounded-full bg-cream"></span>
+            <span>CHAPTER 02 // SELECTED WORK</span>
+            <span className="opacity-40 hidden sm:inline">//</span>
+            <span className="text-cream/80 hidden sm:inline">3D RETRO WORKSTATION (THREE.JS)</span>
+          </div>
+
+          <span className="font-bold text-cream shrink-0">
+            PROJECT 0{workIndex + 1} / 0{workProjects.length}
+          </span>
         </div>
 
-        {/* Project Selector Tabs Strip */}
-        <motion.div 
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-40px" }}
-          className="w-full flex flex-wrap border-b border-cream/30 bg-navy/80 shrink-0"
-        >
-          {workProjects.map((p, idx) => {
-            const isSelected = workIndex === idx;
-            return (
-              <button
-                key={p.title}
-                onClick={() => setWorkIndex(idx)}
-                className={`flex-1 min-w-[200px] py-3.5 px-4 md:px-8 font-mono text-[11px] md:text-xs tracking-widest uppercase text-left transition-colors cursor-pointer border-r last:border-r-0 border-cream/30 flex items-center justify-between group ${
-                  isSelected
-                    ? 'bg-cream text-navy font-black shadow-[inset_0px_2px_0px_0px_#1E4E8C]'
-                    : 'text-cream/70 hover:text-cream hover:bg-cream/10'
-                }`}
-              >
-                <span className="truncate">
-                  0{idx + 1} // {p.title}
-                </span>
-                <span className={`text-[10px] tracking-wider ml-2 hidden sm:inline ${isSelected ? 'text-navy/70' : 'text-cream/50'}`}>
-                  {p.tag}
-                </span>
-              </button>
-            );
-          })}
-        </motion.div>
-
-        {/* Main Spread */}
-        <div className="flex-1 flex flex-col md:flex-row w-full h-full relative">
-           
-           {/* Left Content Half */}
-           <div className="w-full md:w-[40%] flex flex-col justify-between border-b md:border-b-0 md:border-r border-cream/30 relative z-10 shrink-0">
-               
-               {/* Project Details */}
-               <div className="p-6 md:p-12 flex-1 flex flex-col justify-center">
-                  <AnimatePresence mode="wait">
-                    <motion.div
-                      key={workIndex}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      transition={{ duration: 0.3 }}
-                      className="flex flex-col"
-                    >
-                      <div className="text-[10px] md:text-xs font-mono tracking-widest uppercase opacity-70 mb-4 border-b border-cream/30 pb-4">
-                        {workProjects[workIndex].tag}
-                      </div>
-                      
-                      <h3 className="font-serif text-5xl md:text-7xl font-black leading-[0.9] tracking-tighter mb-6">
-                        {workProjects[workIndex].title}
-                      </h3>
-                      
-                      <p className="font-serif text-base md:text-lg leading-relaxed opacity-90 mb-10">
-                        {workProjects[workIndex].desc}
-                      </p>
-                      
-                      {/* Tech Stack */}
-                      <div className="flex flex-wrap gap-3 mb-12">
-                        {workProjects[workIndex].tech.map(tech => (
-                          <span key={tech} className="px-3 py-1 border border-cream/40 text-xs font-bold tracking-widest uppercase">
-                            {tech}
-                          </span>
-                        ))}
-                      </div>
-
-                      <a href={workProjects[workIndex].url} target="_blank" rel="noreferrer" className="group flex items-center gap-4 w-fit hover:opacity-70 transition-opacity">
-                         <span className="text-sm font-bold tracking-widest uppercase border-b border-cream pb-1">
-                           View Live Project
-                         </span>
-                      </a>
-                    </motion.div>
-                  </AnimatePresence>
-               </div>
-
-               {/* Brutalist Navigation Controls */}
-               <div className="flex border-t border-cream/30 h-16 md:h-20 shrink-0">
-                  <button
-                        onClick={prevWork}
-                        className="flex-1 border-r border-cream/30 flex items-center justify-center hover:bg-cream hover:text-navy transition-colors group cursor-pointer"
-                    >
-                     <span className="text-xs font-bold tracking-widest uppercase">Previous</span>
-                  </button>
-                  <button
-                        onClick={nextWork}
-                        className="flex-1 flex items-center justify-center hover:bg-cream hover:text-navy transition-colors group cursor-pointer"
-                    >
-                     <span className="text-xs font-bold tracking-widest uppercase">Next</span>
-                  </button>
-               </div>
-
-           </div>
-           
-           {/* Right Image Half */}
-           <div className="w-full md:w-[60%] relative h-[400px] md:h-auto bg-[#153966] overflow-hidden">
-               <AnimatePresence mode="wait">
-                  <motion.div
-                      key={workIndex}
-                      initial={{ opacity: 0, scale: 1.02 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.6 }}
-                      className="absolute inset-0 flex items-center justify-center p-8 md:p-16 lg:p-24"
-                  >
-                     <div className="relative w-full h-full flex items-center justify-center">
-                       {/* Subtle frame behind the image for an editorial look */}
-                       <div className="absolute inset-0 border border-cream/10 bg-navy/30 shadow-2xl"></div>
-                       
-                       <img 
-                          src={workProjects[workIndex].img} 
-                          alt={workProjects[workIndex].title}
-                          className="relative z-10 w-full h-full object-contain object-center grayscale contrast-125 mix-blend-luminosity opacity-80 hover:grayscale-0 hover:mix-blend-normal hover:opacity-100 transition-all duration-700"
-                       />
-                     </div>
-                  </motion.div>
-               </AnimatePresence>
-               {/* Editorial Corner Mark */}
-               <div className="absolute bottom-6 right-6 md:bottom-12 md:right-12 border border-cream/30 bg-navy/80 backdrop-blur-md px-4 py-2 pointer-events-none">
-                  <span className="text-[10px] font-mono tracking-widest uppercase">Fig. 0{workIndex + 1}</span>
-               </div>
-           </div>
-
+        {/* 3D WebGL Workstation Viewport: Expands fully across available canvas */}
+        <div className="flex-1 w-full max-w-[98vw] 2xl:max-w-[1700px] mx-auto flex flex-col items-stretch justify-start py-0 relative z-10 min-h-0">
+          <RetroComputer3D 
+            projects={workProjects}
+            selectedIndex={workIndex}
+            onSelectProject={setWorkIndex}
+            onPrev={prevWork}
+            onNext={nextWork}
+          />
         </div>
+
+        {/* Bottom Metadata & Specs Strip */}
+        <div className="w-full pt-2 border-t border-cream/20 flex flex-col sm:flex-row sm:items-center justify-between gap-2 font-mono text-[8px] sm:text-[9px] md:text-[10px] text-cream/60 uppercase tracking-widest shrink-0">
+          <div className="flex items-center gap-3">
+            <span>ACTIVE PROJECT: {currentProject?.title}</span>
+            <span className="opacity-40">|</span>
+            <span>TAG: {currentProject?.tag}</span>
+          </div>
+          <div className="flex items-center gap-4">
+            <span className="hidden md:inline">KEYBOARD: [PREV] [NEXT] NAVIGATION</span>
+            <span className="opacity-40 hidden md:inline">|</span>
+            <span>WEBGL 3D BROADSHEET ENGINE</span>
+          </div>
+        </div>
+
       </section>
     </PageTransition>
   );
