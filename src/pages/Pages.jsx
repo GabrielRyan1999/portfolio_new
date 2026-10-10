@@ -1284,8 +1284,8 @@ export function Experience() {
                   </h2>
                </motion.div>
                <motion.div variants={fadeUp} className="max-w-md text-navy/80 font-serif text-lg leading-relaxed border-l-2 border-navy pl-6 flex flex-col gap-2">
-                  <p>Direct observations and endorsements from partner schools and edtech platforms.</p>
-                  <span className="text-xs font-mono tracking-widest uppercase opacity-60">OFFICIAL ENDORSEMENTS</span>
+                  <p>Direct observations and feedback from partner schools and edtech platforms.</p>
+                  <span className="text-xs font-mono tracking-widest uppercase opacity-60">VERIFIED TESTIMONIALS</span>
                </motion.div>
             </motion.div>
 

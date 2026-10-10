@@ -150,7 +150,7 @@ export function Testimonials() {
                     </p>
                   </div>
                   <div className="flex items-center gap-2 text-[10px] md:text-xs font-mono font-bold tracking-widest uppercase text-navy/60">
-                    <span className="hidden md:inline-block">VERIFIED ENDORSEMENT</span>
+                    <span className="hidden md:inline-block">VERIFIED TESTIMONIAL</span>
                   </div>
                 </div>
               </motion.div>
